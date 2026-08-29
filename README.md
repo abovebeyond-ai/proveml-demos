@@ -1,6 +1,6 @@
 # ProveML demos
 
-Two live demos of [ProveML](https://github.com/ShaneDeconinck/proveml) on sources
+Two live demos of [ProveML](https://github.com/abovebeyond-ai/proveml) on sources
 nobody invented: the Hedera ledger and an EU Digital Identity Wallet credential.
 Press a button, a frontier model writes the text, a program with no model in it
 checks every claim, and the verdict can be anchored or issued as a credential.
