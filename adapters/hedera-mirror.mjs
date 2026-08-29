@@ -136,6 +136,10 @@ export async function tokenSnapshot({ network = 'mainnet', tokenId = USDC[networ
     }
     put(`${T}.treasuryTxCount24h`, txCount, null, firstTxUrl);
     put(`${T}.treasuryVolume24h`, units(moved, decimals), t.symbol, firstTxUrl);
+    // The same activity, addressable from the treasury as a holder: a sentence
+    // that has named the treasury account will put its activity there.
+    put(`${TR}.txCount24h`, txCount, null, firstTxUrl);
+    put(`${TR}.volume24h`, units(moved, decimals), t.symbol, firstTxUrl);
 
     return {
         network,
