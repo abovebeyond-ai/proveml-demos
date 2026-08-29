@@ -37,7 +37,7 @@ async function writeReport() {
         const v = r.verification;
         const cov = v.coverage.rate === null ? 'n/a' : `${Math.round(v.coverage.rate * 100)}%`;
         const outside = v.details.filter(d => d.type === 'unmarked').length;
-        $('#verdict').innerHTML = `<span><b class="${v.verified === v.total ? 'good' : 'poor'}">${v.verified}/${v.total}</b> claims verified</span><span>coverage <b>${cov}</b>${outside ? ` (${outside} number${outside === 1 ? '' : 's'} outside any claim)` : ''}</span><span>${esc(r.model)} · ${(r.ms / 1000).toFixed(1)} s</span><span>snapshot ${esc(r.snapshot.id)}</span>`;
+        $('#verdict').innerHTML = `<span><b class="${v.verified === v.total ? 'good' : 'poor'}">${v.verified}/${v.total}</b> claims verified</span><span>coverage <b>${cov}</b>${outside ? ` (${outside} number${outside === 1 ? '' : 's'} outside any claim)` : ''}</span><span>${esc(r.model)} · ${(r.ms / 1000).toFixed(1)} s</span><span>snapshot ${esc(r.snapshot.id)}</span><span>${esc(r.trust)}</span>`;
         $('#rendered').innerHTML = r.html;
         // proof paths -> links to the mirror node
         for (const el of $('#rendered').querySelectorAll('.proveml-proof')) {

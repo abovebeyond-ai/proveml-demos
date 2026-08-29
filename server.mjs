@@ -59,9 +59,13 @@ async function ledgerReport(model) {
     const adapter = mirrorAdapter(snap);
     const options = { thresholds: ledgerThresholds, snapshot: snap.snapshot.id, strict: true };
     const verification = verifyProveml(gen.text, adapter, options);
-    const { html } = renderProveml(gen.text, adapter, { ...options, showProofPaths: true });
+    // Every fact here comes from one source with one trust status, so the
+    // per-claim trust tag the audit render adds is stated once in the verdict
+    // line instead; the path link per claim stays.
+    const html = renderProveml(gen.text, adapter, { ...options, showProofPaths: true }).html
+        .replace(/<span class="proveml-proof">\[trust: [^<]*<\/span>/g, '');
     const id = randomUUID();
-    const report = { id, model: gen.model, ms: gen.ms, markup: gen.text, plain: stripProveml(gen.text), html, verification, snapshot: snap.snapshot, proofs: snap.proofs, canAnchor: hasOperator() };
+    const report = { id, model: gen.model, ms: gen.ms, markup: gen.text, plain: stripProveml(gen.text), html, verification, snapshot: snap.snapshot, proofs: snap.proofs, canAnchor: hasOperator(), trust: 'every fact read from the Hedera mirror node at the snapshot timestamp' };
     reports.set(id, report);
     return report;
 }
