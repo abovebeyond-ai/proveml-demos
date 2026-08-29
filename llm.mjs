@@ -11,9 +11,12 @@
  * The prompt is the same for both: a system text with the ProveML rules and
  * the registry, and one user message with the data and the question.
  */
-import { existsSync, readFileSync } from 'fs';
-import { homedir } from 'os';
+import { existsSync, readFileSync, writeFileSync, mkdtempSync, rmSync } from 'fs';
+import { homedir, tmpdir } from 'os';
 import { join } from 'path';
+import { execFile } from 'child_process';
+import { promisify } from 'util';
+const execFileP = promisify(execFile);
 
 const cfg = (name) => {
     const f = join(homedir(), '.config', 'proveml', name);
@@ -26,12 +29,27 @@ export const MODELS = {
     'deepseek-ai/DeepSeek-V4-Pro-0813': { provider: 'together', label: 'DeepSeek V4 Pro (open weights, via Together)' },
 };
 
+/**
+ * Claude is reached one of two ways: the Anthropic SDK when a key is present,
+ * otherwise the Claude Code CLI (`claude -p`) with whatever login the machine
+ * has. The CLI is what runs on the laptop; a hosted server needs the key.
+ */
+let cliPath = null;
+function claudeCli() {
+    if (cliPath !== null) return cliPath;
+    const candidates = [process.env.CLAUDE_CLI, join(homedir(), '.npm-global', 'bin', 'claude'), join(homedir(), '.local', 'bin', 'claude'), '/opt/homebrew/bin/claude', '/usr/local/bin/claude']
+        .filter(Boolean);
+    cliPath = candidates.find(existsSync) || (process.env.PATH.split(':').map(d => join(d, 'claude')).find(existsSync)) || '';
+    return cliPath;
+}
+function hasAnthropicKey() { return Boolean(process.env.ANTHROPIC_API_KEY || cfg('anthropic-key')); }
+
 export function availableModels() {
-    const hasAnthropic = Boolean(process.env.ANTHROPIC_API_KEY || cfg('anthropic-key') || existsSync(join(homedir(), '.config', 'anthropic')));
+    const hasAnthropic = hasAnthropicKey() || Boolean(claudeCli());
     const hasTogether = Boolean(process.env.TOGETHER_API_KEY || cfg('together-key'));
     return Object.entries(MODELS)
         .filter(([, m]) => (m.provider === 'anthropic' ? hasAnthropic : hasTogether))
-        .map(([id, m]) => ({ id, ...m }));
+        .map(([id, m]) => ({ id, ...m, via: m.provider === 'anthropic' ? (hasAnthropicKey() ? 'api' : 'claude-cli') : 'together' }));
 }
 
 let anthropic;
@@ -51,6 +69,20 @@ export async function generate({ model, system, user }) {
     const spec = MODELS[model];
     if (!spec) throw new Error(`Unknown model ${model}`);
     const t0 = Date.now();
+
+    if (spec.provider === 'anthropic' && !hasAnthropicKey()) {
+        const cli = claudeCli();
+        if (!cli) throw new Error('No Anthropic key and no claude CLI on this machine');
+        const dir = mkdtempSync(join(tmpdir(), 'proveml-'));
+        const file = join(dir, 'prompt.txt');
+        writeFileSync(file, `${system}\n\n${user}`);
+        try {
+            const { stdout } = await execFileP('/bin/sh', ['-c', `cat "${file}" | "${cli}" -p --model ${model}`], { maxBuffer: 10 * 1024 * 1024, timeout: 300000 });
+            const text = stdout.trim();
+            if (!text) throw new Error('claude CLI returned an empty answer');
+            return { text, model, ms: Date.now() - t0 };
+        } finally { rmSync(dir, { recursive: true, force: true }); }
+    }
 
     if (spec.provider === 'anthropic') {
         const client = await anthropicClient();

@@ -13,7 +13,40 @@ async function loadModels() {
     const { models } = await api('/api/models');
     const sel = $('#model');
     sel.innerHTML = models.map(m => `<option value="${esc(m.id)}">${esc(m.label)}</option>`).join('');
-    if (!models.length) { $('#go').disabled = true; $('#go-meta').textContent = 'no model configured on this server'; }
+    if (!models.length) { $('#go').disabled = true; $('#go-meta').textContent = 'no model configured on this server; the examples below were written earlier'; }
+}
+
+function showReport(r) {
+    current = r;
+    const v = r.verification;
+    const cov = v.coverage.rate === null ? 'n/a' : `${Math.round(v.coverage.rate * 100)}%`;
+    const outside = v.details.filter(d => d.type === 'unmarked').length;
+    const when = r.writtenAt ? `<span>written ${esc(r.writtenAt.slice(0, 10))}</span>` : '';
+    $('#verdict').innerHTML = `<span><b class="${v.verified === v.total ? 'good' : 'poor'}">${v.verified}/${v.total}</b> claims verified</span><span>coverage <b>${cov}</b>${outside ? ` (${outside} number${outside === 1 ? '' : 's'} outside any claim)` : ''}</span><span>${esc(r.model)} · ${(r.ms / 1000).toFixed(1)} s</span><span>snapshot ${esc(r.snapshot.id)}</span><span>${esc(r.trust)}</span>${when}`;
+    $('#rendered').innerHTML = r.html;
+    for (const el of $('#rendered').querySelectorAll('.proveml-proof')) {
+        const path = el.textContent.replace(/^\[|\]$/g, '');
+        if (r.proofs[path]) el.innerHTML = `<a href="${esc(r.proofs[path])}" target="_blank" rel="noopener" title="open the mirror-node query">[${esc(path)}]</a>`;
+    }
+    $('#markup').textContent = r.markup;
+    $('#selfcheck').textContent = `# save the markup as report.md and the snapshot as facts.json, then:\nnpx proveml verify --input report.md --facts facts.json --strict\n\n# ${v.verified}/${v.total} claims verified, ${v.errors.length} finding${v.errors.length === 1 ? '' : 's'}${v.errors.length ? ':\n# - ' + v.errors.join('\n# - ') : ''}`;
+    $('#report').hidden = false;
+    $('#anchor-section').hidden = !r.id || r.example === true;
+    $('#anchor').disabled = !r.canAnchor;
+    $('#anchor-meta').textContent = r.canAnchor ? '' : 'no Hedera operator configured on this server';
+}
+
+async function loadExamples() {
+    const { examples } = await api('/api/examples/ledger');
+    if (!examples.length) return;
+    const box = $('#examples');
+    box.innerHTML = `<span class="meta">or see one written earlier:</span> ` + examples.map((e, i) => `<button class="link" data-i="${i}">${esc(e.modelLabel || e.model)}</button>`).join(' ');
+    box.hidden = false;
+    box.addEventListener('click', (ev) => {
+        const b = ev.target.closest('button[data-i]'); if (!b) return;
+        showReport({ ...examples[b.dataset.i], example: true });
+        $('#report').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
 }
 
 async function loadSnapshot() {
@@ -33,23 +66,7 @@ async function writeReport() {
     $('#report').hidden = true; $('#anchor-section').hidden = true; $('#anchored').hidden = true;
     try {
         const r = await api('/api/ledger/report', { model: $('#model').value });
-        current = r;
-        const v = r.verification;
-        const cov = v.coverage.rate === null ? 'n/a' : `${Math.round(v.coverage.rate * 100)}%`;
-        const outside = v.details.filter(d => d.type === 'unmarked').length;
-        $('#verdict').innerHTML = `<span><b class="${v.verified === v.total ? 'good' : 'poor'}">${v.verified}/${v.total}</b> claims verified</span><span>coverage <b>${cov}</b>${outside ? ` (${outside} number${outside === 1 ? '' : 's'} outside any claim)` : ''}</span><span>${esc(r.model)} · ${(r.ms / 1000).toFixed(1)} s</span><span>snapshot ${esc(r.snapshot.id)}</span><span>${esc(r.trust)}</span>`;
-        $('#rendered').innerHTML = r.html;
-        // proof paths -> links to the mirror node
-        for (const el of $('#rendered').querySelectorAll('.proveml-proof')) {
-            const path = el.textContent.replace(/^\[|\]$/g, '');
-            if (r.proofs[path]) el.innerHTML = `<a href="${esc(r.proofs[path])}" target="_blank" rel="noopener" title="open the mirror-node query">[${esc(path)}]</a>`;
-        }
-        $('#markup').textContent = r.markup;
-        $('#selfcheck').textContent = `# save the markup as report.md and the snapshot as facts.json, then:\nnpx proveml verify --input report.md --facts facts.json --strict\n\n# ${v.verified}/${v.total} claims verified, ${v.errors.length} finding${v.errors.length === 1 ? '' : 's'}${v.errors.length ? ':\n# - ' + v.errors.join('\n# - ') : ''}`;
-        $('#report').hidden = false;
-        $('#anchor-section').hidden = false;
-        $('#anchor').disabled = !r.canAnchor;
-        $('#anchor-meta').textContent = r.canAnchor ? '' : 'no Hedera operator configured on this server';
+        showReport(r);
         $('#go-meta').textContent = '';
     } catch (e) {
         $('#go-meta').innerHTML = `<span class="error">${esc(e.message)}</span>`;
@@ -70,4 +87,5 @@ async function anchorVerdict() {
 $('#go').addEventListener('click', writeReport);
 $('#anchor').addEventListener('click', anchorVerdict);
 loadModels().catch(e => { $('#go-meta').innerHTML = `<span class="error">${esc(e.message)}</span>`; });
+loadExamples().catch(() => {});
 loadSnapshot().catch(e => { $('#snapshot-meta').innerHTML = `<span class="error">${esc(e.message)}</span>`; });

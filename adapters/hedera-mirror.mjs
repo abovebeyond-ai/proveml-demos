@@ -79,6 +79,12 @@ export async function tokenSnapshot({ network = 'mainnet', tokenId = USDC[networ
     put(`${T}.treasuryBalance`, units(treasuryBal, decimals), t.symbol, treasuryUrl);
     put(`${T}.circulating`, units(supply - treasuryBal, decimals), t.symbol, treasuryUrl);
     put(`${T}.treasuryShare`, share(treasuryBal, supply), '%', treasuryUrl);
+    // The treasury is a holder too, so a sentence may name it as one.
+    const TR = `holder:${t.treasury_account_id}`;
+    put(`${TR}.name`, t.treasury_account_id, null, treasuryUrl);
+    put(`${TR}.role`, 'treasury', null, tokenUrl);
+    put(`${TR}.balance`, units(treasuryBal, decimals), t.symbol, treasuryUrl);
+    put(`${TR}.share`, share(treasuryBal, supply), '%', treasuryUrl);
 
     // Largest holders. The balances endpoint orders by account id, not by
     // amount, so "top holders" has to be read as a bounded scan: every account

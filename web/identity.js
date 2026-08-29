@@ -12,7 +12,34 @@ async function api(path, body) {
 async function loadModels() {
     const { models } = await api('/api/models');
     $('#model').innerHTML = models.map(m => `<option value="${esc(m.id)}">${esc(m.label)}</option>`).join('');
-    if (!models.length) { $('#go').disabled = true; $('#go-meta').textContent = 'no model configured on this server'; }
+    if (!models.length) { $('#go').disabled = true; $('#go-meta').textContent = 'no model configured on this server; the examples below were written earlier'; }
+}
+
+function showSummary(r) {
+    current = r;
+    const v = r.verification;
+    const cov = v.coverage.rate === null ? 'n/a' : `${Math.round(v.coverage.rate * 100)}%`;
+    const when = r.writtenAt ? `<span>written ${esc(r.writtenAt.slice(0, 10))}</span>` : '';
+    $('#verdict').innerHTML = `<span>credential <b class="${r.credentialStatus === 'verified' ? 'good' : 'poor'}">${esc(r.credentialStatus)}</b></span><span><b class="${v.verified === v.total ? 'good' : 'poor'}">${v.verified}/${v.total}</b> claims verified</span><span>coverage <b>${cov}</b></span><span>${esc(r.model)} · ${(r.ms / 1000).toFixed(1)} s</span>${when}`;
+    $('#rendered').innerHTML = r.html;
+    $('#markup').textContent = r.markup;
+    $('#presentation').textContent = `disclosed: ${r.disclosed.join(', ') || '(nothing)'}\n\nfacts available to the verifier:\n${Object.entries(r.facts).map(([k, val]) => `  ${k} = ${val}\n      ${r.proofs[k]}`).join('\n')}\n\npresentation (SD-JWT ~ disclosures ~ KB-JWT):\n${r.presentation}`;
+    $('#report').hidden = false;
+    $('#attest-section').hidden = r.example === true;
+    $('#attest').disabled = false;
+}
+
+async function loadExamples() {
+    const { examples } = await api('/api/examples/identity');
+    if (!examples.length) return;
+    const box = $('#examples');
+    box.innerHTML = `<span class="meta">or see one written earlier:</span> ` + examples.map((e, i) => `<button class="link" data-i="${i}">${esc(e.modelLabel || e.model)}${e.disclosed.length < 5 ? ' (name withheld)' : ''}</button>`).join(' ');
+    box.hidden = false;
+    box.addEventListener('click', (ev) => {
+        const b = ev.target.closest('button[data-i]'); if (!b) return;
+        showSummary({ ...examples[b.dataset.i], example: true });
+        $('#report').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
 }
 
 async function loadCredential() {
@@ -29,14 +56,7 @@ async function draft() {
     const disclose = [...document.querySelectorAll('input[name=disclose]:checked')].map(i => i.value);
     try {
         const r = await api('/api/identity/summary', { model: $('#model').value, disclose });
-        current = r;
-        const v = r.verification;
-        const cov = v.coverage.rate === null ? 'n/a' : `${Math.round(v.coverage.rate * 100)}%`;
-        $('#verdict').innerHTML = `<span>credential <b class="${r.credentialStatus === 'verified' ? 'good' : 'poor'}">${esc(r.credentialStatus)}</b></span><span><b class="${v.verified === v.total ? 'good' : 'poor'}">${v.verified}/${v.total}</b> claims verified</span><span>coverage <b>${cov}</b></span><span>${esc(r.model)} · ${(r.ms / 1000).toFixed(1)} s</span>`;
-        $('#rendered').innerHTML = r.html;
-        $('#markup').textContent = r.markup;
-        $('#presentation').textContent = `disclosed: ${r.disclosed.join(', ') || '(nothing)'}\n\nfacts available to the verifier:\n${Object.entries(r.facts).map(([k, val]) => `  ${k} = ${val}\n      ${r.proofs[k]}`).join('\n')}\n\npresentation (SD-JWT ~ disclosures ~ KB-JWT):\n${r.presentation}`;
-        $('#report').hidden = false; $('#attest-section').hidden = false; $('#attest').disabled = false; $('#go-meta').textContent = '';
+        showSummary(r); $('#go-meta').textContent = '';
     } catch (e) {
         $('#go-meta').innerHTML = `<span class="error">${esc(e.message)}</span>`;
     } finally { btn.disabled = false; }
@@ -54,4 +74,5 @@ async function attest() {
 $('#go').addEventListener('click', draft);
 $('#attest').addEventListener('click', attest);
 loadModels().catch(e => { $('#go-meta').innerHTML = `<span class="error">${esc(e.message)}</span>`; });
+loadExamples().catch(() => {});
 loadCredential().catch(e => { $('#cred-meta').innerHTML = `<span class="error">${esc(e.message)}</span>`; });

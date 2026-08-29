@@ -36,11 +36,11 @@ function ledgerPrompt(snap) {
     const registry = Object.entries(ledgerThresholds)
         .map(([name, t]) => `${name}: ${t.field} ${t.op} ${t.value}${t.unit ? ' ' + t.unit : ''}  ("${t.label}")`).join('\n');
     const system = `You write short ledger reports in ProveML markdown. Every claim you make is checked by a program against the data below, so:
-- Declare an entity before its facts: @[token:0.0.456858]{USD Coin} or @[holder:0.0.123]{0.0.123}. The name in braces must be the entity's name field exactly.
+- Declare an entity before its facts: @[token:0.0.456858]{USD Coin} or @[holder:0.0.123]{0.0.123}. The name in braces must be the entity's name field exactly. Treasury figures (treasuryBalance, treasuryShare, treasuryTxCount24h, treasuryVolume24h) are fields of the token; the treasury account also exists as a holder entity with balance and share.
 - Every number you state must be a fact: %[field]{value}, copied exactly from the data, unit included when the data shows one (e.g. %[totalSupply]{450010110 USDC}, %[largestHolderShare]{12.3 %}). Never round, never reformat, never compute.
 - Facts bind to the nearest preceding entity. If a sentence names a second entity before a fact, write the fact with its own entity: %[token:0.0.456858.totalSupply]{...}.
 - Qualitative wording (large, concentrated, active) is only allowed as an inference over the registry: ?[label: NAME]{words}. Use only these names, and only when the condition holds; otherwise do not make the claim. A threshold reads its field from the nearest preceding entity; to judge another entity write ?[label: NAME(entity:id.field)]{words}.
-- No number may appear outside a %[...] construct. Do not mention dates or the timestamp as numbers.
+- No number may appear outside a %[...] construct. Do not mention dates or the timestamp as numbers, and say "the last day" rather than "24 hours".
 - Plain Markdown paragraphs, no headings, no code fences, no bullet lists. Four to six sentences.
 
 REGISTRY (the only qualitative claims you may make):
@@ -52,7 +52,7 @@ EXAMPLE:
     return { system, user };
 }
 
-async function ledgerReport(model) {
+export async function ledgerReport(model) {
     const snap = await tokenSnapshot();
     const { system, user } = ledgerPrompt(snap);
     const gen = await generate({ model, system, user });
@@ -90,7 +90,7 @@ EXAMPLE:
     return { system, user };
 }
 
-async function identitySummary(model, disclose) {
+export async function identitySummary(model, disclose) {
     const nonce = randomUUID();
     const pres = await presentAndVerify(identity, disclose, nonce);
     const { system, user } = identityPrompt(pres.facts, pres.entity, pres.disclosed);
@@ -115,10 +115,20 @@ async function readBody(req) {
     return data ? JSON.parse(data) : {};
 }
 
-createServer(async (req, res) => {
+const EXAMPLES = join(here, 'web', 'examples');
+function examples(kind) {
+    const file = join(EXAMPLES, `${kind}.json`);
+    return existsSync(file) ? JSON.parse(readFileSync(file, 'utf8')) : [];
+}
+
+if (process.env.PROVEML_NO_SERVER) {
+    // imported by build-examples.mjs; do not listen
+} else createServer(async (req, res) => {
     const url = new URL(req.url, `http://${req.headers.host}`);
     try {
         if (url.pathname === '/api/models') return json(res, 200, { models: availableModels() });
+        if (url.pathname === '/api/examples/ledger') return json(res, 200, { examples: examples('ledger') });
+        if (url.pathname === '/api/examples/identity') return json(res, 200, { examples: examples('identity') });
         if (url.pathname === '/api/ledger/snapshot') {
             const snap = await tokenSnapshot();
             return json(res, 200, { ...snap, thresholds: ledgerThresholds });
