@@ -50,7 +50,7 @@
   </section>
 
   <footer>
-    <p><strong>What this does not do.</strong> It verifies that the text matches the disclosed attributes, not that the person is who the credential says: that is the issuer's signature, which the relying party checked before any text was written. The PID carries no age; the relying party derives it from the birth date, and that derivation is a fact with its own proof line, not something the verifier computes.</p>
+    <p><strong>What this does not do.</strong> It verifies that the text matches the disclosed attributes, not that the person is who the credential says: that is the issuer's signature, which the relying party checked before any text was written. Nor that the name shown is the only person with that name: the verifier checks the name against the id the model chose and reports whether that name is unique in the store; here there is one presentation and one person, and in a bank the disambiguator is the credential's digest, not the name. The PID carries no age; the relying party derives it from the birth date, and that derivation is a fact with its own proof line, not something the verifier computes.</p>
     <p class="small">Format: SD-JWT VC per the PID Rulebook v1.7; library: OpenWallet Foundation sd-jwt-js. The credential is issued by a demo provider key; member-state wallets are due by the end of 2026.</p>
   </footer>
 </main>

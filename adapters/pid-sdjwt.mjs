@@ -104,6 +104,7 @@ export async function presentAndVerify(id, disclose, nonce) {
     }
 
     const adapter = {
+        subjects() { return Object.entries(facts).filter(([k]) => k.endsWith('.name')).map(([k, v]) => ({ path: k.slice(0, -5), name: String(v) })); },
         resolve(path) {
             if (!(path in facts)) return { found: false };
             return { found: true, value: facts[path], trust: { status, backend: 'sd-jwt-vc', issuer: 'https://pid-provider.demo.abovebeyond.ai', proofRef: `sha256:${digestHex}`, checkedAt: new Date().toISOString() } };

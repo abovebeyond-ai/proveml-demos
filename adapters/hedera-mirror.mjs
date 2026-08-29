@@ -155,6 +155,9 @@ export async function tokenSnapshot({ network = 'mainnet', tokenId = USDC[networ
  */
 export function mirrorAdapter(snap) {
     return {
+        subjects() {
+            return Object.entries(snap.facts).filter(([k]) => /^[^.]+\.name$/.test(k)).map(([k, v]) => ({ path: k.slice(0, -5), name: String(v) }));
+        },
         resolve(path) {
             if (!(path in snap.facts)) return { found: false };
             return {
