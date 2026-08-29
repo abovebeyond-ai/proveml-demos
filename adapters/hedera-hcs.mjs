@@ -75,7 +75,8 @@ export async function anchor(payload) {
     const message = JSON.stringify(payload);
     const tx = await new s.TopicMessageSubmitTransaction().setTopicId(topicId).setMessage(message).execute(c);
     const receipt = await tx.getReceipt(c);
-    const txId = tx.transactionId.toString();
+    // HashScan reads the id as 0.0.x-seconds-nanos; the SDK prints 0.0.x@seconds.nanos.
+    const txId = tx.transactionId.toString().replace('@', '-').replace(/\.(\d+)$/, '-$1');
     const net = op.network || 'testnet';
     c.close();
     return {
