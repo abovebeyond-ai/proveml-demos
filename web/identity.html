@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ProveML on a PID</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:opsz,wght@8..60,600&display=swap">
+<link rel="stylesheet" href="/proveml.css">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<main class="wrap">
+  <nav class="nav"><a href="/">Ledger</a><span>·</span><a href="/identity.html" aria-current="page">Identity</a></nav>
+  <header>
+    <div class="eyebrow">ProveML · EU Digital Identity Wallet PID</div>
+    <h1>A model writes on top of a credential. Every claim resolves to a disclosed attribute.</h1>
+    <p class="lede">The fact store is a Person Identification Data credential in the EUDI format (SD-JWT VC, <code>urn:eudi:pid:1</code>). The holder discloses what they choose, with key binding to this verifier's nonce; the relying party checks the issuer signature and the digests. A summary drafted by a model is then checked claim by claim against what was disclosed, and nothing else.</p>
+  </header>
+
+  <section>
+    <div class="step"><span class="n">1</span><h2>The presentation</h2><span class="meta" id="cred-meta">issuing a demo PID…</span></div>
+    <p class="small muted">Tick what the holder discloses. An undisclosed attribute is not in the store: a sentence about it cannot verify, and the page will show that rather than hide it.</p>
+    <div class="table-wrap"><table id="claims"><thead><tr><th>disclose</th><th>claim</th><th>value in the credential</th></tr></thead><tbody></tbody></table></div>
+    <details class="registry"><summary>The registry: the only qualitative claims the model may make</summary><table id="registry"><tbody></tbody></table></details>
+  </section>
+
+  <section>
+    <div class="step"><span class="n">2</span><h2>The summary</h2></div>
+    <div class="controls">
+      <label>Model <select id="model"></select></label>
+      <button id="go" class="primary">Present and draft the account-opening summary</button>
+      <span class="meta" id="go-meta"></span>
+    </div>
+    <div id="report" class="report" hidden>
+      <div class="verdict" id="verdict"></div>
+      <div class="rendered proveml-root" id="rendered"></div>
+      <div class="legend"><span class="ok">verified</span><span class="bad">mismatch</span><span class="warn">unverifiable (not disclosed)</span><span class="inf">judgement from the registry</span></div>
+      <details><summary>What the model actually wrote (the markup)</summary><pre id="markup"></pre></details>
+      <details><summary>The presentation (SD-JWT with key binding) and what was derived</summary><pre id="presentation"></pre></details>
+    </div>
+  </section>
+
+  <section id="attest-section" hidden>
+    <div class="step"><span class="n">3</span><h2>The verdict as a credential</h2></div>
+    <p>The relying party issues the verification result as an SD-JWT VC of its own (<code>urn:proveml:verification:1</code>): which presentation, which report, how many claims verified, which verifier. Claims in, credential out.</p>
+    <div class="controls"><button id="attest" class="primary">Issue the verification credential</button><span class="meta" id="attest-meta"></span></div>
+    <div id="attested" hidden></div>
+  </section>
+
+  <footer>
+    <p><strong>What this does not do.</strong> It verifies that the text matches the disclosed attributes, not that the person is who the credential says: that is the issuer's signature, which the relying party checked before any text was written. The PID carries no age; the relying party derives it from the birth date, and that derivation is a fact with its own proof line, not something the verifier computes.</p>
+    <p class="small">Format: SD-JWT VC per the PID Rulebook v1.7; library: OpenWallet Foundation sd-jwt-js. The credential is issued by a demo provider key; member-state wallets are due by the end of 2026.</p>
+  </footer>
+</main>
+<script src="/identity.js"></script>
+</body>
+</html>

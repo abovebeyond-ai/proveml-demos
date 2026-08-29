@@ -1,0 +1,22 @@
+{
+  "name": "proveml-demos",
+  "private": true,
+  "type": "module",
+  "description": "Live ProveML demos on real sources: a Hedera ledger report and an EUDI PID summary.",
+  "scripts": {
+    "start": "node server.mjs",
+    "test": "node test.mjs"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.122.0",
+    "@hiero-ledger/sdk": "^2.87.0",
+    "@owf/crypto": "^0.3.2",
+    "@sd-jwt/core": "^0.20.0",
+    "@sd-jwt/sd-jwt-vc": "^0.20.0",
+    "jose": "^6.2.10",
+    "proveml": "^0.3.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
