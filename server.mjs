@@ -16,6 +16,7 @@ import { fileURLToPath } from 'url';
 import { randomUUID } from 'crypto';
 import { verifyProveml, stripProveml } from 'proveml/verify';
 import { renderProveml, PROVEML_CSS } from 'proveml/render';
+import { promptFor } from 'proveml/prompt';
 import { tokenSnapshot, mirrorAdapter } from './adapters/hedera-mirror.mjs';
 import { anchor, anchorPayload, hasOperator } from './adapters/hedera-hcs.mjs';
 import { ledgerThresholds } from './registry/ledger.mjs';
@@ -31,24 +32,18 @@ const identity = await setupIdentity();
 const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.json': 'application/json' };
 
 function ledgerPrompt(snap) {
+    // The rules come from the package (proveml/prompt): what a model has to be
+    // told is measured there, not improvised here. Only the role, the example
+    // and the data are this demo's.
+    const system = promptFor({
+        store: snap.facts,
+        thresholds: ledgerThresholds,
+        role: 'You write short daily ledger reports for the holders of a token. Treasury figures (treasuryBalance, treasuryShare, treasuryTxCount24h, treasuryVolume24h) are fields of the token; the treasury account also exists as a holder with balance, share, txCount24h and volume24h. Say "the last day" rather than "24 hours". Four to six sentences.',
+        example: `@[token:0.0.456858]{USD Coin} has a total supply of %[totalSupply]{450010110 USDC} on Hedera, of which %[circulating]{450009947.703719 USDC} is outside the treasury; ?[large: LARGE_ISSUANCE]{this is a large issuance for the network}.`,
+    });
     const facts = Object.entries(snap.facts).filter(([k]) => !k.endsWith('._unit') && !k.endsWith('._display'))
         .map(([k, v]) => `${k} = ${v}${snap.facts[`${k}._unit`] ? ' ' + snap.facts[`${k}._unit`] : ''}`).join('\n');
-    const registry = Object.entries(ledgerThresholds)
-        .map(([name, t]) => `${name}: ${t.field} ${t.op} ${t.value}${t.unit ? ' ' + t.unit : ''}  ("${t.label}")`).join('\n');
-    const system = `You write short ledger reports in ProveML markdown. Every claim you make is checked by a program against the data below, so:
-- Declare an entity before its facts: @[token:0.0.456858]{USD Coin} or @[holder:0.0.123]{0.0.123}. The name in braces must be the entity's name field exactly. Treasury figures (treasuryBalance, treasuryShare, treasuryTxCount24h, treasuryVolume24h) are fields of the token; the treasury account also exists as a holder entity with balance, share, txCount24h and volume24h.
-- Every number you state must be a fact: %[field]{value}, copied exactly from the data, unit included when the data shows one (e.g. %[totalSupply]{450010110 USDC}, %[largestHolderShare]{12.3 %}). Never round, never reformat, never compute.
-- Facts bind to the nearest preceding entity. If a sentence names a second entity before a fact, write the fact with its own entity: %[token:0.0.456858.totalSupply]{...}.
-- Qualitative wording (large, concentrated, active) is only allowed as an inference over the registry: ?[label: NAME]{words}. Use only these names, and only when the condition holds; otherwise do not make the claim. A threshold reads its field from the nearest preceding entity; to judge another entity write ?[label: NAME(entity:id.field)]{words}.
-- No number may appear outside a %[...] construct. Do not mention dates or the timestamp as numbers, and say "the last day" rather than "24 hours".
-- Plain Markdown paragraphs, no headings, no code fences, no bullet lists. Four to six sentences.
-
-REGISTRY (the only qualitative claims you may make):
-${registry}
-
-EXAMPLE:
-@[token:0.0.456858]{USD Coin} has a total supply of %[totalSupply]{450010110 USDC} on Hedera, of which %[circulating]{450009947.703719 USDC} is outside the treasury; ?[large: LARGE_ISSUANCE]{this is a large issuance for the network}.`;
-    const user = `DATA (snapshot ${snap.snapshot.id}):\n${facts}\n\nWrite today's report on USDC on Hedera: issuance, treasury activity over the last 24 hours, and the largest holders.`;
+    const user = `DATA (snapshot ${snap.snapshot.id}):\n${facts}\n\nWrite today's report on USDC on Hedera: issuance, treasury activity over the last day, and the largest holders.`;
     return { system, user };
 }
 
@@ -71,21 +66,13 @@ export async function ledgerReport(model) {
 }
 
 function identityPrompt(facts, entity, disclosed) {
+    const system = promptFor({
+        store: facts,
+        thresholds: identityThresholds,
+        role: `You draft short account-opening summaries for a bank from a verified identity credential. Start with the person as the subject: @[${entity}]{Name Surname}, using ${entity}.name exactly; if there is no name in the data, write @[${entity}]{the applicant}, which will show as unverifiable, and that is correct. Nested fields keep their dotted name (%[address.locality]{Gent}). Never state an attribute that is not in the data; say it was not disclosed. Three to five sentences, formal register.`,
+        example: `@[${entity}]{Elke Vandenberghe} presented a PID issued by %[issuing_authority]{Demo PID Provider}. She was born on %[birthdate]{1991-06-03} and ?[adult: IS_ADULT]{is of age}; her nationality is %[nationalities]{BE}, so she ?[eu: EU_NATIONAL]{is a national of an EU member state}.`,
+    });
     const lines = Object.entries(facts).map(([k, v]) => `${k} = ${v}`).join('\n');
-    const registry = Object.entries(identityThresholds).map(([n, t]) => `${n}: ${t.field} ${t.op} ${t.value}  ("${t.label}")`).join('\n');
-    const system = `You draft short account-opening summaries for a bank from a verified identity credential, in ProveML markdown. Every claim is checked by a program against the disclosed attributes, so:
-- Start with the person as an entity: @[${entity}]{Name Surname}, using the value of ${entity}.name exactly. If there is no name in the data, write @[${entity}]{the applicant} and it will show as unverifiable, which is correct.
-- Every attribute you state is a fact: %[field]{value} copied exactly from the data, e.g. %[birthdate]{1991-06-03}, %[address.locality]{Gent}, %[nationalities]{BE}. Nested fields keep their dotted name.
-- Qualitative wording (of age, resident, national) is only allowed as an inference over the registry: ?[label: NAME]{words}. Use only these names, only when the condition holds.
-- Never state an attribute that is not in the data. Say that it was not disclosed instead, without inventing a value.
-- No number may appear outside a %[...] construct.
-- Plain Markdown, no headings, no lists, no code fences. Three to five sentences, formal register.
-
-REGISTRY:
-${registry}
-
-EXAMPLE:
-@[person:ab12]{Elke Vandenberghe} presented a PID issued by %[issuing_authority]{Demo PID Provider}. She was born on %[birthdate]{1991-06-03} and ?[adult: IS_ADULT]{is of age}; her nationality is %[nationalities]{BE}, so she ?[eu: EU_NATIONAL]{is a national of an EU member state}.`;
     const user = `DATA (disclosed: ${disclosed.join(', ') || 'nothing'}):\n${lines}\n\nDraft the account-opening summary for this applicant.`;
     return { system, user };
 }
