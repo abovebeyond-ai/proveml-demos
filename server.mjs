@@ -31,7 +31,7 @@ const identity = await setupIdentity();
 const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.json': 'application/json' };
 
 function ledgerPrompt(snap) {
-    const facts = Object.entries(snap.facts).filter(([k]) => !k.endsWith('._unit'))
+    const facts = Object.entries(snap.facts).filter(([k]) => !k.endsWith('._unit') && !k.endsWith('._display'))
         .map(([k, v]) => `${k} = ${v}${snap.facts[`${k}._unit`] ? ' ' + snap.facts[`${k}._unit`] : ''}`).join('\n');
     const registry = Object.entries(ledgerThresholds)
         .map(([name, t]) => `${name}: ${t.field} ${t.op} ${t.value}${t.unit ? ' ' + t.unit : ''}  ("${t.label}")`).join('\n');

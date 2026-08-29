@@ -54,9 +54,14 @@ export async function tokenSnapshot({ network = 'mainnet', tokenId = USDC[networ
 
     const facts = {};
     const proofs = {};
+    // Amounts are stored exactly and displayed rounded: the claim says
+    // 450010110 USDC, the reader sees 450.0 million USDC (proveml >= 0.4.0).
     const put = (key, value, unit, url) => {
         facts[key] = value;
         if (unit) facts[`${key}._unit`] = unit;
+        if (unit === '%') facts[`${key}._display`] = 'percent:1';
+        else if (unit && /^\d/.test(String(value)) && Number(value) >= 1_000_000) facts[`${key}._display`] = 'compact:1';
+        else if (unit && /^\d/.test(String(value))) facts[`${key}._display`] = 'grouped:2';
         proofs[key] = url;
     };
 
@@ -160,6 +165,7 @@ export function mirrorAdapter(snap) {
         },
         resolve(path) {
             if (!(path in snap.facts)) return { found: false };
+            if (path.endsWith('._display')) return { found: true, value: snap.facts[path] };
             return {
                 found: true,
                 value: snap.facts[path],

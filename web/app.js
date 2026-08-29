@@ -52,7 +52,7 @@ async function loadExamples() {
 async function loadSnapshot() {
     const snap = await api('/api/ledger/snapshot');
     $('#snapshot-meta').innerHTML = `snapshot <b>${esc(snap.snapshot.id)}</b> · <a href="${esc(snap.snapshot.hashscan)}" target="_blank" rel="noopener">token on HashScan</a>`;
-    const rows = Object.entries(snap.facts).filter(([k]) => !k.endsWith('._unit')).map(([k, v]) => {
+    const rows = Object.entries(snap.facts).filter(([k]) => !k.endsWith('._unit') && !k.endsWith('._display')).map(([k, v]) => {
         const unit = snap.facts[`${k}._unit`] ? ` ${snap.facts[`${k}._unit`]}` : '';
         return `<tr><td class="path">${esc(k)}</td><td class="val">${esc(v)}${esc(unit)}</td><td><a href="${esc(snap.proofs[k])}" target="_blank" rel="noopener">mirror node ↗</a></td></tr>`;
     });
