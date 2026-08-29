@@ -14,7 +14,7 @@
     "@sd-jwt/core": "^0.20.0",
     "@sd-jwt/sd-jwt-vc": "^0.20.0",
     "jose": "^6.2.10",
-    "proveml": "file:../proveml"
+    "proveml": "^0.3.1"
   },
   "engines": {
     "node": ">=20"
