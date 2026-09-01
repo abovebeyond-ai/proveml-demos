@@ -13,6 +13,7 @@
     "@owf/crypto": "^0.3.2",
     "@sd-jwt/core": "^0.20.0",
     "@sd-jwt/sd-jwt-vc": "^0.20.0",
+    "@simplewebauthn/server": "^13.3.3",
     "jose": "^6.2.10",
     "proveml": "file:../proveml"
   },
