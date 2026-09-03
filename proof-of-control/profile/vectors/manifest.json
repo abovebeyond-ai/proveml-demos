@@ -1,0 +1,35 @@
+{
+ "profile": "poc-reason v0.1",
+ "source_run": "runs/injected-with",
+ "vectors": [
+  {
+   "file": "positive-allow-verified.json",
+   "cert": "positive.cert.md",
+   "store": "positive.store.json",
+   "registry": "positive.registry.json",
+   "expect": "ok",
+   "why": "a real token from the run: ALLOW, certificate verified, digests recompute"
+  },
+  {
+   "file": "negative-allow-unverified.json",
+   "expect": "verdict",
+   "why": "an ALLOW whose certificate did not verify is not evidence of a warranted action"
+  },
+  {
+   "file": "negative-certificate-substituted.json",
+   "cert": "negative-other.cert.md",
+   "store": "positive.store.json",
+   "registry": "positive.registry.json",
+   "expect": "certificate-hash",
+   "why": "the certificate published beside the token is not the one it commits to"
+  },
+  {
+   "file": "negative-required-control-missing.json",
+   "cert": "positive.cert.md",
+   "store": "positive.store.json",
+   "registry": "positive.registry.json",
+   "expect": "reverify",
+   "why": "the token claims a control was required that the certificate never argued; re-verification disagrees"
+  }
+ ]
+}

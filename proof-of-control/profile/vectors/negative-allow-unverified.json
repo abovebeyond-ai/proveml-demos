@@ -1,0 +1,41 @@
+{
+ "iss": "https://verifier.example/poc",
+ "iat": 1788476207,
+ "nonce": "n-00000003",
+ "eat_profile": "https://advancedaisociety.org/poc/v0.1",
+ "poc_claims": {
+  "agent_id": "did:web:abovebeyond.ai#agent-ap",
+  "initiating_user": "did:web:abovebeyond.ai#ops",
+  "agbom_digest": "sha-256:8ccf1344a2087a19f5bd874fa3ae8486dce9ddfed60f17856d9a0cfe6540e868",
+  "interception_point": "PRE_CALL_TOOL_INVOCATION",
+  "step_index": 2,
+  "chain_head": "sha-256:cbc69733297f173197319e49990343418321b28845894a0d1b7e604d39c5f817",
+  "merkle_root": "sha-256:a0cbc2ba42df9439eefc21ead7daa250369783a58c2bfa5b3782adced7f91619",
+  "tree_size": 3,
+  "policy_bundle_hash": "sha-256:3a9b8b2765071ad9c195d4c2fc2b57c7a03a8deb8af68c7f5823afd7d583f3ef",
+  "target_resource": "payments.api",
+  "canonical_snapshot_hash": "sha-256:fbf0c85c8583fba10be1cc642b5fed0416db7e361b2e19beb5c65d6cf2879971",
+  "path_summary_hash": "sha-256:431bf5033ea86dd1d4833efaaece6bad21b73c6b06ae470ba6614f7a4c2b2c4a",
+  "verdict": "ALLOW",
+  "reason": "within grant",
+  "alg": "EdDSA",
+  "proveml_certificate_hash": "sha-256:d4b8f0653d71d74032048ae47722b0da0e75df527cf7a39ec0d08b87d6e905b2",
+  "proveml_store_hash": "sha-256:73466fe558230626f44f2b2e794d50387a71a8607e4c20d5657279ff1b85953a",
+  "proveml_registry_hash": "sha-256:3260edaff662ca3c54f5a775f6f877e4b27fec7a97b767909174eae4679965d6",
+  "proveml_required_controls": [
+   "INVOICE_DUE",
+   "SUPPLIER_VETTED",
+   "AMOUNT_MATCHES_INVOICE",
+   "WITHIN_SINGLE_SPEND",
+   "WITHIN_CUMULATIVE"
+  ],
+  "proveml_verified": false
+ },
+ "submods": {
+  "attestation": {
+   "platform": "SOFTWARE",
+   "measurement": "sha-256:45fbf538a60aea7b7d34650e624c3e406a437f8084bef4cf54f4898705f596a9"
+  }
+ },
+ "signature": "523b9c1ce2ea72690581c87113cec986d4fa26be7e73972745a95171848645aee7589cfbafcd0a359ed1de478332053fe441416e5120994487175a63b1818407"
+}

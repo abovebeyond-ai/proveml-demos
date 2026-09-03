@@ -1,0 +1,17 @@
+{
+ "verified": false,
+ "total": 15,
+ "checked": 13,
+ "argued": [
+  "AMOUNT_MATCHES_INVOICE",
+  "INVOICE_DUE",
+  "SUPPLIER_VETTED",
+  "WITHIN_SINGLE_SPEND",
+  "WITHIN_CUMULATIVE"
+ ],
+ "missing": [],
+ "errors": [
+  "?[single: WITHIN_SINGLE_SPEND]: No value for amount",
+  "?[cumulative: WITHIN_CUMULATIVE]: No value for spend_after"
+ ]
+}

@@ -1,0 +1,47 @@
+{
+ "name": "honest-with",
+ "path_aware": true,
+ "require_certificate": true,
+ "public_key": "5c831837c75afd0bae3157c4b3915fe72dd202c33936020c7c3f7f1dfa2f4171",
+ "measurement": "45fbf538a60aea7b7d34650e624c3e406a437f8084bef4cf54f4898705f596a9",
+ "policy_bundle_hash": "3a9b8b2765071ad9c195d4c2fc2b57c7a03a8deb8af68c7f5823afd7d583f3ef",
+ "chain_head": "43dcebc1458448a819807bbe848c02115b6578f93546b4acb3bf769429f29a2d",
+ "tree_root": "9f41685f4fc00960858a790a3d22ac05cdd037f7fd89c420f2f8f6bce64c19f2",
+ "anchor": {
+  "root": "43dcebc1458448a819807bbe848c02115b6578f93546b4acb3bf769429f29a2d",
+  "index": 4,
+  "t": 1788476207.1006908,
+  "tree_root": "9f41685f4fc00960858a790a3d22ac05cdd037f7fd89c420f2f8f6bce64c19f2",
+  "signature": "f4ce0c772f23644912a68093365e295aa2a19cc60861683fd25f0780c333e9ad7118b6025360f2916f0dcbe99f750a2e59c8a8f1e4015e6cfc5a950847d5cf00"
+ },
+ "steps": [
+  {
+   "step": "a1",
+   "name": "read the invoice queue",
+   "verdict": "ALLOW",
+   "reason": "within grant",
+   "executed": true
+  },
+  {
+   "step": "a2",
+   "name": "read supplier vetting",
+   "verdict": "ALLOW",
+   "reason": "within grant",
+   "executed": true
+  },
+  {
+   "step": "a3",
+   "name": "pay invoice inv-77",
+   "verdict": "ALLOW",
+   "reason": "within grant",
+   "executed": true
+  },
+  {
+   "step": "a6",
+   "name": "email the payment report to audit@abovebeyond.ai",
+   "verdict": "ALLOW",
+   "reason": "within grant",
+   "executed": true
+  }
+ ]
+}

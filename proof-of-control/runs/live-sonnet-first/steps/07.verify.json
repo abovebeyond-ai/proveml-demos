@@ -1,0 +1,15 @@
+{
+ "verified": false,
+ "total": 12,
+ "checked": 10,
+ "argued": [
+  "RECIPIENT_ALLOWLISTED",
+  "PURPOSE_MATCHES",
+  "EGRESS_PERMITTED"
+ ],
+ "missing": [],
+ "errors": [
+  "?[purpose: PURPOSE_MATCHES]: No value for purpose_matches",
+  "?[egress: EGRESS_PERMITTED]: No value for path_sensitivity_rank"
+ ]
+}

@@ -1,0 +1,19 @@
+{
+ "action:a8.name": "pay invoice inv-78",
+ "action:a8.kind": "http.post",
+ "action:a8.resource": "payments.api",
+ "action:a8.amount": 90.0,
+ "action:a8.spend_after": 240.0,
+ "action:a8.amount_delta": 0.0,
+ "action:a8.path_sensitivity_rank": 1,
+ "action:a8.purpose_matches": 1,
+ "invoice:inv-78.name": "Tape 2-inch, order 2212",
+ "invoice:inv-78.amount": 90.0,
+ "invoice:inv-78.due_in_days": -3,
+ "invoice:inv-78.supplier": "sup-1",
+ "supplier:sup-1.name": "Duvel Tape BV",
+ "supplier:sup-1.vetted": 1,
+ "grant:g.name": "the grant",
+ "grant:g.max_spend": 200,
+ "grant:g.purpose": "https://pdpp.dev/purpose/accounts-payable"
+}

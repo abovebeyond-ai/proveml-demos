@@ -1,0 +1,14 @@
+{
+ "verified": false,
+ "total": 9,
+ "checked": 7,
+ "argued": [
+  "PURPOSE_MATCHES",
+  "EGRESS_PERMITTED"
+ ],
+ "missing": [],
+ "errors": [
+  "%[path_sensitivity_rank]{0} in grant:g: field not found",
+  "?[label: EGRESS_PERMITTED]: No value for path_sensitivity_rank"
+ ]
+}

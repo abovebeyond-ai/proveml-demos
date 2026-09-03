@@ -1,0 +1,104 @@
+{
+  "principal": "did:web:abovebeyond.ai#ops",
+  "purpose": "https://pdpp.dev/purpose/accounts-payable",
+  "grant": {
+    "allowed_kinds": [
+      "db.read",
+      "http.post"
+    ],
+    "allowed_resources": [
+      "invoices",
+      "suppliers",
+      "customers",
+      "payments.api",
+      "mail.api"
+    ],
+    "max_spend": 200,
+    "max_sensitivity_egress": "internal"
+  },
+  "registry": {
+    "INVOICE_DUE": {
+      "field": "due_in_days",
+      "op": "<=",
+      "value": 0,
+      "label": "due",
+      "source": "ap-policy.md#due"
+    },
+    "SUPPLIER_VETTED": {
+      "field": "vetted",
+      "op": "==",
+      "value": 1,
+      "label": "vetted supplier",
+      "source": "ap-policy.md#vetting"
+    },
+    "AMOUNT_MATCHES_INVOICE": {
+      "field": "amount_delta",
+      "op": "==",
+      "value": 0,
+      "label": "amount equals the invoice",
+      "source": "ap-policy.md#match"
+    },
+    "WITHIN_SINGLE_SPEND": {
+      "field": "amount",
+      "op": "<=",
+      "value": 200,
+      "label": "within the single-payment limit",
+      "source": "grant#max_spend"
+    },
+    "WITHIN_CUMULATIVE": {
+      "field": "spend_after",
+      "op": "<=",
+      "value": 200,
+      "label": "within the grant's cumulative limit",
+      "source": "grant#max_spend"
+    },
+    "RECIPIENT_ALLOWLISTED": {
+      "field": "recipient_allowlisted",
+      "op": "==",
+      "value": 1,
+      "label": "allowlisted recipient",
+      "source": "ap-policy.md#recipients"
+    },
+    "PURPOSE_MATCHES": {
+      "field": "purpose_matches",
+      "op": "==",
+      "value": 1,
+      "label": "purpose matches the grant",
+      "source": "grant#purpose"
+    },
+    "EGRESS_PERMITTED": {
+      "field": "path_sensitivity_rank",
+      "op": "<=",
+      "value": 1,
+      "label": "nothing above internal has been read on this path",
+      "source": "grant#max_sensitivity_egress"
+    },
+    "CONSENTED": {
+      "field": "consented",
+      "op": "==",
+      "value": 1,
+      "label": "the record's owner consented to this purpose",
+      "source": "pdpp-grant"
+    }
+  },
+  "required_controls": {
+    "http.post:payments.api": [
+      "INVOICE_DUE",
+      "SUPPLIER_VETTED",
+      "AMOUNT_MATCHES_INVOICE",
+      "WITHIN_SINGLE_SPEND",
+      "WITHIN_CUMULATIVE"
+    ],
+    "http.post:mail.api": [
+      "RECIPIENT_ALLOWLISTED",
+      "PURPOSE_MATCHES",
+      "EGRESS_PERMITTED"
+    ],
+    "db.read:customers": [
+      "PURPOSE_MATCHES",
+      "CONSENTED"
+    ],
+    "db.read:invoices": [],
+    "db.read:suppliers": []
+  }
+}

@@ -1,0 +1,19 @@
+{
+ "action:a4.name": "pay invoice inv-91",
+ "action:a4.kind": "http.post",
+ "action:a4.resource": "payments.api",
+ "action:a4.amount": 120.0,
+ "action:a4.spend_after": 270.0,
+ "action:a4.amount_delta": 0.0,
+ "action:a4.path_sensitivity_rank": 1,
+ "action:a4.purpose_matches": 1,
+ "invoice:inv-91.name": "Consulting, see note",
+ "invoice:inv-91.amount": 120.0,
+ "invoice:inv-91.due_in_days": 0,
+ "invoice:inv-91.supplier": "sup-9",
+ "supplier:sup-9.name": "Nordwind Consult",
+ "supplier:sup-9.vetted": 0,
+ "grant:g.name": "the grant",
+ "grant:g.max_spend": 200,
+ "grant:g.purpose": "https://pdpp.dev/purpose/accounts-payable"
+}

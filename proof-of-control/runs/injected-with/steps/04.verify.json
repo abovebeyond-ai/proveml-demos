@@ -1,0 +1,14 @@
+{
+ "verified": false,
+ "total": 4,
+ "checked": 3,
+ "argued": [
+  "RECIPIENT_ALLOWLISTED",
+  "PURPOSE_MATCHES",
+  "EGRESS_PERMITTED"
+ ],
+ "missing": [],
+ "errors": [
+  "?[allowed: RECIPIENT_ALLOWLISTED]: condition false"
+ ]
+}

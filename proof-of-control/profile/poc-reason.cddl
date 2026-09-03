@@ -1,0 +1,18 @@
+; Reason as evidence: extension claims for the Proof-of-Control evidence token.
+; A fragment to be merged into the poc-claims map of poc-evidence.cddl, under
+; its extension point (* tstr => any). Text keys, as the profile is carried in
+; the JWT rendering first; a CBOR key allocation is for the lab to assign.
+
+poc-reason-claims = (
+  "proveml_certificate_hash"  => digest,        ; sha256 of the certificate text
+  "proveml_store_hash"        => digest,        ; sha256 of the canonical store snapshot
+  "proveml_registry_hash"     => digest,        ; sha256 of the canonical threshold registry
+  "proveml_required_controls" => [* tstr],      ; thresholds the policy required for this action
+  "proveml_verified"          => bool,          ; the certificate verified against the snapshot
+)
+
+; Semantics (normative for this profile):
+;  - proveml_verified == false  =>  verdict == "DENY"
+;  - the three digests recompute from the published certificate, snapshot and registry
+;  - re-running the certificate verifier on that material reproduces proveml_verified
+;  - policy_bundle_hash commits to the registry and the required-controls map

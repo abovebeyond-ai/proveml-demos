@@ -1,0 +1,14 @@
+{
+ "verified": true,
+ "total": 10,
+ "checked": 10,
+ "argued": [
+  "INVOICE_DUE",
+  "SUPPLIER_VETTED",
+  "AMOUNT_MATCHES_INVOICE",
+  "WITHIN_SINGLE_SPEND",
+  "WITHIN_CUMULATIVE"
+ ],
+ "missing": [],
+ "errors": []
+}
