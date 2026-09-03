@@ -55,9 +55,11 @@ on a different, vetted one. That last case is a wrong subject rather than a
 wrong fact, and it is not the notation's to catch: the binding is only as good
 as the snapshot. The gateway therefore derives a payment's supplier from the
 invoice and never from a parameter, so the misnamed record is not in the
-snapshot and the claim has nothing to bind to. The injected payment itself was stopped by the reference gateway only
-because an earlier payment had pushed the path over the spend limit; on a fresh
-path it executes. Every token of every run passes the standard's validator.
+snapshot and the claim has nothing to bind to.
+
+The injected payment itself was stopped by the reference gateway only because
+an earlier payment had pushed the path over the spend limit; on a fresh path it
+executes. Every token of every run passes the standard's validator.
 
 ## The live agent
 
