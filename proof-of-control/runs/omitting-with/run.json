@@ -2,7 +2,7 @@
  "name": "omitting-with",
  "path_aware": true,
  "require_certificate": true,
- "public_key": "06f029d6ce0803204e729c43cfc5c46520fe42ce41b59801080dbda7ce273c9d",
+ "public_key": "a933b5efb8ed1a8b1412c5da0348085fa598c2b240522b3d38a2d6a179fd26dc",
  "measurement": "45fbf538a60aea7b7d34650e624c3e406a437f8084bef4cf54f4898705f596a9",
  "policy_bundle_hash": "3a9b8b2765071ad9c195d4c2fc2b57c7a03a8deb8af68c7f5823afd7d583f3ef",
  "chain_head": "250391ba240dc0e8a3add201a29eb87c280d852b0305eeb5207ef50e8696e04a",
@@ -10,9 +10,9 @@
  "anchor": {
   "root": "250391ba240dc0e8a3add201a29eb87c280d852b0305eeb5207ef50e8696e04a",
   "index": 3,
-  "t": 1788476207.752216,
+  "t": 1788477382.260156,
   "tree_root": "7d8139622f1ac811fb027b857b3318e34235809fbe6f6cba7434037b2dff7652",
-  "signature": "b56239620bbf9cd5468da4fbfc1b78393cf8631136d160633961921d4bf4f775e062f9eb717878feafa9143704f798e14c41a840aa1a6206d67f21d436bc0d06"
+  "signature": "941689879afe71add37138fb3dcd974cc3dfc920a1cbd44deff93218c994373e358cedb3b9ea02a1ad20028491b2f4105e8a954df107e3becca1786d30c4720c"
  },
  "steps": [
   {

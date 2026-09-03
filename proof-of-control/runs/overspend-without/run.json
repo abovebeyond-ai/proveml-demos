@@ -2,7 +2,7 @@
  "name": "overspend-without",
  "path_aware": true,
  "require_certificate": false,
- "public_key": "fa8e2e5940307d1b90351d441d7496981be2bd27d493fdf56faba5aa79063042",
+ "public_key": "96e5cf8179f459427beebbe7e5c1ab7af83b5d2c87ac29364915ef1e36cc817f",
  "measurement": "45fbf538a60aea7b7d34650e624c3e406a437f8084bef4cf54f4898705f596a9",
  "policy_bundle_hash": "3a9b8b2765071ad9c195d4c2fc2b57c7a03a8deb8af68c7f5823afd7d583f3ef",
  "chain_head": "83d255162bbbb0e2595452a4bb851a1a311e4bad38d9131d94f9695ed582db48",
@@ -10,9 +10,9 @@
  "anchor": {
   "root": "83d255162bbbb0e2595452a4bb851a1a311e4bad38d9131d94f9695ed582db48",
   "index": 4,
-  "t": 1788476207.7588391,
+  "t": 1788477382.485215,
   "tree_root": "f889cd07ff873a6c063533b36bd04b2f259f7877de48818da0c561861418649a",
-  "signature": "b70b4cbbc30a99a252927f310638093a1fc828374f1a897e03254bf4599764c2957b4e385f5a3280068f444f2b3243bcfb0e692b1ca1efddabea2c7d2ac46c0e"
+  "signature": "82f847f1dac7fabd9705928a39e519a0fd864ca4997195e49edabbc9411ecfca84f98fc482ae18d98655c60f06a27ddc10915024bc3cc704103182483db4ea0d"
  },
  "steps": [
   {

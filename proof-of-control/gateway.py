@@ -40,7 +40,10 @@ def store_for(policy, data, action, phi):
     p = action.params; aid = p.get('id', 'a')
     s = {}
     inv = data['invoices'].get(p.get('invoice', ''))
-    sup = data['suppliers'].get(p.get('supplier') or (inv or {}).get('supplier', ''))
+    # a payment's supplier is the invoice's supplier, never a parameter: otherwise an agent
+    # paying an unvetted supplier could name a vetted one and argue SUPPLIER_VETTED on it
+    sup_id = inv['supplier'] if inv else p.get('supplier', '')
+    sup = data['suppliers'].get(sup_id)
     cust = data['customers'].get(p.get('customer', ''))
     amount = float(p.get('amount', 0) or 0)
     s[f'action:{aid}.name'] = p.get('name', f'action {aid}')
@@ -56,7 +59,7 @@ def store_for(policy, data, action, phi):
     if inv:
         iid = p['invoice']; s[f'invoice:{iid}.name'] = inv['description']; s[f'invoice:{iid}.amount'] = float(inv['amount']); s[f'invoice:{iid}.due_in_days'] = inv['due_in_days']; s[f'invoice:{iid}.supplier'] = inv['supplier']
     if sup:
-        sid = p.get('supplier') or inv['supplier']; s[f'supplier:{sid}.name'] = sup['name']; s[f'supplier:{sid}.vetted'] = sup['vetted']
+        sid = sup_id; s[f'supplier:{sid}.name'] = sup['name']; s[f'supplier:{sid}.vetted'] = sup['vetted']
     if cust:
         cid = p['customer']; s[f'customer:{cid}.name'] = cust['name']; s[f'customer:{cid}.consented'] = 1 if policy['purpose'] in cust['consented_purposes'] else 0
     s['grant:g.name'] = 'the grant'; s['grant:g.max_spend'] = policy['grant']['max_spend']; s['grant:g.purpose'] = policy['purpose']

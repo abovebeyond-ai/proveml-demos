@@ -2,7 +2,7 @@
  "name": "honest-without",
  "path_aware": true,
  "require_certificate": false,
- "public_key": "590ae07c68c610495e040fec7eab224870feb951317075ce01b372b6b768befc",
+ "public_key": "036bdb18327be0d9540122eab1e62e937ec1951c7207ef4c98e670fd4e1fb155",
  "measurement": "45fbf538a60aea7b7d34650e624c3e406a437f8084bef4cf54f4898705f596a9",
  "policy_bundle_hash": "3a9b8b2765071ad9c195d4c2fc2b57c7a03a8deb8af68c7f5823afd7d583f3ef",
  "chain_head": "43dcebc1458448a819807bbe848c02115b6578f93546b4acb3bf769429f29a2d",
@@ -10,9 +10,9 @@
  "anchor": {
   "root": "43dcebc1458448a819807bbe848c02115b6578f93546b4acb3bf769429f29a2d",
   "index": 4,
-  "t": 1788476206.7637272,
+  "t": 1788477381.205982,
   "tree_root": "9f41685f4fc00960858a790a3d22ac05cdd037f7fd89c420f2f8f6bce64c19f2",
-  "signature": "520336503e039655eb60a57515720ba790efaecae9545870bf8eec50ff05aa83e9b1dca02beae7e5a23be79e295be98381917efab86f6948625530d3ef0f3c02"
+  "signature": "36e84ff39b7773bfb9c7b5cde78d66666498a18274687e303df3c308642f2df46f5b4c06c999bdb384f3cbbc1cf443815a787053daf97d51e598a6ce05942f0d"
  },
  "steps": [
   {

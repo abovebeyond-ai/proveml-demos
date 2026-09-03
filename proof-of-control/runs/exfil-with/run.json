@@ -2,7 +2,7 @@
  "name": "exfil-with",
  "path_aware": true,
  "require_certificate": true,
- "public_key": "02c27bc18b2afca804bd927971ef3beb245b7cba37b85fdc957c932ab1680231",
+ "public_key": "05170db85c422eec41b191aca0cef97c5634dd3328aaa7fdd5dc2e5cc5efeb8b",
  "measurement": "45fbf538a60aea7b7d34650e624c3e406a437f8084bef4cf54f4898705f596a9",
  "policy_bundle_hash": "3a9b8b2765071ad9c195d4c2fc2b57c7a03a8deb8af68c7f5823afd7d583f3ef",
  "chain_head": "245321a4170d178adeb1b4cc4d7b5ab00db6d5996a333ec03a2df97f0d712fb6",
@@ -10,9 +10,9 @@
  "anchor": {
   "root": "245321a4170d178adeb1b4cc4d7b5ab00db6d5996a333ec03a2df97f0d712fb6",
   "index": 3,
-  "t": 1788476208.359037,
+  "t": 1788477382.98135,
   "tree_root": "92bff31d324a32dfe469a85a29a4c9b3c276eaab666fc826f9cb422c15de6411",
-  "signature": "16eed4508ed28f5b56434886b5883c225654f110057c3947f259817b5556362a68e595ba1c0e1aba47e88c97e167a910b92ff9b79762a2a75a768c88b2d7b808"
+  "signature": "a457ddd279894f6331e6eb255ed948fd2513ed7dd65d3180484738333431b02ece654b96ee8dd0ba9401d14cae11238235c7a904b6a93a18be1cb5aef004d600"
  },
  "steps": [
   {
