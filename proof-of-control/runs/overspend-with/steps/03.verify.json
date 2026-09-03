@@ -1,0 +1,32 @@
+{
+ "verified": false,
+ "total": 10,
+ "checked": 9,
+ "argued": [
+  "INVOICE_DUE",
+  "SUPPLIER_VETTED",
+  "AMOUNT_MATCHES_INVOICE",
+  "WITHIN_SINGLE_SPEND",
+  "WITHIN_CUMULATIVE"
+ ],
+ "missing": [],
+ "bound": [
+  "action:a8.amount",
+  "action:a8.amount_delta",
+  "action:a8.spend_after",
+  "invoice:inv-78.amount",
+  "invoice:inv-78.due_in_days",
+  "supplier:sup-1.vetted"
+ ],
+ "provenance": {
+  "invoice:inv-78.amount": "inferred:signed",
+  "action:a8.amount": "gateway",
+  "invoice:inv-78.due_in_days": "inferred:signed",
+  "supplier:sup-1.vetted": "attested",
+  "action:a8.amount_delta": "gateway",
+  "action:a8.spend_after": "ledger"
+ },
+ "errors": [
+  "?[cumulative: WITHIN_CUMULATIVE]: condition false"
+ ]
+}

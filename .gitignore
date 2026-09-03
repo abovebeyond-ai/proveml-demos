@@ -1,3 +1,4 @@
 node_modules/
 .DS_Store
 *.log
+proof-of-control/sources/keys/*.jwk

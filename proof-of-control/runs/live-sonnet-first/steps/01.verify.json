@@ -1,0 +1,11 @@
+{
+ "verified": true,
+ "total": 10,
+ "checked": 10,
+ "argued": [
+  "EGRESS_PERMITTED",
+  "PURPOSE_MATCHES"
+ ],
+ "missing": [],
+ "errors": []
+}

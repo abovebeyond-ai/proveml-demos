@@ -1,0 +1,59 @@
+{
+ "profile": "poc-reason v0.1",
+ "source_runs": [
+  "runs/injected-with",
+  "runs/unchecked-with"
+ ],
+ "vectors": [
+  {
+   "file": "positive-allow-verified.json",
+   "cert": "positive.cert.md",
+   "store": "positive.store.json",
+   "registry": "positive.registry.json",
+   "provenance": "positive.provenance.json",
+   "expect": "ok",
+   "why": "a real token from the run: ALLOW, certificate verified, digests recompute, every bound fact at the grade the policy requires"
+  },
+  {
+   "file": "negative-allow-unverified.json",
+   "expect": "verdict",
+   "why": "an ALLOW whose certificate did not verify is not evidence of a warranted action"
+  },
+  {
+   "file": "negative-certificate-substituted.json",
+   "cert": "negative-other.cert.md",
+   "store": "positive.store.json",
+   "registry": "positive.registry.json",
+   "provenance": "positive.provenance.json",
+   "expect": "certificate-hash",
+   "why": "the certificate published beside the token is not the one it commits to"
+  },
+  {
+   "file": "negative-required-control-missing.json",
+   "cert": "positive.cert.md",
+   "store": "positive.store.json",
+   "registry": "positive.registry.json",
+   "provenance": "positive.provenance.json",
+   "expect": "reverify",
+   "why": "the token claims a control was required that the certificate never argued; re-verification disagrees"
+  },
+  {
+   "file": "negative-provenance-substituted.json",
+   "cert": "positive.cert.md",
+   "store": "positive.store.json",
+   "registry": "positive.registry.json",
+   "provenance": "negative-edited.provenance.json",
+   "expect": "provenance-hash",
+   "why": "the provenance map published beside the token has a grade raised; it is not the map the token commits to"
+  },
+  {
+   "file": "negative-provenance-insufficient.json",
+   "cert": "unchecked.cert.md",
+   "store": "unchecked.store.json",
+   "registry": "unchecked.registry.json",
+   "provenance": "unchecked.provenance.json",
+   "expect": "reverify",
+   "why": "a payment on an unsigned extraction, with the verdict and the verified flag forged; the digests hold, re-verification with the required grades does not"
+  }
+ ]
+}

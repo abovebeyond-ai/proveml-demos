@@ -1,0 +1,50 @@
+{
+ "iss": "https://verifier.example/poc",
+ "iat": 1788478273,
+ "nonce": "n-00000003",
+ "eat_profile": "https://advancedaisociety.org/poc/v0.1",
+ "poc_claims": {
+  "agent_id": "did:web:abovebeyond.ai#agent-ap",
+  "initiating_user": "did:web:abovebeyond.ai#ops",
+  "agbom_digest": "sha-256:8ccf1344a2087a19f5bd874fa3ae8486dce9ddfed60f17856d9a0cfe6540e868",
+  "interception_point": "PRE_CALL_TOOL_INVOCATION",
+  "step_index": 2,
+  "chain_head": "sha-256:cbc69733297f173197319e49990343418321b28845894a0d1b7e604d39c5f817",
+  "merkle_root": "sha-256:a0cbc2ba42df9439eefc21ead7daa250369783a58c2bfa5b3782adced7f91619",
+  "tree_size": 3,
+  "policy_bundle_hash": "sha-256:e5ea7e1065736d5e7acb069a9335a7f49186839e1dd623593f34dc11ae6eabe6",
+  "target_resource": "payments.api",
+  "canonical_snapshot_hash": "sha-256:fbf0c85c8583fba10be1cc642b5fed0416db7e361b2e19beb5c65d6cf2879971",
+  "path_summary_hash": "sha-256:431bf5033ea86dd1d4833efaaece6bad21b73c6b06ae470ba6614f7a4c2b2c4a",
+  "verdict": "ALLOW",
+  "reason": "within grant",
+  "alg": "EdDSA",
+  "proveml_certificate_hash": "sha-256:d4b8f0653d71d74032048ae47722b0da0e75df527cf7a39ec0d08b87d6e905b2",
+  "proveml_store_hash": "sha-256:73466fe558230626f44f2b2e794d50387a71a8607e4c20d5657279ff1b85953a",
+  "proveml_registry_hash": "sha-256:3260edaff662ca3c54f5a775f6f877e4b27fec7a97b767909174eae4679965d6",
+  "proveml_required_controls": [
+   "INVOICE_DUE",
+   "SUPPLIER_VETTED",
+   "AMOUNT_MATCHES_INVOICE",
+   "WITHIN_SINGLE_SPEND",
+   "WITHIN_CUMULATIVE"
+  ],
+  "proveml_verified": false,
+  "proveml_provenance_hash": "sha-256:2f07ca20cc5c2539497ffc73ab38320f437eb82732623211b263a81883ba7839",
+  "proveml_provenance": {
+   "action:a3.amount": "gateway",
+   "action:a3.amount_delta": "gateway",
+   "action:a3.spend_after": "ledger",
+   "invoice:inv-77.amount": "inferred:signed",
+   "invoice:inv-77.due_in_days": "inferred:signed",
+   "supplier:sup-1.vetted": "attested"
+  }
+ },
+ "submods": {
+  "attestation": {
+   "platform": "SOFTWARE",
+   "measurement": "sha-256:d530cb41c54fbb9f05658afe54ed467e74205025b48bbbdf85d4914f09778db4"
+  }
+ },
+ "signature": "6d1ddc3e0843f42dadc69edfa30db81a0259bd5e31b2c002d298a456763721457376fa69665dfc0fbed2efe21a35badf5eed7e6a2dc2a0a24ea2e84b753c2504"
+}

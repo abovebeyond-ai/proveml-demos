@@ -1,0 +1,24 @@
+{
+ "verified": false,
+ "total": 4,
+ "checked": 3,
+ "argued": [
+  "RECIPIENT_ALLOWLISTED",
+  "PURPOSE_MATCHES",
+  "EGRESS_PERMITTED"
+ ],
+ "missing": [],
+ "bound": [
+  "action:a6.path_sensitivity_rank",
+  "action:a6.purpose_matches",
+  "action:a6.recipient_allowlisted"
+ ],
+ "provenance": {
+  "action:a6.recipient_allowlisted": "policy",
+  "action:a6.purpose_matches": "gateway",
+  "action:a6.path_sensitivity_rank": "gateway"
+ },
+ "errors": [
+  "?[egress: EGRESS_PERMITTED]: condition false"
+ ]
+}

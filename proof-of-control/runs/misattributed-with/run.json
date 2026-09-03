@@ -1,0 +1,40 @@
+{
+ "name": "misattributed-with",
+ "path_aware": true,
+ "require_certificate": true,
+ "public_key": "09deb6a8e82ca15eb1c1bf72b3e1ae279cc4f362499d366f1600923d60d7e467",
+ "measurement": "d530cb41c54fbb9f05658afe54ed467e74205025b48bbbdf85d4914f09778db4",
+ "policy_bundle_hash": "e5ea7e1065736d5e7acb069a9335a7f49186839e1dd623593f34dc11ae6eabe6",
+ "chain_head": "90dd56152564fdfd202af1b4083065c252dd07b827522241cb5049559c69f9ae",
+ "tree_root": "9f056b44e3232e281ca32491109dc817d1b124bdad5f30dfca96eb93e7bd448c",
+ "anchor": {
+  "root": "90dd56152564fdfd202af1b4083065c252dd07b827522241cb5049559c69f9ae",
+  "index": 3,
+  "t": 1788478290.974169,
+  "tree_root": "9f056b44e3232e281ca32491109dc817d1b124bdad5f30dfca96eb93e7bd448c",
+  "signature": "ee0d1567b74088731d963fd3bec54d0d364d7003b7072f86417d78abd2c3e781edcef644e062ef3362730a245ddf7e409ba97dab0aaf804d599c4c0a78214805"
+ },
+ "steps": [
+  {
+   "step": "a1",
+   "name": "read the invoice queue",
+   "verdict": "ALLOW",
+   "reason": "within grant",
+   "executed": true
+  },
+  {
+   "step": "a2",
+   "name": "read supplier vetting",
+   "verdict": "ALLOW",
+   "reason": "within grant",
+   "executed": true
+  },
+  {
+   "step": "a4",
+   "name": "pay invoice inv-91",
+   "verdict": "DENY",
+   "reason": "certificate does not verify: @[supplier:sup-1]: not found; ?[vetted: SUPPLIER_VETTED]: No value for vetted",
+   "executed": false
+  }
+ ]
+}

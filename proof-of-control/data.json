@@ -1,0 +1,11 @@
+{
+  "_": "The directory the gateway holds: names and the allowlist. Invoices come from sources/extraction.json (inferred from the PDFs, mapping signed by a person or not), supplier vetting from sources/credentials/*.vetting.sdjwt (attested by the vetting desk; no credential means unvetted), customer consent from the customer's wallet at request time (presented, key-bound to a nonce), spend from the run's signed ledger.",
+  "suppliers": {
+    "sup-1": { "name": "Duvel Tape BV" },
+    "sup-9": { "name": "Nordwind Consult" }
+  },
+  "customers": {
+    "cust-4": { "name": "Lena Janssens", "classification": "confidential" }
+  },
+  "recipients": { "allowlist": ["ap@abovebeyond.ai", "audit@abovebeyond.ai"] }
+}

@@ -1,0 +1,34 @@
+{
+ "verified": false,
+ "total": 10,
+ "checked": 8,
+ "argued": [
+  "INVOICE_DUE",
+  "SUPPLIER_VETTED",
+  "AMOUNT_MATCHES_INVOICE",
+  "WITHIN_SINGLE_SPEND",
+  "WITHIN_CUMULATIVE"
+ ],
+ "missing": [],
+ "bound": [
+  "action:a4.amount",
+  "action:a4.amount_delta",
+  "action:a4.spend_after",
+  "invoice:inv-91.amount",
+  "invoice:inv-91.due_in_days",
+  "supplier:sup-9.vetted"
+ ],
+ "provenance": {
+  "invoice:inv-91.amount": "inferred:signed",
+  "action:a4.amount": "gateway",
+  "invoice:inv-91.due_in_days": "inferred:signed",
+  "supplier:sup-9.vetted": "absent",
+  "action:a4.amount_delta": "gateway",
+  "action:a4.spend_after": "ledger"
+ },
+ "errors": [
+  "?[vetted: SUPPLIER_VETTED]: condition false",
+  "?[cumulative: WITHIN_CUMULATIVE]: condition false",
+  "supplier:sup-9.vetted is absent (no vetting credential on file); policy requires attested"
+ ]
+}

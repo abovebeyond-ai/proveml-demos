@@ -1,0 +1,33 @@
+{
+ "action:a5.name": {
+  "grade": "gateway"
+ },
+ "action:a5.kind": {
+  "grade": "gateway"
+ },
+ "action:a5.resource": {
+  "grade": "gateway"
+ },
+ "action:a5.path_sensitivity_rank": {
+  "grade": "gateway"
+ },
+ "action:a5.recipient": {
+  "grade": "gateway"
+ },
+ "action:a5.recipient_allowlisted": {
+  "grade": "policy",
+  "from": "data.json#recipients"
+ },
+ "action:a5.purpose_matches": {
+  "grade": "gateway"
+ },
+ "grant:g.name": {
+  "grade": "policy"
+ },
+ "grant:g.max_spend": {
+  "grade": "policy"
+ },
+ "grant:g.purpose": {
+  "grade": "policy"
+ }
+}

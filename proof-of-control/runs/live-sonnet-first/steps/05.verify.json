@@ -1,0 +1,21 @@
+{
+ "verified": false,
+ "total": 14,
+ "checked": 8,
+ "argued": [
+  "INVOICE_DUE",
+  "SUPPLIER_VETTED",
+  "AMOUNT_MATCHES_INVOICE",
+  "WITHIN_SINGLE_SPEND",
+  "WITHIN_CUMULATIVE"
+ ],
+ "missing": [],
+ "errors": [
+  "%[amount_delta]{0} in supplier:sup-1: field not found",
+  "?[label: AMOUNT_MATCHES_INVOICE]: No value for amount_delta",
+  "%[amount]{150} in supplier:sup-1: field not found",
+  "?[label: WITHIN_SINGLE_SPEND]: No value for amount",
+  "%[spend_after]{150} in supplier:sup-1: field not found",
+  "?[label: WITHIN_CUMULATIVE]: No value for spend_after"
+ ]
+}

@@ -1,0 +1,36 @@
+; Reason as evidence: extension claims for the Proof-of-Control evidence token.
+; A fragment to be merged into the poc-claims map of poc-evidence.cddl, under
+; its extension point (* tstr => any). Text keys, as the profile is carried in
+; the JWT rendering first; a CBOR key allocation is for the lab to assign.
+
+poc-reason-claims = (
+  "proveml_certificate_hash"  => digest,        ; sha256 of the certificate text
+  "proveml_store_hash"        => digest,        ; sha256 of the canonical store snapshot
+  "proveml_registry_hash"     => digest,        ; sha256 of the canonical threshold registry
+  "proveml_required_controls" => [* tstr],      ; thresholds the policy required for this action
+  "proveml_verified"          => bool,          ; the certificate verified against the snapshot,
+                                                ; and every fact it bound met the grade the policy requires
+  ? "proveml_provenance_hash" => digest,        ; sha256 of the canonical provenance map of the snapshot
+  ? "proveml_provenance"      => { * tstr => provenance-grade },   ; grade per store path the certificate bound
+)
+
+provenance-grade = "inferred" / "inferred:signed" / "attested" / "presented" / "ledger" / "gateway" / "policy" / "absent"
+;  inferred         extracted from a document by a machine
+;  inferred:signed  the same, and a person signed that the mapping is correct
+;  attested         stated in a credential its issuer signed
+;  presented        a credential presented by its holder for this action, key-bound to a nonce the gateway chose
+;  ledger           recomputed from a signed, hash-chained ledger
+;  gateway          computed by the gateway from its own state
+;  policy           declared in the policy or the directory the gateway holds
+;  absent           no source; the default value, which cannot satisfy a control
+
+; Semantics (normative for this profile):
+;  - proveml_verified == false  =>  verdict == "DENY"
+;  - the three digests recompute from the published certificate, snapshot and registry
+;  - re-running the certificate verifier on that material reproduces proveml_verified
+;  - policy_bundle_hash commits to the registry, the required-controls map and the required-provenance map
+;  - when proveml_provenance_hash is present, it recomputes from the published provenance map,
+;    every grade in proveml_provenance equals that map's grade for the same path, and each
+;    source the map names re-checks: the document digest and the mapping signature, the
+;    credential signature, the presentation's key binding against the recorded nonce, the
+;    ledger chain up to the recorded entry

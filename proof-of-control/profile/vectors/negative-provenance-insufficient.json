@@ -1,0 +1,50 @@
+{
+ "iss": "https://verifier.example/poc",
+ "iat": 1788478299,
+ "nonce": "n-00000003",
+ "eat_profile": "https://advancedaisociety.org/poc/v0.1",
+ "poc_claims": {
+  "agent_id": "did:web:abovebeyond.ai#agent-ap",
+  "initiating_user": "did:web:abovebeyond.ai#ops",
+  "agbom_digest": "sha-256:8ccf1344a2087a19f5bd874fa3ae8486dce9ddfed60f17856d9a0cfe6540e868",
+  "interception_point": "PRE_CALL_TOOL_INVOCATION",
+  "step_index": 2,
+  "chain_head": "sha-256:7093a22d8b051a2c933c126421c152c2d6c7230e44f55fc0737f135ff5b25ce6",
+  "merkle_root": "sha-256:6981e4c360bb2326df6fdfcdb41374537caebac90088ea397c0b22a6686e2b94",
+  "tree_size": 3,
+  "policy_bundle_hash": "sha-256:e5ea7e1065736d5e7acb069a9335a7f49186839e1dd623593f34dc11ae6eabe6",
+  "target_resource": "payments.api",
+  "canonical_snapshot_hash": "sha-256:af26181b1337f637797983036e05344e0200bb2697f2fddfa8e22893cd0119bf",
+  "path_summary_hash": "sha-256:431bf5033ea86dd1d4833efaaece6bad21b73c6b06ae470ba6614f7a4c2b2c4a",
+  "verdict": "ALLOW",
+  "reason": "certificate does not verify: invoice:inv-80.amount is inferred (no one has signed the mapping); policy requires inferred:signed; invoice:inv-80.due_in_days is inferred (no one has signed the mapping); policy requires inferred:signed",
+  "alg": "EdDSA",
+  "proveml_certificate_hash": "sha-256:ff311770b13ce1d36df5aefac03b51133ce3af6fcf8da919b03cc0d838418362",
+  "proveml_store_hash": "sha-256:1e70afff5399d80b5bb4805850dcb591e8b794217b9a826492bff107190ae667",
+  "proveml_registry_hash": "sha-256:3260edaff662ca3c54f5a775f6f877e4b27fec7a97b767909174eae4679965d6",
+  "proveml_required_controls": [
+   "INVOICE_DUE",
+   "SUPPLIER_VETTED",
+   "AMOUNT_MATCHES_INVOICE",
+   "WITHIN_SINGLE_SPEND",
+   "WITHIN_CUMULATIVE"
+  ],
+  "proveml_verified": true,
+  "proveml_provenance_hash": "sha-256:a5e90c877a5ac29d4d05c8151ce7241c17cad8f9144453fc5c6010507bed6eb3",
+  "proveml_provenance": {
+   "action:a4.amount": "gateway",
+   "action:a4.amount_delta": "gateway",
+   "action:a4.spend_after": "ledger",
+   "invoice:inv-80.amount": "inferred",
+   "invoice:inv-80.due_in_days": "inferred",
+   "supplier:sup-1.vetted": "attested"
+  }
+ },
+ "submods": {
+  "attestation": {
+   "platform": "SOFTWARE",
+   "measurement": "sha-256:d530cb41c54fbb9f05658afe54ed467e74205025b48bbbdf85d4914f09778db4"
+  }
+ },
+ "signature": "b36e4018b138d316ca50b1d974944890971bc6e2837902b33ffea4682abb997752ed502e1abe7331952abf802af39ccabcb7d2880430c7d8408951dfce985e0c"
+}
