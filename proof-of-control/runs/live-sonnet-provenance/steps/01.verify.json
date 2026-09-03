@@ -1,0 +1,25 @@
+{
+ "verified": true,
+ "total": 9,
+ "checked": 9,
+ "argued": [
+  "EGRESS_PERMITTED",
+  "PURPOSE_MATCHES"
+ ],
+ "missing": [],
+ "bound": [
+  "action:a2.kind",
+  "action:a2.path_sensitivity_rank",
+  "action:a2.purpose_matches",
+  "action:a2.resource",
+  "grant:g.purpose"
+ ],
+ "provenance": {
+  "action:a2.kind": "gateway",
+  "action:a2.resource": "gateway",
+  "action:a2.path_sensitivity_rank": "gateway",
+  "action:a2.purpose_matches": "gateway",
+  "grant:g.purpose": "policy"
+ },
+ "errors": []
+}

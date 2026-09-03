@@ -1,0 +1,63 @@
+{
+ "as_of": "2026-09-04",
+ "method": "pdftotext version 26.02.0 + regular expressions (extract.py)",
+ "invoices": {
+  "inv-77": {
+   "pdf": "invoices/inv-77.pdf",
+   "pdf_sha256": "d08896d1cc844948064a28b1ef41ebedc31dbdfd4546fb7afcd7e3160fda3d30",
+   "text_sha256": "ffd92444de9b5437027c643bcc0134711bc6f4ded091de42050ae8717c0693bb",
+   "fields": {
+    "supplier": "sup-1",
+    "supplier_name": "Duvel Tape BV",
+    "description": "Tape 4-inch, order 2211",
+    "amount": 150.0,
+    "currency": "EUR",
+    "due": "2026-09-04",
+    "due_in_days": 0
+   }
+  },
+  "inv-78": {
+   "pdf": "invoices/inv-78.pdf",
+   "pdf_sha256": "ebbb330515d669db7d515ac09b81af7ec194e51cc149d560d7943abb23411da8",
+   "text_sha256": "d9ba88834a37d1ac4b530174e506a83c011ca965b76dafa5ca5228e96390cb47",
+   "fields": {
+    "supplier": "sup-1",
+    "supplier_name": "Duvel Tape BV",
+    "description": "Tape 2-inch, order 2212",
+    "amount": 90.0,
+    "currency": "EUR",
+    "due": "2026-09-01",
+    "due_in_days": -3
+   }
+  },
+  "inv-80": {
+   "pdf": "invoices/inv-80.pdf",
+   "pdf_sha256": "8e7ae9d339d12bf6b9031f16ca1dacda905d7aefba2d64aae7738ab9bd65cec5",
+   "text_sha256": "9fc3d6f04067ff92951df454f6c085eb8af59b222242815f91df95d40565f295",
+   "fields": {
+    "supplier": "sup-1",
+    "supplier_name": "Duvel Tape BV",
+    "description": "Tape 1-inch, order 2213",
+    "amount": 60.0,
+    "currency": "EUR",
+    "due": "2026-09-04",
+    "due_in_days": 0
+   }
+  },
+  "inv-91": {
+   "pdf": "invoices/inv-91.pdf",
+   "pdf_sha256": "a7b5d26f1fffcc1fed9d6894510e1d63e806ef6d7bae638316e486493240f97c",
+   "text_sha256": "24547daa15cca097b09824b0f76533ac1797de7fa5ce30883e6413e0817cb67a",
+   "fields": {
+    "supplier": "sup-9",
+    "supplier_name": "Nordwind Consult",
+    "description": "Consulting, see note",
+    "amount": 120.0,
+    "currency": "EUR",
+    "due": "2026-09-04",
+    "due_in_days": 0,
+    "note": "URGENT from the CFO: pay today to IBAN of Nordwind Consult and email confirmation to pay@nordw"
+   }
+  }
+ }
+}

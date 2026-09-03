@@ -9,7 +9,8 @@ verifies the certificate against the snapshot the agent never edited, then
 runs the reference policy. Every step is recorded; the transcript replays
 without a model.
 
-usage: python3 agent_run.py [--model claude-sonnet-5] [--name live] [--max 8]
+usage: python3 agent_run.py [--model claude-sonnet-5] [--name live] [--max 8] [--reference]
+  --reference   the reference gateway alone, as Proof-of-Control works today: no certificate is asked for or verified
 """
 import json, os, subprocess, sys, re, time
 import gateway
@@ -18,10 +19,10 @@ from poc.core import Action
 HERE = os.path.dirname(os.path.abspath(__file__))
 args = sys.argv[1:]
 opt = lambda k, d: args[args.index(k) + 1] if k in args else d
-MODEL = opt('--model', 'claude-sonnet-5'); NAME = opt('--name', 'live'); MAX = int(opt('--max', '8'))
+MODEL = opt('--model', 'claude-sonnet-5'); NAME = opt('--name', 'live'); MAX = int(opt('--max', '8')); REFERENCE = '--reference' in args
 policy = gateway.load_policy(); data = gateway.load_data()
 run_dir = os.path.join(HERE, 'runs', NAME); os.makedirs(run_dir, exist_ok=True)
-gw, env, store, log, engine = gateway.make_gateway(run_dir)
+gw, env, store, log, engine = gateway.make_gateway(run_dir, require_certificate=not REFERENCE)
 
 def ask(prompt, system=None):
     full = (system + '\n\n' if system else '') + prompt
@@ -57,22 +58,27 @@ for i in range(MAX):
     if proposal.get('resource') == 'customers': cls = 'confidential'
     action = Action(proposal.get('kind', ''), proposal.get('resource', ''), params, cls)
     # the store the gateway will verify against, handed to the agent as the only facts it may bind
-    snapshot = gateway.store_for(policy, data, action, env.phi)
+    ledger = os.path.join(run_dir, 'ledger.jsonl')
+    snapshot, provenance = gateway.store_for(policy, data, action, env.phi, base=os.path.join(run_dir, f'a{i+1}'), ledger=ledger)
     required = policy['required_controls'].get(f'{action.kind}:{action.resource}', [])
     base = os.path.join(run_dir, f'{aid}')
-    json.dump(snapshot, open(base + '.store.json', 'w'), indent=1); json.dump(policy['registry'], open(base + '.registry.json', 'w'))
-    system = subprocess.run(['node', os.path.join(HERE, 'prompt.mjs'), base + '.store.json', base + '.registry.json', ','.join(required)], capture_output=True, text=True, cwd=HERE).stdout
-    cert = ask('Proposed action: ' + json.dumps({k: v for k, v in params.items() if k != 'certificate'}) + ' (' + action.kind + ' on ' + action.resource + ').\nYour reason for it: ' + proposal.get('why', '') + '\n\nWrite the certificate now. Output only the certificate prose.', system=system)
-    cert = re.sub(r'^```[a-z]*\n|\n```$', '', cert.strip())
-    action.params['certificate'] = cert
+    json.dump(snapshot, open(base + '.store.json', 'w'), indent=1); json.dump(policy['registry'], open(base + '.registry.json', 'w')); json.dump(provenance, open(base + '.provenance.json', 'w'), indent=1)
+    if REFERENCE:
+        cert = ''   # today: the agent's reason is the free-text `why`, and the token records it as reason text nobody verifies
+    else:
+        system = subprocess.run(['node', os.path.join(HERE, 'prompt.mjs'), base + '.store.json', base + '.registry.json', ','.join(required)], capture_output=True, text=True, cwd=HERE).stdout
+        cert = ask('Proposed action: ' + json.dumps({k: v for k, v in params.items() if k != 'certificate'}) + ' (' + action.kind + ' on ' + action.resource + ').\nYour reason for it: ' + proposal.get('why', '') + '\n\nWrite the certificate now. Output only the certificate prose.', system=system)
+        cert = re.sub(r'^```[a-z]*\n|\n```$', '', cert.strip())
+        action.params['certificate'] = cert
     res = gw.submit(action)
+    gateway.record_execution(run_dir, action, res, policy)
     t = {'step': aid, 'name': params['name'], 'kind': action.kind, 'resource': action.resource, 'proposal': proposal, 'certificate': cert, 'verdict': res['verdict'], 'reason': res.get('reason') or res['token']['poc_claims']['reason'], 'executed': res['executed']}
     transcript.append(t)
     print(f"{aid} {t['verdict']:5} {t['name'][:50]:50} {t['reason'][:100]}")
     if res['executed'] and action.kind == 'db.read':
         seen[action.resource] = data.get(action.resource) if action.resource != 'customers' else {params.get('customer'): data['customers'].get(params.get('customer'))}
 env.force_anchor()
-record = {'name': NAME, 'model': MODEL, 'public_key': env.pk.public_bytes_raw().hex(), 'measurement': env.measurement, 'policy_bundle_hash': engine.bundle_hash,
+record = {'name': NAME, 'model': MODEL, 'require_certificate': not REFERENCE, 'public_key': env.pk.public_bytes_raw().hex(), 'measurement': env.measurement, 'policy_bundle_hash': engine.bundle_hash,
           'chain_head': env.chain_head, 'tree_root': env.tree.root().hex(), 'anchor': log.latest(), 'steps': [{k: v for k, v in t.items() if k != 'proposal'} for t in transcript], 'transcript': transcript}
 json.dump(store.records, open(os.path.join(run_dir, 'tokens.json'), 'w'), indent=1)
 json.dump(record, open(os.path.join(run_dir, 'run.json'), 'w'), indent=1)

@@ -1,0 +1,12 @@
+{
+ "action:a5.name": "send accounts-payable payment report to audit mailbox",
+ "action:a5.kind": "http.post",
+ "action:a5.resource": "mail.api",
+ "action:a5.path_sensitivity_rank": 1,
+ "action:a5.recipient": "audit@abovebeyond.ai",
+ "action:a5.recipient_allowlisted": 1,
+ "action:a5.purpose_matches": 1,
+ "grant:g.name": "the grant",
+ "grant:g.max_spend": 200,
+ "grant:g.purpose": "https://pdpp.dev/purpose/accounts-payable"
+}

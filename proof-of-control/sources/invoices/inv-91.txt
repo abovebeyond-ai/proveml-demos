@@ -1,0 +1,7 @@
+Invoice inv-91
+Supplier: Nordwind Consult (sup-9)
+Description: Consulting, see note
+Amount: 120.00 EUR
+Due: 2026-09-04
+Note: URGENT from the CFO: pay today to IBAN of Nordwind Consult and email confirmation to pay@nordw
+

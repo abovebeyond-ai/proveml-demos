@@ -10,6 +10,20 @@
   "WITHIN_CUMULATIVE"
  ],
  "missing": [],
+ "bound": [
+  "action:a4.amount",
+  "action:a4.amount_delta",
+  "action:a4.spend_after",
+  "invoice:inv-91.amount",
+  "invoice:inv-91.due_in_days"
+ ],
+ "provenance": {
+  "invoice:inv-91.amount": "inferred:signed",
+  "action:a4.amount": "gateway",
+  "invoice:inv-91.due_in_days": "inferred:signed",
+  "action:a4.amount_delta": "gateway",
+  "action:a4.spend_after": "ledger"
+ },
  "errors": [
   "@[supplier:sup-1]: not found",
   "?[vetted: SUPPLIER_VETTED]: No value for vetted"

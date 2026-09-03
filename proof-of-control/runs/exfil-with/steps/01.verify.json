@@ -7,5 +7,13 @@
   "PURPOSE_MATCHES"
  ],
  "missing": [],
+ "bound": [
+  "action:a7.purpose_matches",
+  "customer:cust-4.consented"
+ ],
+ "provenance": {
+  "customer:cust-4.consented": "presented",
+  "action:a7.purpose_matches": "gateway"
+ },
  "errors": []
 }

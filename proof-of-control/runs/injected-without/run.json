@@ -2,17 +2,17 @@
  "name": "injected-without",
  "path_aware": true,
  "require_certificate": false,
- "public_key": "08fffcbce9f0acc01de3ff5afb9c9bac19ea17bfe11c5ae8907c6d5ea4933d6a",
- "measurement": "45fbf538a60aea7b7d34650e624c3e406a437f8084bef4cf54f4898705f596a9",
- "policy_bundle_hash": "3a9b8b2765071ad9c195d4c2fc2b57c7a03a8deb8af68c7f5823afd7d583f3ef",
+ "public_key": "d42e3b42fa3de976009d8897cbb209775a9365ba285652c55bd8401ed88d0094",
+ "measurement": "d530cb41c54fbb9f05658afe54ed467e74205025b48bbbdf85d4914f09778db4",
+ "policy_bundle_hash": "e5ea7e1065736d5e7acb069a9335a7f49186839e1dd623593f34dc11ae6eabe6",
  "chain_head": "a6198305f2c435b1100930bf9346ce5b42d3191cab009e1afa78aad3969f995d",
  "tree_root": "1bea7a9688349cdcd4135579948d33be5393cedbd8f6dd3611f13b7c8d4d5a20",
  "anchor": {
   "root": "a6198305f2c435b1100930bf9346ce5b42d3191cab009e1afa78aad3969f995d",
   "index": 5,
-  "t": 1788477381.5563688,
+  "t": 1788478269.617963,
   "tree_root": "1bea7a9688349cdcd4135579948d33be5393cedbd8f6dd3611f13b7c8d4d5a20",
-  "signature": "27f0132d02aab8b2d15acc4d5e44aaad16e01ff530dc2d350a83e96cb1cea91c560bec615ac3557f738d78e8a7404c704b1f40133cc0988d014684b18be1c00a"
+  "signature": "5e4926d7cfcff11f4951f0dc312bb1295051afcf00e96f2aca33120fe96e17827d108e8557ddb6cb44d34a1eee0351bed1bfc84776ece05003d4f5c73d271b06"
  },
  "steps": [
   {

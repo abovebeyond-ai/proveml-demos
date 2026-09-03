@@ -10,60 +10,147 @@ is wrapped and one is subclassed:
                          store snapshot the agent cannot edit, BEFORE the
                          reference policy runs; a certificate that does not
                          verify is a DENY with the verifier's reason
-  ReasonedEnvironment    the reference evidence token, with five extension
+  ReasonedEnvironment    the reference evidence token, with the extension
                          claims added before signing (the claim set has an
                          open extension point): the certificate digest, the
                          store snapshot digest, the registry digest, the
-                         controls the policy required, and the verifier's
-                         result
+                         controls the policy required, the verifier's result,
+                         and the provenance of the facts the certificate bound
+
+Every fact in the snapshot carries its provenance, the kind of guarantee it
+really has, and the policy says which grade each field needs:
+
+  inferred          extracted from a document by a machine (a PDF, pdftotext)
+  inferred:signed   the same, and a person signed that the mapping is correct
+  attested          stated in a credential whose issuer signed it
+  presented         a credential presented by its holder for THIS action,
+                    key-bound to a nonce the gateway chose
+  ledger            recomputed from a signed, hash-chained ledger
+  gateway           computed by the gateway from its own state
+  policy            declared in the policy or the directory the gateway holds
+  absent            no source; the value is the default and cannot be argued
 
 Nothing else changes. Set POC_STANDARD to the ov-poc-standard checkout.
 """
-import json, os, subprocess, sys, time, hashlib, tempfile
+import json, os, subprocess, sys, time, hashlib, tempfile, datetime
 POC = os.environ.get('POC_STANDARD') or os.path.expanduser('~/Projects/ov-poc-standard')
 if not os.path.isdir(POC): POC = '/private/tmp/claude-501/-Volumes-shanedeconinck-be-Projects-proveml-all/aaffe3ee-a529-4c8f-bc96-24f5cec9bb0e/scratchpad/ov-poc-standard'
 sys.path.insert(0, POC + '/impl')
 from poc.core import (Action, Grant, PolicyEngine, AttestingEnvironment, EvidenceStore, Gateway,
                       TransparencyLog, Verifier, PathSummary, canonical, sha256, tag, untag)
 HERE = os.path.dirname(os.path.abspath(__file__))
+SOURCES = os.path.join(HERE, 'sources')
 ORDER = PathSummary.ORDER
+GRADE_RANK = {'absent': 0, 'inferred': 1, 'gateway': 2, 'inferred:signed': 2, 'attested': 3, 'presented': 4, 'ledger': 4, 'policy': 4}
+rel = lambda p: os.path.relpath(p, HERE)
+
+def node_json(*args):
+    r = subprocess.run(['node', *args], capture_output=True, text=True, cwd=HERE)
+    try: return json.loads(r.stdout.strip().splitlines()[-1])
+    except Exception: return {'ok': False, 'why': 'node failed: ' + (r.stderr or r.stdout)[-200:]}
 
 def load_policy(path=None):
     return json.load(open(path or os.path.join(HERE, 'policy.json')))
 
 def load_data(path=None):
-    return json.load(open(path or os.path.join(HERE, 'data.json')))
+    """The directory the gateway holds (supplier and customer names, the
+    allowlist) joined with the sources: invoices from the extraction, with the
+    clerk's mapping signature checked; supplier vetting from the vetting desk's
+    credentials, checked; each with its provenance under _prov."""
+    d = json.load(open(path or os.path.join(HERE, 'data.json')))
+    ex = json.load(open(os.path.join(SOURCES, 'extraction.json')))
+    d['invoices'] = {}
+    for iid, e in ex['invoices'].items():
+        f = e['fields']; signed_fields = {k: v for k, v in f.items() if k != 'note'}
+        prov = {'grade': 'inferred', 'source': 'sources/' + e['pdf'], 'pdf_sha256': e['pdf_sha256'], 'method': ex['method']}
+        mp = os.path.join(SOURCES, 'invoices', iid + '.mapping.sdjwt')
+        if os.path.exists(mp):
+            m = node_json(os.path.join(SOURCES, 'check.mjs'), 'mapping', mp, e['pdf_sha256'])
+            if m.get('ok') and m.get('fields') == signed_fields: prov.update({'grade': 'inferred:signed', 'mapping': rel(mp), 'signed_by': m['signer'], 'resolved': m['resolved'], 'checked_by': m.get('checked_by')})
+            else: prov['mapping_error'] = m.get('why', 'the signed fields differ from the extraction')
+        else: prov['why'] = 'no one has signed the mapping'
+        d['invoices'][iid] = {'supplier': f['supplier'], 'amount': f['amount'], 'currency': f['currency'], 'due_in_days': f['due_in_days'], 'description': f['description'], **({'note': f['note']} if 'note' in f else {}), '_prov': prov}
+    for sid, s in d['suppliers'].items():
+        cp = os.path.join(SOURCES, 'credentials', sid + '.vetting.sdjwt')
+        if os.path.exists(cp):
+            c = node_json(os.path.join(SOURCES, 'check.mjs'), 'credential', cp)
+            if c.get('ok') and c['claims'].get('supplier') == sid and c['claims'].get('vetted') is True:
+                s['vetted'] = 1; s['_prov'] = {'grade': 'attested', 'credential': rel(cp), 'issuer': c['issuer'], 'vct': c['vct'], 'checked_at': c['claims'].get('checked_at')}
+            else: s['vetted'] = 0; s['_prov'] = {'grade': 'absent', 'why': c.get('why', 'the credential does not attest this supplier')}
+        else: s['vetted'] = 0; s['_prov'] = {'grade': 'absent', 'why': 'no vetting credential on file'}
+    return d
 
-def store_for(policy, data, action, phi):
+def present_consent(policy, cid, action, phi, base):
+    """Ask the customer's wallet to present the consent credential for this
+    action: the nonce is derived from the action and the path, so a copy
+    taken for another action cannot answer it."""
+    nonce = sha256(canonical({'action': action.params.get('id'), 'path': phi.digest()}))[:32]
+    aud = policy['principal'].split('#')[0] + '#gateway'
+    r = subprocess.run(['node', os.path.join(SOURCES, 'wallet.mjs'), cid, nonce, aud], capture_output=True, text=True, cwd=HERE)
+    if r.returncode != 0: return 0, {'grade': 'absent', 'why': 'the wallet did not answer: ' + r.stderr[-120:]}
+    pf = (base or tempfile.mktemp()) + '.presentation.sdjwt'; open(pf, 'w').write(r.stdout)
+    c = node_json(os.path.join(SOURCES, 'check.mjs'), 'presentation', pf, nonce, aud)
+    if not c.get('ok'): return 0, {'grade': 'absent', 'why': 'presentation rejected: ' + c.get('why', '')}
+    ok = c['claims'].get('customer') == cid and policy['purpose'] in c['claims'].get('purposes', [])
+    return (1 if ok else 0), {'grade': 'presented', 'presentation': rel(pf) if base else None, 'issuer': c['issuer'], 'holder': c['holder'], 'nonce': nonce, 'aud': aud, 'presented_at': c['presented_at'], 'vct': c['vct']}
+
+def ledger_spend(ledger, principal):
+    """The spend so far, recomputed from the signed ledger (None when there is no ledger)."""
+    if not ledger: return None, None
+    v = node_json(os.path.join(SOURCES, 'ledger.mjs'), 'verify', ledger, principal)
+    if not v.get('ok'): raise RuntimeError('ledger does not verify: ' + '; '.join(v.get('errors') or [v.get('why', '')]))
+    return float(v['sum']), {'grade': 'ledger', 'ledger': rel(ledger), 'entries': v['entries'], 'head': v['head'], 'signer': v['signer'], 'sum_before': float(v['sum'])}
+
+def store_for(policy, data, action, phi, base=None, ledger=None):
     """The facts a certificate may bind: the action, what it touches, the grant,
-    and the path so far. Computed by the gateway, never by the agent."""
+    and the path so far. Computed by the gateway, never by the agent. Returns
+    the store and, per field, its provenance."""
     p = action.params; aid = p.get('id', 'a')
-    s = {}
+    s = {}; prov = {}
+    def put(path, value, pv): s[path] = value; prov[path] = pv
+    G = {'grade': 'gateway'}; P = {'grade': 'policy'}
     inv = data['invoices'].get(p.get('invoice', ''))
     # a payment's supplier is the invoice's supplier, never a parameter: otherwise an agent
     # paying an unvetted supplier could name a vetted one and argue SUPPLIER_VETTED on it
     sup_id = inv['supplier'] if inv else p.get('supplier', '')
     sup = data['suppliers'].get(sup_id)
-    cust = data['customers'].get(p.get('customer', ''))
     amount = float(p.get('amount', 0) or 0)
-    s[f'action:{aid}.name'] = p.get('name', f'action {aid}')
-    s[f'action:{aid}.kind'] = action.kind
-    s[f'action:{aid}.resource'] = action.resource
+    put(f'action:{aid}.name', p.get('name', f'action {aid}'), G)
+    put(f'action:{aid}.kind', action.kind, G)
+    put(f'action:{aid}.resource', action.resource, G)
     if amount:
-        s[f'action:{aid}.amount'] = amount
-        s[f'action:{aid}.spend_after'] = phi.spend + amount
-        if inv: s[f'action:{aid}.amount_delta'] = amount - float(inv['amount'])
-    s[f'action:{aid}.path_sensitivity_rank'] = ORDER[phi.sensitivity]
-    if 'recipient' in p: s[f'action:{aid}.recipient'] = p['recipient']; s[f'action:{aid}.recipient_allowlisted'] = 1 if p['recipient'] in data['recipients']['allowlist'] else 0
-    s[f'action:{aid}.purpose_matches'] = 1 if p.get('purpose') == policy['purpose'] else 0
+        put(f'action:{aid}.amount', amount, G)
+        spent, lprov = ledger_spend(ledger, policy['principal'])
+        if spent is not None and abs(spent - phi.spend) > 1e-9: raise RuntimeError(f'the ledger says {spent} spent, the path says {phi.spend}')
+        put(f'action:{aid}.spend_after', (spent if spent is not None else phi.spend) + amount, lprov or G)
+        if inv: put(f'action:{aid}.amount_delta', amount - float(inv['amount']), {'grade': 'gateway', 'from': f'invoice:{p["invoice"]}.amount'})
+    put(f'action:{aid}.path_sensitivity_rank', ORDER[phi.sensitivity], G)
+    if 'recipient' in p:
+        put(f'action:{aid}.recipient', p['recipient'], G)
+        put(f'action:{aid}.recipient_allowlisted', 1 if p['recipient'] in data['recipients']['allowlist'] else 0, {'grade': 'policy', 'from': 'data.json#recipients'})
+    put(f'action:{aid}.purpose_matches', 1 if p.get('purpose') == policy['purpose'] else 0, G)
     if inv:
-        iid = p['invoice']; s[f'invoice:{iid}.name'] = inv['description']; s[f'invoice:{iid}.amount'] = float(inv['amount']); s[f'invoice:{iid}.due_in_days'] = inv['due_in_days']; s[f'invoice:{iid}.supplier'] = inv['supplier']
+        iid = p['invoice']; ip = inv['_prov']
+        put(f'invoice:{iid}.name', inv['description'], ip); put(f'invoice:{iid}.amount', float(inv['amount']), ip)
+        put(f'invoice:{iid}.due_in_days', inv['due_in_days'], ip); put(f'invoice:{iid}.supplier', inv['supplier'], ip)
     if sup:
-        sid = sup_id; s[f'supplier:{sid}.name'] = sup['name']; s[f'supplier:{sid}.vetted'] = sup['vetted']
+        put(f'supplier:{sup_id}.name', sup['name'], {'grade': 'policy', 'from': 'data.json#suppliers'})
+        put(f'supplier:{sup_id}.vetted', sup['vetted'], sup['_prov'])
+    cust = data['customers'].get(p.get('customer', ''))
     if cust:
-        cid = p['customer']; s[f'customer:{cid}.name'] = cust['name']; s[f'customer:{cid}.consented'] = 1 if policy['purpose'] in cust['consented_purposes'] else 0
-    s['grant:g.name'] = 'the grant'; s['grant:g.max_spend'] = policy['grant']['max_spend']; s['grant:g.purpose'] = policy['purpose']
-    return s
+        cid = p['customer']; consented, cprov = present_consent(policy, cid, action, phi, base)
+        put(f'customer:{cid}.name', cust['name'], {'grade': 'policy', 'from': 'data.json#customers'})
+        put(f'customer:{cid}.consented', consented, cprov)
+    put('grant:g.name', 'the grant', P); put('grant:g.max_spend', policy['grant']['max_spend'], P); put('grant:g.purpose', policy['purpose'], P)
+    return s, prov
+
+def record_execution(run_dir, action, res, policy):
+    """Capability-bound dispatch happened: an executed payment goes to the
+    signed ledger, which the next snapshot reads its spend from."""
+    if not res.get('executed') or action.resource != 'payments.api': return None
+    p = action.params
+    return node_json(os.path.join(SOURCES, 'ledger.mjs'), 'append', os.path.join(run_dir, 'ledger.jsonl'),
+                     json.dumps({'principal': policy['principal'], 'action': p.get('id'), 'invoice': p.get('invoice'), 'amount': float(p.get('amount', 0) or 0), 'at': datetime.datetime.now(datetime.timezone.utc).isoformat(timespec='seconds')}))
 
 class ReasonedPolicyEngine(PolicyEngine):
     def __init__(self, policy, data, run_dir, path_aware=True, require_certificate=True):
@@ -72,25 +159,29 @@ class ReasonedPolicyEngine(PolicyEngine):
         self.policy, self.data, self.run_dir, self.require = policy, data, run_dir, require_certificate
         self.registry_hash = sha256(canonical(policy['registry']))
         self.required_hash = sha256(canonical(policy['required_controls']))
+        self.provenance_hash = sha256(canonical(policy.get('required_provenance', {})))
         # the policy bundle now commits to the reason policy as well as the grant
-        self.bundle_hash = sha256(canonical({'reference_bundle': self.bundle_hash, 'registry': self.registry_hash, 'required_controls': self.required_hash, 'version': 'poc-reason-1'}))
+        self.bundle_hash = sha256(canonical({'reference_bundle': self.bundle_hash, 'registry': self.registry_hash, 'required_controls': self.required_hash, 'required_provenance': self.provenance_hash, 'version': 'poc-reason-2'}))
         self.last = None; self.step = 0
 
     def evaluate(self, action, phi):
         self.last = None
         if self.require:
             cert = action.params.get('certificate', '')
-            store = store_for(self.policy, self.data, action, phi)
-            required = self.policy['required_controls'].get(f'{action.kind}:{action.resource}', [])
             os.makedirs(os.path.join(self.run_dir, 'steps'), exist_ok=True)
             base = os.path.join(self.run_dir, 'steps', f'{self.step:02d}')
+            ledger = os.path.join(self.run_dir, 'ledger.jsonl')
+            store, prov = store_for(self.policy, self.data, action, phi, base=base, ledger=ledger)
+            required = self.policy['required_controls'].get(f'{action.kind}:{action.resource}', [])
             json.dump(store, open(base + '.store.json', 'w'), indent=1); open(base + '.cert.md', 'w').write(cert)
-            json.dump(self.policy['registry'], open(base + '.registry.json', 'w'))
-            r = subprocess.run(['node', os.path.join(HERE, 'verify-cert.mjs'), base + '.store.json', base + '.registry.json', base + '.cert.md', ','.join(required)], capture_output=True, text=True, cwd=HERE)
+            json.dump(self.policy['registry'], open(base + '.registry.json', 'w')); json.dump(prov, open(base + '.provenance.json', 'w'), indent=1)
+            r = subprocess.run(['node', os.path.join(HERE, 'verify-cert.mjs'), base + '.store.json', base + '.registry.json', base + '.cert.md', ','.join(required), base + '.provenance.json', json.dumps(self.policy.get('required_provenance', {}))], capture_output=True, text=True, cwd=HERE)
             try: result = json.loads(r.stdout.strip().splitlines()[-1])
-            except Exception: result = {'verified': False, 'errors': ['certificate verifier failed: ' + (r.stderr or r.stdout)[-300:]]}
+            except Exception: result = {'verified': False, 'errors': ['certificate verifier failed: ' + (r.stderr or r.stdout)[-300:]], 'bound': []}
             json.dump(result, open(base + '.verify.json', 'w'), indent=1)
-            self.last = {'proveml_certificate_hash': tag(sha256(cert.encode())), 'proveml_store_hash': tag(sha256(canonical(store))), 'proveml_registry_hash': tag(self.registry_hash), 'proveml_required_controls': required, 'proveml_verified': bool(result['verified'])}
+            self.last = {'proveml_certificate_hash': tag(sha256(cert.encode())), 'proveml_store_hash': tag(sha256(canonical(store))), 'proveml_registry_hash': tag(self.registry_hash),
+                         'proveml_required_controls': required, 'proveml_verified': bool(result['verified']),
+                         'proveml_provenance_hash': tag(sha256(canonical(prov))), 'proveml_provenance': {p: prov.get(p, {}).get('grade', 'absent') for p in result.get('bound', [])}}
             self.step += 1
             if not result['verified']:
                 return 'DENY', 'certificate does not verify: ' + '; '.join(result['errors'])[:240]
@@ -127,6 +218,9 @@ class ReasonedEnvironment(AttestingEnvironment):
 
 def make_gateway(run_dir, policy=None, data=None, path_aware=True, require_certificate=True, agent_id='did:web:abovebeyond.ai#agent-ap'):
     policy = policy or load_policy(); data = data or load_data()
+    os.makedirs(run_dir, exist_ok=True)
+    ledger = os.path.join(run_dir, 'ledger.jsonl')
+    open(ledger, 'w').close()   # a run starts with an empty ledger: no entries, spend 0, still a ledger
     engine = ReasonedPolicyEngine(policy, data, run_dir, path_aware, require_certificate)
     log = TransparencyLog('demo-log')
     env = ReasonedEnvironment(engine, anchor=log, anchor_interval_s=0.0)
@@ -136,12 +230,13 @@ def make_gateway(run_dir, policy=None, data=None, path_aware=True, require_certi
 
 def run_steps(name, steps, path_aware=True, require_certificate=True):
     """steps: list of dicts {kind, resource, params, classification}. Returns the run record."""
-    run_dir = os.path.join(HERE, 'runs', name); os.makedirs(run_dir, exist_ok=True)
+    run_dir = os.path.join(HERE, 'runs', name)
     gw, env, store, log, engine = make_gateway(run_dir, path_aware=path_aware, require_certificate=require_certificate)
     out = []
     for st in steps:
         a = Action(st['kind'], st['resource'], dict(st.get('params', {})), st.get('classification', 'public'))
         res = gw.submit(a)
+        record_execution(run_dir, a, res, engine.policy)
         out.append({'step': st['params'].get('id'), 'name': st['params'].get('name'), 'verdict': res['verdict'], 'reason': res.get('reason', res.get('token', {}).get('poc_claims', {}).get('reason')), 'executed': res['executed']})
     env.force_anchor()
     record = {'name': name, 'path_aware': path_aware, 'require_certificate': require_certificate, 'public_key': env.pk.public_bytes_raw().hex(), 'measurement': env.measurement, 'policy_bundle_hash': engine.bundle_hash, 'chain_head': env.chain_head, 'tree_root': env.tree.root().hex(), 'anchor': log.latest(), 'steps': out}

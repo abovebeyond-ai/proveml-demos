@@ -1,0 +1,6 @@
+{
+ "vetting desk": "did:jwk:eyJrdHkiOiJPS1AiLCJjcnYiOiJFZDI1NTE5IiwieCI6InZicklZWjAwTDVLSmJEcERwX0hUcDVneTVBTzFnVkIwcWVFSm5Zcnp0ZHMifQ",
+ "consent registry": "did:jwk:eyJrdHkiOiJPS1AiLCJjcnYiOiJFZDI1NTE5IiwieCI6IkNsaHNsb1ZGWmJyUVo5RHpybUt6RkJEZHdDUDU0TEkzRFItcFdBalFuYnMifQ",
+ "customer wallet": "did:jwk:eyJrdHkiOiJPS1AiLCJjcnYiOiJFZDI1NTE5IiwieCI6InhNMDF1RGF5VzhSVnJPam43dDV2dURHTHFvbC1QUDFpMjRIVVhGRzUyRk0ifQ",
+ "ledger": "did:jwk:eyJrdHkiOiJPS1AiLCJjcnYiOiJFZDI1NTE5IiwieCI6InU0QTNiUHdJRVVQQXM2UzU2a3NHd1Jxb3R3T3V2bkx1ZjZEQTdZUlVwY0EifQ"
+}

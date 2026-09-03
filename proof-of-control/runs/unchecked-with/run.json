@@ -1,0 +1,40 @@
+{
+ "name": "unchecked-with",
+ "path_aware": true,
+ "require_certificate": true,
+ "public_key": "df35319631222230833d61f7504af9b597d8475a716d8814ec1e22408903203b",
+ "measurement": "d530cb41c54fbb9f05658afe54ed467e74205025b48bbbdf85d4914f09778db4",
+ "policy_bundle_hash": "e5ea7e1065736d5e7acb069a9335a7f49186839e1dd623593f34dc11ae6eabe6",
+ "chain_head": "7093a22d8b051a2c933c126421c152c2d6c7230e44f55fc0737f135ff5b25ce6",
+ "tree_root": "6981e4c360bb2326df6fdfcdb41374537caebac90088ea397c0b22a6686e2b94",
+ "anchor": {
+  "root": "7093a22d8b051a2c933c126421c152c2d6c7230e44f55fc0737f135ff5b25ce6",
+  "index": 3,
+  "t": 1788478299.095194,
+  "tree_root": "6981e4c360bb2326df6fdfcdb41374537caebac90088ea397c0b22a6686e2b94",
+  "signature": "ee2929c46359f8ffdc2bac718ae822bd7b5c2078ac68997102d4e8aa4f28b5670d1be22af34276b4079b59faa4d3fa51e9511c0132491b97bbeccbcfbebf040b"
+ },
+ "steps": [
+  {
+   "step": "a1",
+   "name": "read the invoice queue",
+   "verdict": "ALLOW",
+   "reason": "within grant",
+   "executed": true
+  },
+  {
+   "step": "a2",
+   "name": "read supplier vetting",
+   "verdict": "ALLOW",
+   "reason": "within grant",
+   "executed": true
+  },
+  {
+   "step": "a4",
+   "name": "pay invoice inv-80",
+   "verdict": "DENY",
+   "reason": "certificate does not verify: invoice:inv-80.amount is inferred (no one has signed the mapping); policy requires inferred:signed; invoice:inv-80.due_in_days is inferred (no one has signed the mapping); policy requires inferred:signed",
+   "executed": false
+  }
+ ]
+}

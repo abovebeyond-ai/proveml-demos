@@ -9,10 +9,18 @@
     "proveml_store_hash": { "type": "string", "pattern": "^sha-256:[0-9a-f]{64}$" },
     "proveml_registry_hash": { "type": "string", "pattern": "^sha-256:[0-9a-f]{64}$" },
     "proveml_required_controls": { "type": "array", "items": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]*$" } },
-    "proveml_verified": { "type": "boolean" }
+    "proveml_verified": { "type": "boolean" },
+    "proveml_provenance_hash": { "type": "string", "pattern": "^sha-256:[0-9a-f]{64}$" },
+    "proveml_provenance": {
+      "type": "object",
+      "description": "Provenance grade per store path the certificate bound.",
+      "propertyNames": { "pattern": "^[a-z_]+:[A-Za-z0-9_-]+\\.[a-z_]+$" },
+      "additionalProperties": { "type": "string", "enum": ["inferred", "inferred:signed", "attested", "presented", "ledger", "gateway", "policy", "absent"] }
+    }
   },
   "dependentRequired": {
-    "proveml_verified": ["proveml_certificate_hash", "proveml_store_hash", "proveml_registry_hash", "proveml_required_controls"]
+    "proveml_verified": ["proveml_certificate_hash", "proveml_store_hash", "proveml_registry_hash", "proveml_required_controls"],
+    "proveml_provenance": ["proveml_provenance_hash"]
   },
   "if": { "properties": { "proveml_verified": { "const": false } }, "required": ["proveml_verified"] },
   "then": { "properties": { "verdict": { "const": "DENY" } } }

@@ -1,0 +1,33 @@
+{
+ "verified": false,
+ "total": 10,
+ "checked": 10,
+ "argued": [
+  "INVOICE_DUE",
+  "SUPPLIER_VETTED",
+  "AMOUNT_MATCHES_INVOICE",
+  "WITHIN_SINGLE_SPEND",
+  "WITHIN_CUMULATIVE"
+ ],
+ "missing": [],
+ "bound": [
+  "action:a4.amount",
+  "action:a4.amount_delta",
+  "action:a4.spend_after",
+  "invoice:inv-80.amount",
+  "invoice:inv-80.due_in_days",
+  "supplier:sup-1.vetted"
+ ],
+ "provenance": {
+  "invoice:inv-80.amount": "inferred",
+  "action:a4.amount": "gateway",
+  "invoice:inv-80.due_in_days": "inferred",
+  "supplier:sup-1.vetted": "attested",
+  "action:a4.amount_delta": "gateway",
+  "action:a4.spend_after": "ledger"
+ },
+ "errors": [
+  "invoice:inv-80.amount is inferred (no one has signed the mapping); policy requires inferred:signed",
+  "invoice:inv-80.due_in_days is inferred (no one has signed the mapping); policy requires inferred:signed"
+ ]
+}

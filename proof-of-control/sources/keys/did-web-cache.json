@@ -1,0 +1,24 @@
+{
+ "did:web:abovebeyond.ai": {
+  "@context": [
+   "https://www.w3.org/ns/did/v1",
+   "https://w3id.org/security/suites/jws-2020/v1"
+  ],
+  "id": "did:web:abovebeyond.ai",
+  "verificationMethod": [
+   {
+    "id": "did:web:abovebeyond.ai#key-1",
+    "type": "JsonWebKey2020",
+    "controller": "did:web:abovebeyond.ai",
+    "publicKeyJwk": {
+     "crv": "Ed25519",
+     "x": "jc3CwjMlmEVTfZHEIap7X8lmYxm9WY89rLiHuzDWAn8",
+     "kty": "OKP"
+    }
+   }
+  ],
+  "assertionMethod": [
+   "did:web:abovebeyond.ai#key-1"
+  ]
+ }
+}
