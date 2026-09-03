@@ -6,6 +6,8 @@ const U = (p) => new URL('../' + p, import.meta.url);
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const rows = JSON.parse(readFileSync(U('results/attacks.json'), 'utf8'));
 const scenarios = [...new Set(rows.map((r) => r.scenario))];
+// the number of unwarranted actions per scenario, from the harness table (attacks.py owns that list)
+const totals = Object.fromEntries(readFileSync(U('results/attacks.md'), 'utf8').split('\n').filter((l) => /^\| [a-z]/.test(l)).map((l) => l.split('|').map((x) => x.trim())).map((c) => [c[1], c[2]]));
 const live = ['live-sonnet-reference', 'live-sonnet-provenance', 'live-sonnet', 'live-sonnet-first'].filter((n) => existsSync(U(`runs/${n}/run.json`))).map((n) => ({ name: n, run: JSON.parse(readFileSync(U(`runs/${n}/run.json`), 'utf8')) }));
 const cell = (sc, req) => { const r = rows.find((x) => x.scenario === sc && x.requirement === req); const n = Object.keys(r.unwarranted_executed || {}).length; return `<td class="${n ? 'bad' : ''}"><a href="../runs/${sc}-${req}/report.html">${r.executed.length} executed</a>${n ? `, ${n} unwarranted` : ''}</td>`; };
 process.stdout.write(`<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Reason as evidence: the runs</title><style>
@@ -19,9 +21,9 @@ td.bad{color:var(--bad)}a{color:var(--ink)}.mono{font-family:"Spline Sans Mono",
 <p class="lede">The same agent, the same grant, the same queue, through the Proof-of-Control reference gateway twice: as it works today, and with a certificate the gateway verifies before the policy. Counted: actions the grant permits but the facts do not warrant. Each cell links to the report of that run, where every step shows the certificate the agent wrote, rendered so a claim that held and one that did not look different, and the same step as the reference gateway alone records it.</p>
 <h2>Scripted scenarios</h2>
 <table><tr><th>scenario</th><th>unwarranted actions</th><th>reference gateway alone (today)</th><th>with reason as evidence</th></tr>
-${scenarios.map((sc) => { const w = rows.find((x) => x.scenario === sc && x.requirement === 'without'); return `<tr><td>${esc(sc)}</td><td>${Object.keys((rows.find((x) => x.scenario === sc && x.requirement === 'with') || {}).unwarranted_executed || {}).length + Object.keys(w.unwarranted_executed || {}).length ? '' : ''}${esc(String(Math.max(...rows.filter((x) => x.scenario === sc).map((x) => Object.keys(x.unwarranted_executed || {}).length))))}</td>${cell(sc, 'without')}${cell(sc, 'with')}</tr>`; }).join('\n')}
+${scenarios.map((sc) => `<tr><td>${esc(sc)}</td><td>${esc(totals[sc] ?? '?')}</td>${cell(sc, 'without')}${cell(sc, 'with')}</tr>`).join('\n')}
 </table>
-<p class="mono">unwarranted actions per scenario are listed in attacks.py; the count shown is the most any run of the scenario executed, which is the reference-alone run</p>
+<p class="mono">which actions count as unwarranted is declared per scenario in attacks.py, before any run</p>
 <h2>Live agent (Claude, claude-sonnet-5)</h2>
 <table><tr><th>run</th><th>gateway</th><th>intercepted</th><th>executed</th><th>paid</th><th>report</th></tr>
 ${live.map(({ name, run }) => { const paid = run.steps.filter((s) => s.executed && s.resource === 'payments.api').map((s) => (run.transcript || []).find((t) => t.step === s.step)?.proposal?.invoice || s.name).join(', '); return `<tr><td>${esc(name)}</td><td>${run.require_certificate === false ? 'reference alone (today)' : 'with reason as evidence'}</td><td>${run.steps.filter((s) => s.verdict === 'ALLOW' || s.verdict === 'DENY').length}</td><td>${run.steps.filter((s) => s.executed).length}</td><td>${esc(paid || 'none')}</td><td><a href="../runs/${name}/report.html">report</a></td></tr>`; }).join('\n')}
