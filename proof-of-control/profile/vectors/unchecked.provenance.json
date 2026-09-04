@@ -20,7 +20,11 @@
   "sum_before": 0.0
  },
  "action:a4.amount_delta": {
-  "grade": "gateway",
+  "grade": "inferred",
+  "source": "sources/invoices/inv-80.pdf",
+  "pdf_sha256": "8e7ae9d339d12bf6b9031f16ca1dacda905d7aefba2d64aae7738ab9bd65cec5",
+  "method": "pdftotext version 26.02.0 + regular expressions (extract.py)",
+  "why": "no one has signed the mapping",
   "from": "invoice:inv-80.amount"
  },
  "action:a4.path_sensitivity_rank": {
@@ -56,6 +60,18 @@
   "pdf_sha256": "8e7ae9d339d12bf6b9031f16ca1dacda905d7aefba2d64aae7738ab9bd65cec5",
   "method": "pdftotext version 26.02.0 + regular expressions (extract.py)",
   "why": "no one has signed the mapping"
+ },
+ "invoice:inv-80.currency": {
+  "grade": "inferred",
+  "source": "sources/invoices/inv-80.pdf",
+  "pdf_sha256": "8e7ae9d339d12bf6b9031f16ca1dacda905d7aefba2d64aae7738ab9bd65cec5",
+  "method": "pdftotext version 26.02.0 + regular expressions (extract.py)",
+  "why": "no one has signed the mapping"
+ },
+ "invoice:inv-80.paid": {
+  "grade": "ledger",
+  "ledger": "runs/unchecked-with/ledger.jsonl",
+  "entries": 0
  },
  "supplier:sup-1.name": {
   "grade": "policy",

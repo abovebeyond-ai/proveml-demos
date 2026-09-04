@@ -8,7 +8,7 @@ const rows = JSON.parse(readFileSync(U('results/attacks.json'), 'utf8'));
 const scenarios = [...new Set(rows.map((r) => r.scenario))];
 // the number of unwarranted actions per scenario, from the harness table (attacks.py owns that list)
 const totals = Object.fromEntries(readFileSync(U('results/attacks.md'), 'utf8').split('\n').filter((l) => /^\| [a-z]/.test(l)).map((l) => l.split('|').map((x) => x.trim())).map((c) => [c[1], c[2]]));
-const live = ['live-sonnet-reference', 'live-sonnet-provenance', 'live-sonnet', 'live-sonnet-first'].filter((n) => existsSync(U(`runs/${n}/run.json`))).map((n) => ({ name: n, run: JSON.parse(readFileSync(U(`runs/${n}/run.json`), 'utf8')) }));
+const live = ['live-sonnet-reference', 'live-sonnet-hardened', 'live-sonnet-provenance', 'live-sonnet', 'live-sonnet-first'].filter((n) => existsSync(U(`runs/${n}/run.json`))).map((n) => ({ name: n, run: JSON.parse(readFileSync(U(`runs/${n}/run.json`), 'utf8')) }));
 const cell = (sc, req) => { const r = rows.find((x) => x.scenario === sc && x.requirement === req); const n = Object.keys(r.unwarranted_executed || {}).length; return `<td class="${n ? 'bad' : ''}"><a href="../runs/${sc}-${req}/report.html">${r.executed.length} executed</a>${n ? `, ${n} unwarranted` : ''}</td>`; };
 process.stdout.write(`<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Reason as evidence: the runs</title><style>
 :root{--ink:#0e2433;--muted:#47616f;--sky:#f2f6f7;--card:#fafcfd;--line:rgba(14,36,51,.18);--bad:#a8352a;--ok:#126b3a}
@@ -18,10 +18,10 @@ table{border-collapse:collapse;width:100%;font-size:.92rem}th,td{text-align:left
 td.bad{color:var(--bad)}a{color:var(--ink)}.mono{font-family:"Spline Sans Mono",ui-monospace,monospace;font-size:.8rem;color:var(--muted)}
 </style></head><body><main>
 <h1>Reason as evidence: the runs</h1>
-<p class="lede">The same agent, the same grant, the same queue, through the Proof-of-Control reference gateway twice: as it works today, and with a certificate the gateway verifies before the policy. Counted: actions the grant permits but the facts do not warrant. Each cell links to the report of that run, where every step shows the certificate the agent wrote, rendered so a claim that held and one that did not look different, and the same step as the reference gateway alone records it.</p>
+<p class="lede">The same agent, the same grant, the same queue, through the Proof-of-Control reference gateway three times: as it works today; with the gateway evaluating the same registry and grades itself, no certificate; and with a certificate the gateway verifies before the policy. The middle column is the honest baseline: on these scenarios the certificate refuses exactly what the predicate refuses, and its value is the record it leaves, not the refusal. Counted: actions the grant permits but the facts do not warrant. Each cell links to the report of that run, where every step shows the certificate the agent wrote, rendered so a claim that held and one that did not look different, and the same step as the reference gateway alone records it.</p>
 <h2>Scripted scenarios</h2>
-<table><tr><th>scenario</th><th>unwarranted actions</th><th>reference gateway alone (today)</th><th>with reason as evidence</th></tr>
-${scenarios.map((sc) => `<tr><td>${esc(sc)}</td><td>${esc(totals[sc] ?? '?')}</td>${cell(sc, 'without')}${cell(sc, 'with')}</tr>`).join('\n')}
+<table><tr><th>scenario</th><th>unwarranted actions</th><th>reference gateway alone (today)</th><th>gateway-side predicate</th><th>with reason as evidence</th></tr>
+${scenarios.map((sc) => `<tr><td>${esc(sc)}</td><td>${esc(totals[sc] ?? '?')}</td>${cell(sc, 'without')}${cell(sc, 'predicate')}${cell(sc, 'with')}</tr>`).join('\n')}
 </table>
 <p class="mono">which actions count as unwarranted is declared per scenario in attacks.py, before any run</p>
 <h2>Live agent (Claude, claude-sonnet-5)</h2>

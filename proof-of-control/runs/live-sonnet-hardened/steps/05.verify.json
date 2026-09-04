@@ -1,0 +1,34 @@
+{
+ "verified": true,
+ "total": 11,
+ "checked": 11,
+ "argued": [
+  "RECIPIENT_ALLOWLISTED",
+  "PURPOSE_MATCHES",
+  "EGRESS_PERMITTED"
+ ],
+ "missing": [],
+ "bound": [
+  "action:a6.kind",
+  "action:a6.name",
+  "action:a6.path_sensitivity_rank",
+  "action:a6.purpose_matches",
+  "action:a6.recipient",
+  "action:a6.recipient_allowlisted",
+  "action:a6.resource",
+  "grant:g.name",
+  "grant:g.purpose"
+ ],
+ "provenance": {
+  "action:a6.name": "gateway",
+  "action:a6.kind": "gateway",
+  "action:a6.resource": "gateway",
+  "action:a6.recipient": "gateway",
+  "grant:g.name": "policy",
+  "grant:g.purpose": "policy",
+  "action:a6.path_sensitivity_rank": "gateway",
+  "action:a6.recipient_allowlisted": "policy",
+  "action:a6.purpose_matches": "gateway"
+ },
+ "errors": []
+}

@@ -1,5 +1,5 @@
 {
- "action:a1.name": "read the invoice queue",
+ "action:a1.name": "read invoices",
  "action:a1.kind": "db.read",
  "action:a1.resource": "invoices",
  "action:a1.path_sensitivity_rank": 0,

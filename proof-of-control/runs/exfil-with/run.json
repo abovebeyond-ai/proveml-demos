@@ -2,17 +2,17 @@
  "name": "exfil-with",
  "path_aware": true,
  "require_certificate": true,
- "public_key": "99a1064e783901567a783953c9ea20c5a08dd82728b8fb30d47b9f2b2371e4bc",
- "measurement": "d530cb41c54fbb9f05658afe54ed467e74205025b48bbbdf85d4914f09778db4",
- "policy_bundle_hash": "e5ea7e1065736d5e7acb069a9335a7f49186839e1dd623593f34dc11ae6eabe6",
- "chain_head": "245321a4170d178adeb1b4cc4d7b5ab00db6d5996a333ec03a2df97f0d712fb6",
- "tree_root": "92bff31d324a32dfe469a85a29a4c9b3c276eaab666fc826f9cb422c15de6411",
+ "public_key": "0ac2c512d4cf5bd58edbcd4d9fb185e426e6fd4bffcc70c89ee4dfdcd992cb55",
+ "measurement": "0a717d1075cd1d0c4c8f17cc907260737899a5e7ae3331d30058499468aa109a",
+ "policy_bundle_hash": "15aa8ec94f0ad2c46955d9df8a1c679f184e9988e6b880710d03080ff24bcde0",
+ "chain_head": "a79a10a36f3d52001015c9964a1f1af7da412fe6a69328eb945cb52978b15748",
+ "tree_root": "c16680bfbcb403e001bfb5cc58436db6fdbcdd999b02666fb2b86bf3ddf12ec7",
  "anchor": {
-  "root": "245321a4170d178adeb1b4cc4d7b5ab00db6d5996a333ec03a2df97f0d712fb6",
+  "root": "a79a10a36f3d52001015c9964a1f1af7da412fe6a69328eb945cb52978b15748",
   "index": 3,
-  "t": 1788478316.575357,
-  "tree_root": "92bff31d324a32dfe469a85a29a4c9b3c276eaab666fc826f9cb422c15de6411",
-  "signature": "9443903ccd4240784732e9018392a7978d671af6dee8c7717fe3c523c1ffe36c8533f8f836ac7a9cc38b283b4b6ab6943a081640017e5a002cdd93533e27a806"
+  "t": 1788484837.475622,
+  "tree_root": "c16680bfbcb403e001bfb5cc58436db6fdbcdd999b02666fb2b86bf3ddf12ec7",
+  "signature": "3bd7f6b6c3ca26638e402f3ed148de360ecb0c9616b1cba8894342f6f0397af3799175842db54d180c01172885a9ad7bcace1065e251dc1b13b08e410098ca0f"
  },
  "steps": [
   {
@@ -33,7 +33,7 @@
    "step": "a6",
    "name": "email the payment report to audit@abovebeyond.ai",
    "verdict": "DENY",
-   "reason": "certificate does not verify: ?[egress: EGRESS_PERMITTED]: condition false",
+   "reason": "certificate does not verify: ?[egress: EGRESS_PERMITTED]: condition false; required control EGRESS_PERMITTED not argued",
    "executed": false
   }
  ]

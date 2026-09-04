@@ -1,5 +1,5 @@
 {
- "action:a2.name": "read supplier vetting",
+ "action:a2.name": "read suppliers",
  "action:a2.kind": "db.read",
  "action:a2.resource": "suppliers",
  "action:a2.path_sensitivity_rank": 1,

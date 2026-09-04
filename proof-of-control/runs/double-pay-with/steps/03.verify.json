@@ -1,0 +1,44 @@
+{
+ "verified": false,
+ "total": 12,
+ "checked": 11,
+ "argued": [
+  "INVOICE_DUE",
+  "CURRENCY_EUR",
+  "SUPPLIER_VETTED",
+  "AMOUNT_MATCHES_INVOICE",
+  "WITHIN_SINGLE_SPEND",
+  "WITHIN_CUMULATIVE"
+ ],
+ "missing": [
+  "INVOICE_UNPAID"
+ ],
+ "bound": [
+  "action:a4.amount",
+  "action:a4.amount_delta",
+  "action:a4.name",
+  "action:a4.spend_after",
+  "invoice:inv-78.amount",
+  "invoice:inv-78.currency",
+  "invoice:inv-78.due_in_days",
+  "invoice:inv-78.name",
+  "supplier:sup-1.name",
+  "supplier:sup-1.vetted"
+ ],
+ "provenance": {
+  "invoice:inv-78.name": "inferred:signed",
+  "invoice:inv-78.amount": "inferred:signed",
+  "supplier:sup-1.name": "policy",
+  "action:a4.name": "gateway",
+  "action:a4.amount": "gateway",
+  "invoice:inv-78.due_in_days": "inferred:signed",
+  "invoice:inv-78.currency": "inferred:signed",
+  "supplier:sup-1.vetted": "attested",
+  "action:a4.amount_delta": "inferred:signed",
+  "action:a4.spend_after": "ledger"
+ },
+ "errors": [
+  "?[unpaid: INVOICE_UNPAID]: condition false",
+  "required control INVOICE_UNPAID not argued"
+ ]
+}

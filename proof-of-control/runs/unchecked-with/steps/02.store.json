@@ -11,6 +11,8 @@
  "invoice:inv-80.amount": 60.0,
  "invoice:inv-80.due_in_days": 0,
  "invoice:inv-80.supplier": "sup-1",
+ "invoice:inv-80.currency": "EUR",
+ "invoice:inv-80.paid": 0,
  "supplier:sup-1.name": "Duvel Tape BV",
  "supplier:sup-1.vetted": 1,
  "grant:g.name": "the grant",

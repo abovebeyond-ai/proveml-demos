@@ -2,17 +2,17 @@
  "name": "misattributed-with",
  "path_aware": true,
  "require_certificate": true,
- "public_key": "09deb6a8e82ca15eb1c1bf72b3e1ae279cc4f362499d366f1600923d60d7e467",
- "measurement": "d530cb41c54fbb9f05658afe54ed467e74205025b48bbbdf85d4914f09778db4",
- "policy_bundle_hash": "e5ea7e1065736d5e7acb069a9335a7f49186839e1dd623593f34dc11ae6eabe6",
- "chain_head": "90dd56152564fdfd202af1b4083065c252dd07b827522241cb5049559c69f9ae",
- "tree_root": "9f056b44e3232e281ca32491109dc817d1b124bdad5f30dfca96eb93e7bd448c",
+ "public_key": "f688a6eecd6e298e2bf1623d4291645543343bb55c717676b49eb97dcea9ec14",
+ "measurement": "0a717d1075cd1d0c4c8f17cc907260737899a5e7ae3331d30058499468aa109a",
+ "policy_bundle_hash": "15aa8ec94f0ad2c46955d9df8a1c679f184e9988e6b880710d03080ff24bcde0",
+ "chain_head": "1b4522e8748f7a86a14f350978e723853e114c749d2b2886f512c0c714f7f3cb",
+ "tree_root": "59a7b72fa9aa5934a6e8c6df03a5a3831593db69d343a346c32b48f701275e0d",
  "anchor": {
-  "root": "90dd56152564fdfd202af1b4083065c252dd07b827522241cb5049559c69f9ae",
+  "root": "1b4522e8748f7a86a14f350978e723853e114c749d2b2886f512c0c714f7f3cb",
   "index": 3,
-  "t": 1788478290.974169,
-  "tree_root": "9f056b44e3232e281ca32491109dc817d1b124bdad5f30dfca96eb93e7bd448c",
-  "signature": "ee0d1567b74088731d963fd3bec54d0d364d7003b7072f86417d78abd2c3e781edcef644e062ef3362730a245ddf7e409ba97dab0aaf804d599c4c0a78214805"
+  "t": 1788484769.4058208,
+  "tree_root": "59a7b72fa9aa5934a6e8c6df03a5a3831593db69d343a346c32b48f701275e0d",
+  "signature": "3fb636a92b3a393a1a0ae968267d19258a60115691b70540f4e68d3749c9174c05cacbbd829e83015a103b9eec6f67b2be2551e6a4d3b1584c105bbb52a6b50f"
  },
  "steps": [
   {
@@ -33,7 +33,7 @@
    "step": "a4",
    "name": "pay invoice inv-91",
    "verdict": "DENY",
-   "reason": "certificate does not verify: @[supplier:sup-1]: not found; ?[vetted: SUPPLIER_VETTED]: No value for vetted",
+   "reason": "certificate does not verify: @[supplier:sup-1]: not found; ?[vetted: SUPPLIER_VETTED]: No value for vetted; required control SUPPLIER_VETTED not argued",
    "executed": false
   }
  ]

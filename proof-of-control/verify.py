@@ -76,6 +76,7 @@ for i, t in enumerate(tokens):
     for path, pv in prov.items():
         g = pv.get('grade'); ent, _, field = path.partition('.'); eid = ent.split(':')[1]
         if g == 'inferred:signed':
+            if not pv.get('mapping') or not pv.get('source'): errs.append(f'{path}: claims a signed mapping but names none'); continue
             pdf = os.path.join(HERE, pv['source'])
             if hashlib.sha256(open(pdf, 'rb').read()).hexdigest() != pv['pdf_sha256']: errs.append(f'{path}: the PDF on disk is not the one extracted from')
             m = node_json(os.path.join(SOURCES, 'check.mjs'), 'mapping', os.path.join(HERE, pv['mapping']), pv['pdf_sha256'])
@@ -85,14 +86,22 @@ for i, t in enumerate(tokens):
                 signed = m['fields'].get({'name': 'description'}.get(field, field))
                 if signed is not None and signed != store[path]: errs.append(f'{path}: store says {store[path]}, the signed mapping says {signed}')
         elif g == 'attested':
+            if not pv.get('credential'): errs.append(f'{path}: claims a credential but names none'); continue
             cr = node_json(os.path.join(SOURCES, 'check.mjs'), 'credential', os.path.join(HERE, pv['credential']))
             if not cr.get('ok'): errs.append(f'{path}: credential: ' + cr.get('why', ''))
             elif cr['issuer'] != pv['issuer'] or cr['claims'].get('supplier') != eid or (cr['claims'].get('vetted') is True) != (store[path] == 1): errs.append(f'{path}: the credential does not say what the store says')
         elif g == 'presented':
+            if not pv.get('presentation'): errs.append(f'{path}: claims a presentation but names none'); continue
             pr = node_json(os.path.join(SOURCES, 'check.mjs'), 'presentation', os.path.join(HERE, pv['presentation']), pv['nonce'], pv['aud'])
             if not pr.get('ok'): errs.append(f'{path}: presentation: ' + pr.get('why', ''))
             elif pr['issuer'] != pv['issuer'] or pr['claims'].get('customer') != eid or (policy['purpose'] in pr['claims'].get('purposes', [])) != (store[path] == 1): errs.append(f'{path}: the presentation does not say what the store says')
+        elif g == 'ledger' and field == 'paid':
+            ledger_file = os.path.join(HERE, pv['ledger']) if pv.get('ledger') else None
+            n = sum(1 for line in open(ledger_file) if line.strip() and json.loads(line)['entry'].get('invoice') == eid) if ledger_file and os.path.exists(ledger_file) else 0
+            # the ledger has grown since this snapshot; the count then is bounded by the count now, and the token committed to the snapshot's value
+            if store[path] > n: errs.append(f'{path}: the snapshot says paid {store[path]} times, the ledger holds {n} payments of it')
         elif g == 'ledger':
+            if not pv.get('ledger') or 'entries' not in pv or 'head' not in pv: errs.append(f'{path}: claims the ledger but names no entry'); continue
             lv = node_json(os.path.join(SOURCES, 'ledger.mjs'), 'verify', os.path.join(HERE, pv['ledger']), policy['principal'], str(pv['entries']))
             if not lv.get('ok'): errs.append(f'{path}: ledger: ' + '; '.join(lv.get('errors') or [lv.get('why', '')]))
             elif lv['head'] != pv['head'] or float(lv['sum']) != float(pv['sum_before']): errs.append(f'{path}: the ledger up to entry {pv["entries"]} does not give the spend the snapshot used')
