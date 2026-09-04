@@ -157,14 +157,14 @@ h2{font-size:1.15rem;margin:0 0 .5rem;display:flex;gap:.6rem;align-items:baselin
 @media (prefers-reduced-motion:reduce){.cert .lit,.verdict,.why,.token,.node,.gatebar span{transition:none}}
 .instant .node,.instant .gatebar span,.instant .verdict,.instant .token{transition:none}
 </style></head><body><main>
-<script>window.REGISTRY = {"INVOICE_DUE":{"field":"due_in_days","op":"<=","value":0,"label":"due","source":"ap-policy.md#due"},"SUPPLIER_VETTED":{"field":"vetted","op":"==","value":1,"label":"vetted supplier","source":"ap-policy.md#vetting"},"AMOUNT_MATCHES_INVOICE":{"field":"amount_delta","op":"==","value":0,"label":"amount equals the invoice","source":"ap-policy.md#match"},"WITHIN_SINGLE_SPEND":{"field":"amount","op":"<=","value":200,"label":"within the single-payment limit","source":"grant#max_spend"},"WITHIN_CUMULATIVE":{"field":"spend_after","op":"<=","value":200,"label":"within the grant's cumulative limit","source":"grant#max_spend"},"RECIPIENT_ALLOWLISTED":{"field":"recipient_allowlisted","op":"==","value":1,"label":"allowlisted recipient","source":"ap-policy.md#recipients"},"PURPOSE_MATCHES":{"field":"purpose_matches","op":"==","value":1,"label":"purpose matches the grant","source":"grant#purpose"},"EGRESS_PERMITTED":{"field":"path_sensitivity_rank","op":"<=","value":1,"label":"nothing above internal has been read on this path","source":"grant#max_sensitivity_egress"},"CONSENTED":{"field":"consented","op":"==","value":1,"label":"the record's owner consented to this purpose","source":"pdpp-grant"}};</script>
+<script>window.REGISTRY = {"INVOICE_DUE":{"field":"due_in_days","op":"<=","value":0,"label":"due","source":"ap-policy.md#due"},"SUPPLIER_VETTED":{"field":"vetted","op":"==","value":1,"label":"vetted supplier","source":"ap-policy.md#vetting"},"AMOUNT_MATCHES_INVOICE":{"field":"amount_delta","op":"==","value":0,"label":"amount equals the invoice","source":"ap-policy.md#match"},"WITHIN_SINGLE_SPEND":{"field":"amount","op":"<=","value":200,"label":"within the single-payment limit","source":"grant#max_spend"},"WITHIN_CUMULATIVE":{"field":"spend_after","op":"<=","value":200,"label":"within the grant's cumulative limit","source":"grant#max_spend"},"RECIPIENT_ALLOWLISTED":{"field":"recipient_allowlisted","op":"==","value":1,"label":"allowlisted recipient","source":"ap-policy.md#recipients"},"PURPOSE_MATCHES":{"field":"purpose_matches","op":"==","value":1,"label":"purpose matches the grant","source":"grant#purpose"},"EGRESS_PERMITTED":{"field":"path_sensitivity_rank","op":"<=","value":1,"label":"nothing above internal has been read on this path","source":"grant#max_sensitivity_egress"},"CONSENTED":{"field":"consented","op":"==","value":1,"label":"the record's owner consented to this purpose","source":"pdpp-grant"},"INVOICE_UNPAID":{"field":"paid","op":"==","value":0,"label":"not yet paid","source":"ledger"},"CURRENCY_EUR":{"field":"currency","op":"==","value":"EUR","label":"in euro","source":"grant#max_spend"}};</script>
 <h1>honest-without: an agent under a grant, every action through the gate</h1>
 <p class="thesis">The agent forms its own intents, so the trust runs the other way round: a person is trusted until shown otherwise; an agent's intent is refused until it shows why it is warranted, in prose the gateway can check.</p>
 <div class="grant">
   <div><h3>the agent</h3><p>did:web:abovebeyond.ai#agent-ap<br>scripted<br>acting for did:web:abovebeyond.ai#ops</p></div>
   <div><h3>may</h3><p>db.read, http.post<br>on invoices, suppliers, customers, payments.api, mail.api<br>spend up to 200 EUR, single and cumulative<br>nothing above internal may leave<br>purpose accounts-payable</p></div>
   <div><h3>must show</h3>
-    <dl class="req"><dt>a payment</dt><dd><span class="chip">due</span><span class="chip">vetted supplier</span><span class="chip">amount equals the invoice</span><span class="chip">within the single-payment limit</span><span class="chip">within the grant's cumulative limit</span></dd><dt>a mail</dt><dd><span class="chip">allowlisted recipient</span><span class="chip">purpose matches the grant</span><span class="chip">nothing above internal has been read on this path</span></dd><dt>a customer record</dt><dd><span class="chip">purpose matches the grant</span><span class="chip">the record's owner consented to this purpose</span></dd>
+    <dl class="req"><dt>a payment</dt><dd><span class="chip">due</span><span class="chip">vetted supplier</span><span class="chip">amount equals the invoice</span><span class="chip">within the single-payment limit</span><span class="chip">within the grant's cumulative limit</span><span class="chip">not yet paid</span><span class="chip">in euro</span></dd><dt>a mail</dt><dd><span class="chip">allowlisted recipient</span><span class="chip">purpose matches the grant</span><span class="chip">nothing above internal has been read on this path</span></dd><dt>a customer record</dt><dd><span class="chip">purpose matches the grant</span><span class="chip">the record's owner consented to this purpose</span></dd>
     <dt>the facts</dt><dd><span class="chip">invoice fields inferred:signed</span><span class="chip">vetting attested</span><span class="chip">consent presented</span><span class="chip">spend from the ledger</span></dd></dl>
   </div>
 </div>
@@ -200,7 +200,7 @@ h2{font-size:1.15rem;margin:0 0 .5rem;display:flex;gap:.6rem;align-items:baselin
   <p class="now"></p>
   <p class="why">within grant</p>
 </div>
-<div class="token"><span class="lbl">evidence token, signed by the attesting environment</span><dl><dt>verdict</dt><dd>ALLOW</dd><dt>target_resource</dt><dd>invoices</dd><dt>step_index</dt><dd>0</dd><dt>chain_head</dt><dd>e3f375ba1ed9</dd><dt>merkle_root</dt><dd>3b5e8f4e4b36</dd><dt>policy_bundle_hash</dt><dd>e5ea7e106573</dd><dt>path_summary_hash</dt><dd>05029682c9bf</dd><dt>signature</dt><dd>b29a8f72c076</dd></dl></div>
+<div class="token"><span class="lbl">evidence token, signed by the attesting environment</span><dl><dt>verdict</dt><dd>ALLOW</dd><dt>target_resource</dt><dd>invoices</dd><dt>step_index</dt><dd>0</dd><dt>chain_head</dt><dd>73deb8b00404</dd><dt>merkle_root</dt><dd>f5e308f11c4a</dd><dt>policy_bundle_hash</dt><dd>15aa8ec94f0a</dd><dt>path_summary_hash</dt><dd>05029682c9bf</dd><dt>signature</dt><dd>a1e44436dd80</dd></dl></div>
 </section>
 <section class="step allow" data-gate='{&quot;verified&quot;:false,&quot;verdict&quot;:&quot;ALLOW&quot;,&quot;controls&quot;:[]}'>
 <h2><span class="nr">02</span> read supplier vetting <span class="res">suppliers</span></h2>
@@ -220,7 +220,7 @@ h2{font-size:1.15rem;margin:0 0 .5rem;display:flex;gap:.6rem;align-items:baselin
   <p class="now"></p>
   <p class="why">within grant</p>
 </div>
-<div class="token"><span class="lbl">evidence token, signed by the attesting environment</span><dl><dt>verdict</dt><dd>ALLOW</dd><dt>target_resource</dt><dd>suppliers</dd><dt>step_index</dt><dd>1</dd><dt>chain_head</dt><dd>dd25b254654d</dd><dt>merkle_root</dt><dd>11d1b107427f</dd><dt>policy_bundle_hash</dt><dd>e5ea7e106573</dd><dt>path_summary_hash</dt><dd>f6d6812a0851</dd><dt>signature</dt><dd>5bc7d79314a1</dd></dl></div>
+<div class="token"><span class="lbl">evidence token, signed by the attesting environment</span><dl><dt>verdict</dt><dd>ALLOW</dd><dt>target_resource</dt><dd>suppliers</dd><dt>step_index</dt><dd>1</dd><dt>chain_head</dt><dd>beda21c50960</dd><dt>merkle_root</dt><dd>70d4643e9fd8</dd><dt>policy_bundle_hash</dt><dd>15aa8ec94f0a</dd><dt>path_summary_hash</dt><dd>f6d6812a0851</dd><dt>signature</dt><dd>9f150bcdf9d1</dd></dl></div>
 </section>
 <section class="step allow" data-gate='{&quot;verified&quot;:false,&quot;verdict&quot;:&quot;ALLOW&quot;,&quot;controls&quot;:[]}'>
 <h2><span class="nr">03</span> pay invoice inv-77 <span class="res">payments.api</span></h2>
@@ -240,7 +240,7 @@ h2{font-size:1.15rem;margin:0 0 .5rem;display:flex;gap:.6rem;align-items:baselin
   <p class="now"></p>
   <p class="why">within grant</p>
 </div>
-<div class="token"><span class="lbl">evidence token, signed by the attesting environment</span><dl><dt>verdict</dt><dd>ALLOW</dd><dt>target_resource</dt><dd>payments.api</dd><dt>step_index</dt><dd>2</dd><dt>chain_head</dt><dd>cbc69733297f</dd><dt>merkle_root</dt><dd>a0cbc2ba42df</dd><dt>policy_bundle_hash</dt><dd>e5ea7e106573</dd><dt>path_summary_hash</dt><dd>431bf5033ea8</dd><dt>signature</dt><dd>c59818e75987</dd></dl></div>
+<div class="token"><span class="lbl">evidence token, signed by the attesting environment</span><dl><dt>verdict</dt><dd>ALLOW</dd><dt>target_resource</dt><dd>payments.api</dd><dt>step_index</dt><dd>2</dd><dt>chain_head</dt><dd>5e0a80eeeb18</dd><dt>merkle_root</dt><dd>e819bb4de759</dd><dt>policy_bundle_hash</dt><dd>15aa8ec94f0a</dd><dt>path_summary_hash</dt><dd>431bf5033ea8</dd><dt>signature</dt><dd>d4cedadfbbec</dd></dl></div>
 </section>
 <section class="step allow" data-gate='{&quot;verified&quot;:false,&quot;verdict&quot;:&quot;ALLOW&quot;,&quot;controls&quot;:[]}'>
 <h2><span class="nr">04</span> email the payment report to audit@abovebeyond.ai <span class="res">mail.api</span></h2>
@@ -260,11 +260,11 @@ h2{font-size:1.15rem;margin:0 0 .5rem;display:flex;gap:.6rem;align-items:baselin
   <p class="now"></p>
   <p class="why">within grant</p>
 </div>
-<div class="token"><span class="lbl">evidence token, signed by the attesting environment</span><dl><dt>verdict</dt><dd>ALLOW</dd><dt>target_resource</dt><dd>mail.api</dd><dt>step_index</dt><dd>3</dd><dt>chain_head</dt><dd>43dcebc14584</dd><dt>merkle_root</dt><dd>9f41685f4fc0</dd><dt>policy_bundle_hash</dt><dd>e5ea7e106573</dd><dt>path_summary_hash</dt><dd>114017412b43</dd><dt>signature</dt><dd>e021c37e3b02</dd></dl></div>
+<div class="token"><span class="lbl">evidence token, signed by the attesting environment</span><dl><dt>verdict</dt><dd>ALLOW</dd><dt>target_resource</dt><dd>mail.api</dd><dt>step_index</dt><dd>3</dd><dt>chain_head</dt><dd>3a02c6adb09e</dd><dt>merkle_root</dt><dd>81ded276da60</dd><dt>policy_bundle_hash</dt><dd>15aa8ec94f0a</dd><dt>path_summary_hash</dt><dd>114017412b43</dd><dt>signature</dt><dd>4678c58361de</dd></dl></div>
 </section>
 
 <p class="foot">grant: did:web:abovebeyond.ai#ops, db.read http.post on invoices, suppliers, customers, payments.api, mail.api, spend 200 EUR, egress up to internal.<br>
-policy bundle e5ea7e106573, measurement d530cb41c54f, chain head 43dcebc14584, tree root 9f41685f4fc0.<br>
+policy bundle 15aa8ec94f0a, measurement 0a717d1075cd, chain head 3a02c6adb09e, tree root 81ded276da60.<br>
 Replay without a model or a gateway: <code>python3 verify.py runs/honest-without</code>. What this does not prove: that the registry is the right policy.</p>
 </main>
 <script>

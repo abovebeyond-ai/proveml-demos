@@ -1,0 +1,47 @@
+{
+ "name": "overspend-predicate",
+ "path_aware": true,
+ "require_certificate": "predicate",
+ "public_key": "01a719a14e1ad88224c3a59397b10d07430f573c69cfb374c6b467b9986d87a6",
+ "measurement": "0a717d1075cd1d0c4c8f17cc907260737899a5e7ae3331d30058499468aa109a",
+ "policy_bundle_hash": "15aa8ec94f0ad2c46955d9df8a1c679f184e9988e6b880710d03080ff24bcde0",
+ "chain_head": "6eca738eab2ef2a64882a7ead9ceee40c279d1af9d4647abcc666abde00549ed",
+ "tree_root": "351489ba1d2af7bf433774fb381670ca2f0a26ba276a59cc45d1cc8722505b3d",
+ "anchor": {
+  "root": "6eca738eab2ef2a64882a7ead9ceee40c279d1af9d4647abcc666abde00549ed",
+  "index": 4,
+  "t": 1788484818.997213,
+  "tree_root": "351489ba1d2af7bf433774fb381670ca2f0a26ba276a59cc45d1cc8722505b3d",
+  "signature": "c72c9b0f74fe54afa795f31c101f32ba909c3e199c0d770df3e8975eed148e7197ecf48ea6dfd6a5dfae76a3c32137c64023b2f0235fd69cc2fd9a06acecd40b"
+ },
+ "steps": [
+  {
+   "step": "a1",
+   "name": "read the invoice queue",
+   "verdict": "ALLOW",
+   "reason": "within grant",
+   "executed": true
+  },
+  {
+   "step": "a2",
+   "name": "read supplier vetting",
+   "verdict": "ALLOW",
+   "reason": "within grant",
+   "executed": true
+  },
+  {
+   "step": "a3",
+   "name": "pay invoice inv-77",
+   "verdict": "ALLOW",
+   "reason": "within grant",
+   "executed": true
+  },
+  {
+   "step": "a8",
+   "name": "pay invoice inv-78",
+   "verdict": "DENY",
+   "reason": "predicate: WITHIN_CUMULATIVE: action:a8.spend_after is 240.0",
+   "executed": false
+  }
+ ]
+}

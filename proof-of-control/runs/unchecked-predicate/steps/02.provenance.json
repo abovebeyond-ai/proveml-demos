@@ -1,0 +1,96 @@
+{
+ "action:a4.name": {
+  "grade": "gateway"
+ },
+ "action:a4.kind": {
+  "grade": "gateway"
+ },
+ "action:a4.resource": {
+  "grade": "gateway"
+ },
+ "action:a4.amount": {
+  "grade": "gateway"
+ },
+ "action:a4.spend_after": {
+  "grade": "ledger",
+  "ledger": "runs/unchecked-predicate/ledger.jsonl",
+  "entries": 0,
+  "head": "genesis",
+  "signer": null,
+  "sum_before": 0.0
+ },
+ "action:a4.amount_delta": {
+  "grade": "inferred",
+  "source": "sources/invoices/inv-80.pdf",
+  "pdf_sha256": "8e7ae9d339d12bf6b9031f16ca1dacda905d7aefba2d64aae7738ab9bd65cec5",
+  "method": "pdftotext version 26.02.0 + regular expressions (extract.py)",
+  "why": "no one has signed the mapping",
+  "from": "invoice:inv-80.amount"
+ },
+ "action:a4.path_sensitivity_rank": {
+  "grade": "gateway"
+ },
+ "action:a4.purpose_matches": {
+  "grade": "gateway"
+ },
+ "invoice:inv-80.name": {
+  "grade": "inferred",
+  "source": "sources/invoices/inv-80.pdf",
+  "pdf_sha256": "8e7ae9d339d12bf6b9031f16ca1dacda905d7aefba2d64aae7738ab9bd65cec5",
+  "method": "pdftotext version 26.02.0 + regular expressions (extract.py)",
+  "why": "no one has signed the mapping"
+ },
+ "invoice:inv-80.amount": {
+  "grade": "inferred",
+  "source": "sources/invoices/inv-80.pdf",
+  "pdf_sha256": "8e7ae9d339d12bf6b9031f16ca1dacda905d7aefba2d64aae7738ab9bd65cec5",
+  "method": "pdftotext version 26.02.0 + regular expressions (extract.py)",
+  "why": "no one has signed the mapping"
+ },
+ "invoice:inv-80.due_in_days": {
+  "grade": "inferred",
+  "source": "sources/invoices/inv-80.pdf",
+  "pdf_sha256": "8e7ae9d339d12bf6b9031f16ca1dacda905d7aefba2d64aae7738ab9bd65cec5",
+  "method": "pdftotext version 26.02.0 + regular expressions (extract.py)",
+  "why": "no one has signed the mapping"
+ },
+ "invoice:inv-80.supplier": {
+  "grade": "inferred",
+  "source": "sources/invoices/inv-80.pdf",
+  "pdf_sha256": "8e7ae9d339d12bf6b9031f16ca1dacda905d7aefba2d64aae7738ab9bd65cec5",
+  "method": "pdftotext version 26.02.0 + regular expressions (extract.py)",
+  "why": "no one has signed the mapping"
+ },
+ "invoice:inv-80.currency": {
+  "grade": "inferred",
+  "source": "sources/invoices/inv-80.pdf",
+  "pdf_sha256": "8e7ae9d339d12bf6b9031f16ca1dacda905d7aefba2d64aae7738ab9bd65cec5",
+  "method": "pdftotext version 26.02.0 + regular expressions (extract.py)",
+  "why": "no one has signed the mapping"
+ },
+ "invoice:inv-80.paid": {
+  "grade": "ledger",
+  "ledger": "runs/unchecked-predicate/ledger.jsonl",
+  "entries": 0
+ },
+ "supplier:sup-1.name": {
+  "grade": "policy",
+  "from": "data.json#suppliers"
+ },
+ "supplier:sup-1.vetted": {
+  "grade": "attested",
+  "credential": "sources/credentials/sup-1.vetting.sdjwt",
+  "issuer": "did:jwk:eyJrdHkiOiJPS1AiLCJjcnYiOiJFZDI1NTE5IiwieCI6InZicklZWjAwTDVLSmJEcERwX0hUcDVneTVBTzFnVkIwcWVFSm5Zcnp0ZHMifQ",
+  "vct": "urn:proveml:supplier-vetting:1",
+  "checked_at": "2026-08-20"
+ },
+ "grant:g.name": {
+  "grade": "policy"
+ },
+ "grant:g.max_spend": {
+  "grade": "policy"
+ },
+ "grant:g.purpose": {
+  "grade": "policy"
+ }
+}

@@ -1,6 +1,6 @@
 {
  "iss": "https://verifier.example/poc",
- "iat": 1788478273,
+ "iat": 1788484742,
  "nonce": "n-00000003",
  "eat_profile": "https://advancedaisociety.org/poc/v0.1",
  "poc_claims": {
@@ -9,42 +9,49 @@
   "agbom_digest": "sha-256:8ccf1344a2087a19f5bd874fa3ae8486dce9ddfed60f17856d9a0cfe6540e868",
   "interception_point": "PRE_CALL_TOOL_INVOCATION",
   "step_index": 2,
-  "chain_head": "sha-256:cbc69733297f173197319e49990343418321b28845894a0d1b7e604d39c5f817",
-  "merkle_root": "sha-256:a0cbc2ba42df9439eefc21ead7daa250369783a58c2bfa5b3782adced7f91619",
+  "chain_head": "sha-256:5e0a80eeeb1813955e292b0985964c46725ee0dcdffa598e59817d8651062b05",
+  "merkle_root": "sha-256:e819bb4de7594fddd03de9f405a03b28ccad78b948ad36208b64a82a5e720eab",
   "tree_size": 3,
-  "policy_bundle_hash": "sha-256:e5ea7e1065736d5e7acb069a9335a7f49186839e1dd623593f34dc11ae6eabe6",
+  "policy_bundle_hash": "sha-256:15aa8ec94f0ad2c46955d9df8a1c679f184e9988e6b880710d03080ff24bcde0",
   "target_resource": "payments.api",
-  "canonical_snapshot_hash": "sha-256:fbf0c85c8583fba10be1cc642b5fed0416db7e361b2e19beb5c65d6cf2879971",
+  "canonical_snapshot_hash": "sha-256:ac7ff9a48b1fdf6f28d21132b417db91ddd266e4a52eaf6bd6a7cae8ab2314ab",
   "path_summary_hash": "sha-256:431bf5033ea86dd1d4833efaaece6bad21b73c6b06ae470ba6614f7a4c2b2c4a",
   "verdict": "ALLOW",
   "reason": "within grant",
   "alg": "EdDSA",
-  "proveml_certificate_hash": "sha-256:d4b8f0653d71d74032048ae47722b0da0e75df527cf7a39ec0d08b87d6e905b2",
-  "proveml_store_hash": "sha-256:73466fe558230626f44f2b2e794d50387a71a8607e4c20d5657279ff1b85953a",
-  "proveml_registry_hash": "sha-256:3260edaff662ca3c54f5a775f6f877e4b27fec7a97b767909174eae4679965d6",
+  "proveml_certificate_hash": "sha-256:b0f2485a53c3bfe44c1fd9a4e148c80cd0b91a55fec571f54ca0dffb87fd4e18",
+  "proveml_store_hash": "sha-256:088b041d997db9bfc50755e2e3a13f0397b06c970318452625e61377619baf7a",
+  "proveml_registry_hash": "sha-256:9a3b03c2a87bed6385988056a04775c3a3635d9e1203dfe0de0c11470bc7a9e3",
   "proveml_required_controls": [
    "INVOICE_DUE",
    "SUPPLIER_VETTED",
    "AMOUNT_MATCHES_INVOICE",
    "WITHIN_SINGLE_SPEND",
-   "WITHIN_CUMULATIVE"
+   "WITHIN_CUMULATIVE",
+   "INVOICE_UNPAID",
+   "CURRENCY_EUR"
   ],
   "proveml_verified": false,
-  "proveml_provenance_hash": "sha-256:2f07ca20cc5c2539497ffc73ab38320f437eb82732623211b263a81883ba7839",
+  "proveml_provenance_hash": "sha-256:b32438f127ca78a7ecbe120a0035246e74f755494c6df2d14a621ef7243366c6",
   "proveml_provenance": {
    "action:a3.amount": "gateway",
-   "action:a3.amount_delta": "gateway",
+   "action:a3.amount_delta": "inferred:signed",
+   "action:a3.name": "gateway",
    "action:a3.spend_after": "ledger",
    "invoice:inv-77.amount": "inferred:signed",
+   "invoice:inv-77.currency": "inferred:signed",
    "invoice:inv-77.due_in_days": "inferred:signed",
+   "invoice:inv-77.name": "inferred:signed",
+   "invoice:inv-77.paid": "ledger",
+   "supplier:sup-1.name": "policy",
    "supplier:sup-1.vetted": "attested"
   }
  },
  "submods": {
   "attestation": {
    "platform": "SOFTWARE",
-   "measurement": "sha-256:d530cb41c54fbb9f05658afe54ed467e74205025b48bbbdf85d4914f09778db4"
+   "measurement": "sha-256:0a717d1075cd1d0c4c8f17cc907260737899a5e7ae3331d30058499468aa109a"
   }
  },
- "signature": "6d1ddc3e0843f42dadc69edfa30db81a0259bd5e31b2c002d298a456763721457376fa69665dfc0fbed2efe21a35badf5eed7e6a2dc2a0a24ea2e84b753c2504"
+ "signature": "4308181e5bfb5097c12f2d177443ddca29f18e50e2f81539ea0dfc8eb85f95f2c6929146173f07bef35759e8e60d5f859f44df1e1b7b074b1d6d85f9bc652d0c"
 }

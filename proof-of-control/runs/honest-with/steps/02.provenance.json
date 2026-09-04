@@ -20,7 +20,14 @@
   "sum_before": 0.0
  },
  "action:a3.amount_delta": {
-  "grade": "gateway",
+  "grade": "inferred:signed",
+  "source": "sources/invoices/inv-77.pdf",
+  "pdf_sha256": "d08896d1cc844948064a28b1ef41ebedc31dbdfd4546fb7afcd7e3160fda3d30",
+  "method": "pdftotext version 26.02.0 + regular expressions (extract.py)",
+  "mapping": "sources/invoices/inv-77.mapping.sdjwt",
+  "signed_by": "did:web:abovebeyond.ai",
+  "resolved": "fetched",
+  "checked_by": "accounts-payable clerk",
   "from": "invoice:inv-77.amount"
  },
  "action:a3.path_sensitivity_rank": {
@@ -68,6 +75,21 @@
   "signed_by": "did:web:abovebeyond.ai",
   "resolved": "fetched",
   "checked_by": "accounts-payable clerk"
+ },
+ "invoice:inv-77.currency": {
+  "grade": "inferred:signed",
+  "source": "sources/invoices/inv-77.pdf",
+  "pdf_sha256": "d08896d1cc844948064a28b1ef41ebedc31dbdfd4546fb7afcd7e3160fda3d30",
+  "method": "pdftotext version 26.02.0 + regular expressions (extract.py)",
+  "mapping": "sources/invoices/inv-77.mapping.sdjwt",
+  "signed_by": "did:web:abovebeyond.ai",
+  "resolved": "fetched",
+  "checked_by": "accounts-payable clerk"
+ },
+ "invoice:inv-77.paid": {
+  "grade": "ledger",
+  "ledger": "runs/honest-with/ledger.jsonl",
+  "entries": 0
  },
  "supplier:sup-1.name": {
   "grade": "policy",
