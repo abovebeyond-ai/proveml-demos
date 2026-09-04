@@ -78,18 +78,19 @@ const rows = tokens.map((t, i) => {
     const label = r.grade === 'ledger' ? 'ledger, ' + r.entries + (r.entries === 1 ? ' entry' : ' entries') : r.grade === 'presented' ? 'consent, presented' : r.grade === 'attested' ? 'vetting credential' : r.grade === 'absent' ? p.split('.').pop() + ': absent' : (r.source || '').split('/').pop() + (r.grade === 'inferred:signed' ? ', mapping signed' : ', unsigned');
     sources.push({ label, ok: met && r.grade !== 'absent', why: r.why || (need && !met ? 'policy requires ' + need : r.grade) });
   }
-  const entities = marks.map((d, m) => ({ d, m })).filter(({ d }) => d.type === 'entity').map(({ d, m }) => ({ m, label: d.path.replace(':', ' '), ok: d.status === 'verified' }));
+  const readable = (d) => d.type === 'entity' ? d.status === 'verified' : !/unverifiable|no-context|not-found|unknown/.test(d.status || '');
+  const entities = marks.map((d, m) => ({ m, label: d.type === 'entity' ? d.path.replace(':', ' ') : d.type === 'fact' ? (d.path || '').split('.').pop() + ' = ' + d.value : (d.label || 'judgement'), ok: readable(d), kind: d.type }));
   const checks = marks.map((d, m) => ({ d, m })).filter(({ d }) => d.type !== 'entity').map(({ d, m }) => ({ m, ok: d.status === 'verified', label: d.type === 'fact' ? (d.path || '').split('.').pop() : (d.label || 'judgement') }));
   const reqControls = controls.filter((k) => k.required);
   const at = (i, n, a, b) => (n <= 1 ? (a + b) / 2 : a + (b - a) * i / (n - 1));
-  const SEG = { extraction: [2, 17], interpretation: [22, 36], verification: [41, 62], policy: [67, 82] };
-  const STAGE = { src: 'extraction', ent: 'interpretation', chk: 'verification', ctl: 'policy gate' };
+  const SEG = { extraction: [2, 14], interpretation: [19, 44], verification: [49, 64], policy: [69, 82] };
+  const STAGE = { src: 'extraction', ent: 'reading', chk: 'checking', ctl: 'policy gate' };
   const node = (cls, x, attrs, label, alt) => `<span class="node ${cls}${alt ? ' below' : ''}" style="left:${x.toFixed(2)}%" data-stage="${STAGE[cls]}" data-label="${esc(label || '')}" ${attrs}>${label ? `<i>${esc(label)}</i>` : ''}</span>`;
-  const srcNodes = sources.length ? sources.map((sr, i) => node('src', at(i, sources.length, ...SEG.extraction), `data-ok="${sr.ok ? 1 : 0}" title="${esc(sr.why || '')}"`, sr.label, i % 2)).join('') : `<span class="nonode" style="left:9.5%">gateway state only</span>`;
-  const entNodes = entities.length ? entities.map((e, i) => node('ent', at(i, entities.length, ...SEG.interpretation), `data-m="${e.m}" data-ok="${e.ok ? 1 : 0}" title="${esc(e.label)}${e.ok ? '' : ': not in the snapshot'}"`, e.label, i % 2)).join('') : `<span class="nonode" style="left:29%">no certificate</span>`;
+  const srcNodes = sources.length ? sources.map((sr, i) => node('src', at(i, sources.length, ...SEG.extraction), `data-ok="${sr.ok ? 1 : 0}" title="${esc(sr.why || '')}"`, sr.label, i % 2)).join('') : `<span class="nonode" style="left:8%">gateway state only</span>`;
+  const entNodes = entities.length ? entities.map((e, i) => node('ent', at(i, entities.length, ...SEG.interpretation), `data-m="${e.m}" data-ok="${e.ok ? 1 : 0}" data-kind="${e.kind}" title="${esc(e.label)}${e.ok ? '' : ': cannot be bound'}"`, e.label, i % 2)).join('') : `<span class="nonode" style="left:31.5%">no certificate</span>`;
   const chkNodes = checks.map((k, i) => node('chk', at(i, checks.length, ...SEG.verification), `data-m="${k.m}" data-ok="${k.ok ? 1 : 0}" title="${esc(k.label)}: ${k.ok ? 'verified' : 'failed'}"`, k.label, 0)).join('');
-  const ctlNodes = reqControls.length ? reqControls.map((k, i) => node('ctl', at(i, reqControls.length, ...SEG.policy), `data-k="${k.k}" data-held="${k.held ? 1 : 0}" data-argued="${k.argued ? 1 : 0}" title="${esc(k.name)}: ${k.argued ? (k.held ? 'held' : 'false') : 'not argued'}"`, k.name.toLowerCase().replace(/_/g, ' '), i % 2)).join('') : `<span class="nonode" style="left:74.5%">no controls required</span>`;
-  const lane = `<div class="stages"><span style="left:${SEG.extraction[0]}%">extraction</span><span style="left:${SEG.interpretation[0]}%">interpretation</span><span style="left:${SEG.verification[0]}%">verification</span><span style="left:${SEG.policy[0]}%">policy gate</span></div>
+  const ctlNodes = reqControls.length ? reqControls.map((k, i) => node('ctl', at(i, reqControls.length, ...SEG.policy), `data-k="${k.k}" data-held="${k.held ? 1 : 0}" data-argued="${k.argued ? 1 : 0}" title="${esc(k.name)}: ${k.argued ? (k.held ? 'held' : 'false') : 'not argued'}"`, k.name.toLowerCase().replace(/_/g, ' '), i % 2)).join('') : `<span class="nonode" style="left:75.5%">no controls required</span>`;
+  const lane = `<div class="stages"><span style="left:${SEG.extraction[0]}%">extraction</span><span style="left:${SEG.interpretation[0]}%">reading</span><span style="left:${SEG.verification[0]}%">checking</span><span style="left:${SEG.policy[0]}%">policy gate</span></div>
   <div class="lane" data-open="${gate.verified && c.verdict === 'ALLOW' ? 1 : 0}">
     <div class="track"><span class="fill"></span></div>
     ${srcNodes}${entNodes}${chkNodes}${ctlNodes}
@@ -99,11 +100,26 @@ const rows = tokens.map((t, i) => {
   </div>
   <p class="now"></p>`;
   const today = todayFor(st.step); const loss = today && baseRow && baseRow.unwarranted_executed && baseRow.unwarranted_executed[st.step];
+  // what the agent intends, what the grant lets it do, what the policy demands it show: all read from the snapshot and the policy
+  const aid = Object.keys(store).find((k) => k.startsWith('action:'))?.split('.')[0] || '';
+  const sv = (f) => store[aid + '.' + f];
+  const invId = Object.keys(store).find((k) => k.startsWith('invoice:'))?.split('.')[0]?.split(':')[1];
+  const custId = Object.keys(store).find((k) => k.startsWith('customer:'))?.split('.')[0]?.split(':')[1];
+  const intent = sv('kind') === 'http.post' && c.target_resource === 'payments.api' ? `pay ${sv('amount')} EUR against ${invId ? 'invoice ' + invId + ' (' + store['invoice:' + invId + '.name'] + ')' : 'an invoice'} to ${store['supplier:' + store['invoice:' + invId + '.supplier'] + '.name'] || 'its supplier'}`
+    : c.target_resource === 'mail.api' ? `send mail to ${sv('recipient')}` : c.target_resource === 'customers' ? `read the record of customer ${custId} (${store['customer:' + custId + '.name']})` : `read ${c.target_resource}`;
+  const g = policy.grant; const kindOk = g.allowed_kinds.includes(sv('kind') || c.target_resource.includes('.api') ? 'http.post' : 'db.read'); const resOk = g.allowed_resources.includes(c.target_resource);
+  const may = `${sv('kind') || ''} on ${c.target_resource}${resOk && kindOk ? ' is within the grant' : ' is outside the grant'}; ${c.target_resource === 'payments.api' ? `single and cumulative spend up to ${g.max_spend} EUR` : c.target_resource === 'mail.api' ? `nothing above ${g.max_sensitivity_egress} may leave` : 'reads leave the path more sensitive, never less'}`;
+  const controlWords = required.map((n) => (policy.registry[n] || {}).label || n.toLowerCase());
+  const provWords = []; const rp = policy.required_provenance;
+  if (invId) provWords.push(`invoice facts at ${rp['invoice.amount']}`); if (Object.keys(store).some((k) => k.startsWith('supplier:'))) provWords.push(`vetting ${rp['supplier.vetted']}`);
+  if (custId) provWords.push(`consent ${rp['customer.consented']}`); if (sv('spend_after') !== undefined) provWords.push(`spend from the ${rp['action.spend_after']}`);
+  const must = required.length ? `argue ${controlWords.join(', ')}` + (provWords.length ? `; facts: ${provWords.join(', ')}` : '') : 'nothing beyond the grant: a read inside it needs no argument' + (provWords.length ? `; facts: ${provWords.join(', ')}` : '');
   const tokenView = [['verdict', c.verdict], ['target_resource', c.target_resource], ['step_index', c.step_index], ['chain_head', short(c.chain_head)], ['merkle_root', short(c.merkle_root)], ['policy_bundle_hash', short(c.policy_bundle_hash)], ['path_summary_hash', short(c.path_summary_hash)],
     ...(c.proveml_verified !== undefined ? [['proveml_verified', String(c.proveml_verified)], ['proveml_certificate_hash', short(c.proveml_certificate_hash)], ['proveml_store_hash', short(c.proveml_store_hash)], ['proveml_registry_hash', short(c.proveml_registry_hash)], ['proveml_required_controls', (c.proveml_required_controls || []).join(' ') || '(none)'], ...(c.proveml_provenance_hash ? [['proveml_provenance_hash', short(c.proveml_provenance_hash)]] : [])] : []),
     ['signature', esc(String(t.signature).slice(0, 12))]];
   return `<section class="step ${c.verdict === 'ALLOW' ? 'allow' : 'deny'}" data-gate='${esc(JSON.stringify(gate))}'>
 <h2><span class="nr">${String(c.step_index + 1).padStart(2, '0')}</span> ${esc(st.name || c.target_resource)} <span class="res">${esc(c.target_resource)}</span></h2>
+<dl class="frame"><dt>intends</dt><dd>${esc(intent)}</dd><dt>may</dt><dd>${esc(may)}</dd><dt>must show</dt><dd>${esc(must)}</dd></dl>
 ${today ? `<p class="today"><span class="lbl">today, reference gateway alone</span> ${esc(today.step.verdict)}, reason <q>${esc(today.claims.reason || today.step.reason || '')}</q>${today.step.executed ? ', executed' : ''}.${loss ? ` <b>${esc(loss)}.</b>` : ''}</p>` : ''}
 ${cert ? `<div class="cert proveml-root">${rendered}</div>` : '<p class="muted">no certificate: the reference gateway alone does not ask for one.</p>'}
 ${prov && c.proveml_provenance ? `<p class="prov">${esc(provLine(prov, Object.keys(c.proveml_provenance)))}</p>` : ''}
@@ -123,8 +139,17 @@ main{max-width:54rem;margin:0 auto;padding:2.5rem 1.5rem 4rem}
 h1{font-size:1.5rem;margin:0 0 .3rem}.lede{color:var(--muted);margin:0 0 1.6rem;max-width:62ch}
 .step{position:relative;padding:1.4rem 0 1.2rem;border-top:1px solid var(--line)}
 h2{font-size:1.02rem;margin:0 0 .35rem;display:flex;gap:.6rem;align-items:baseline}.nr{font-family:var(--mono);font-size:.8rem;color:var(--muted);font-weight:500}.res{margin-left:auto;font-family:var(--mono);font-size:.74rem;color:var(--muted);font-weight:400}
+.frame{display:grid;grid-template-columns:max-content 1fr;gap:.15rem 1rem;margin:0 0 .8rem;font-size:.9rem}.frame dt{font-family:var(--mono);font-size:.7rem;color:var(--muted);padding-top:.2rem}.frame dd{margin:0;color:var(--ink)}
+.frame.top{margin:0 0 1.4rem;padding:.8rem 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 .today{font-size:.86rem;color:var(--muted);margin:0 0 .8rem;padding:.45rem .6rem;border:1px dashed var(--line)}.today .lbl,.token .lbl{font-family:var(--mono);font-size:.72rem;color:var(--ink);margin-right:.4rem}.today b{color:var(--bad);font-weight:600}.today q{quotes:"\\201C" "\\201D"}
-.cert{font-size:1rem}.cert p{margin:0 0 .5rem}
+.cert{font-size:1.12rem;line-height:1.6;max-width:64ch}.cert p{margin:0 0 .6rem}
+.cert .w{opacity:1}.cert.typing .w{opacity:0}.cert.typing .w.on{opacity:1}
+.cert .proveml-entity,.cert .proveml-fact,.cert .proveml-inference{position:relative}
+.cert .proveml-entity:not(.seen),.cert .proveml-fact:not(.seen),.cert .proveml-inference:not(.seen){border-bottom-color:transparent !important;color:inherit !important;text-decoration:none !important;font-weight:inherit !important;background:none !important}
+.cert .seen:not(.judged){border-bottom-color:var(--muted) !important;color:inherit !important;text-decoration:none !important;background:none !important}
+.bind{position:absolute;left:0;bottom:1.35em;font-family:var(--mono);font-size:.68rem;font-weight:500;color:var(--ink);background:var(--card);border:1px solid var(--line);padding:.1rem .4rem;white-space:nowrap;pointer-events:none;z-index:2;animation:rise 1.4s ease-out forwards}
+.bind.bad{color:var(--bad);border-color:var(--bad)}.bind.stay{animation:none}
+@keyframes rise{0%{opacity:0;transform:translateY(.3rem)}15%{opacity:1;transform:none}75%{opacity:1}100%{opacity:0;transform:translateY(-.2rem)}}
 .cert .proveml-entity,.cert .proveml-fact,.cert .proveml-inference{transition:background-color .25s,box-shadow .25s}
 .cert .lit{background-color:rgba(18,107,58,.14);box-shadow:0 0 0 3px rgba(18,107,58,.14)}
 .cert .lit.bad{background-color:rgba(168,53,42,.14);box-shadow:0 0 0 3px rgba(168,53,42,.14)}
@@ -137,7 +162,7 @@ h2{font-size:1.02rem;margin:0 0 .35rem;display:flex;gap:.6rem;align-items:baseli
 .track .fill{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--ok)}.lane.failed .track .fill{background:var(--bad)}
 .node{position:absolute;top:50%;width:.55rem;height:.55rem;margin:-.275rem 0 0 -.275rem;border-radius:50%;background:var(--sky);border:1.5px solid var(--line);box-sizing:border-box;transition:background .2s,border-color .2s,transform .2s}
 .node.ctl,.node.src,.node.ent{width:.8rem;height:.8rem;margin:-.4rem 0 0 -.4rem;border-radius:2px}
-.node.ent{border-radius:50%}
+.node.ent{border-radius:50%}.node.ent[data-kind=fact]{border-radius:1px;width:.6rem;height:.6rem;margin:-.3rem 0 0 -.3rem}.node.ent[data-kind=inference]{border-radius:1px;transform:rotate(45deg) scale(.8)}.node.ent[data-kind=inference].fired{transform:rotate(45deg) scale(1.1)}.node.ent[data-kind=inference].fired.settled{transform:rotate(45deg) scale(.8)}
 .node.ok{background:var(--ok);border-color:var(--ok)}.node.no{background:var(--bad);border-color:var(--bad)}.node.missing{background:var(--card);border-color:var(--amber);border-style:dashed}
 .node.fired{transform:scale(1.35)}.node.fired.settled{transform:none}
 .node i{display:none;position:absolute;left:50%;transform:translateX(-50%);top:1.1rem;font-style:normal;font-family:var(--mono);font-size:.62rem;white-space:nowrap;color:var(--muted)}
@@ -166,8 +191,13 @@ h2{font-size:1.02rem;margin:0 0 .35rem;display:flex;gap:.6rem;align-items:baseli
 @media (prefers-reduced-motion:reduce){.cert .lit,.verdict,.why,.token,.node,.gatebar span{transition:none}}
 .instant .node,.instant .gatebar span,.instant .verdict,.instant .token{transition:none}
 </style></head><body><main>
+<script>window.REGISTRY = ${JSON.stringify(policy.registry)};</script>
 <h1>${esc(run.name)}: an agent under a grant, every action through the gate</h1>
-<p class="lede">${tokens.length} intercepted actions, ${executed} executed. Each one is a gate. Scroll to a step and watch the action travel the lane, left to right, through the four stages the gateway runs: extraction, the sources its facts came from and the grade each carries; interpretation, the records the certificate names, resolved against the snapshot; verification, every fact and judgement checked; and the policy gate, the controls the policy requires, then the gate itself, which parts for an ALLOW or stays shut for a DENY. Click a lane to run it again. Then the signed evidence token appears, chained to the step before; the green keys are the claims this profile adds.${baseline ? ' The dashed line above each certificate is the same step as Proof-of-Control records it today, without one.' : ''}${run.model ? ` The agent was ${esc(run.model)}.` : ''} <button class="again" type="button">run it again</button></p>
+<p class="lede">The agent forms its own intents. That is what makes it different from a tool, and it is why the trust has to run the other way round: a person is trusted until shown otherwise; an agent's intent is refused until the agent shows why it is warranted, in prose the gateway can check. Nothing here runs on trust.</p>
+<dl class="frame top"><dt>the agent</dt><dd>${esc(tokens[0]?.poc_claims?.agent_id || 'the agent')}${run.model ? `, ${esc(run.model)}` : ', scripted'}, acting for ${esc(policy.principal)}</dd>
+<dt>may</dt><dd>${esc(policy.grant.allowed_kinds.join(' and '))} on ${esc(policy.grant.allowed_resources.join(', '))}; spend up to ${esc(String(policy.grant.max_spend))} EUR, single and cumulative; nothing above ${esc(policy.grant.max_sensitivity_egress)} may leave; purpose ${esc(policy.purpose)}</dd>
+<dt>must show</dt><dd>for every payment: ${esc(policy.required_controls['http.post:payments.api'].map((n) => policy.registry[n].label).join(', '))}. For every mail: ${esc(policy.required_controls['http.post:mail.api'].map((n) => policy.registry[n].label).join(', '))}. For a customer record: ${esc(policy.required_controls['db.read:customers'].map((n) => policy.registry[n].label).join(', '))}. Each as a registered judgement on a fact in the snapshot, and the facts themselves at the grade the policy names: invoice fields ${esc(policy.required_provenance['invoice.amount'])}, vetting ${esc(policy.required_provenance['supplier.vetted'])}, consent ${esc(policy.required_provenance['customer.consented'])}, spend from the ${esc(policy.required_provenance['action.spend_after'])}</dd></dl>
+<p class="lede">${tokens.length} intercepted actions, ${executed} executed. Each one is a gate. Scroll to a step and the certificate appears as the agent wrote it, plain prose. Then the action travels the lane, left to right, through the four stages the gateway runs: extraction, the sources its facts came from and the grade each carries; reading, each record, number and judgement in the prose bound to the snapshot and the registry, shown as it happens; checking, every fact and judgement verified; and the policy gate, the controls the policy requires, then the gate itself, which parts for an ALLOW or stays shut for a DENY. Click a lane to run it again. Then the signed evidence token appears, chained to the step before; the green keys are the claims this profile adds.${baseline ? ' The dashed line above each certificate is the same step as Proof-of-Control records it today, without one.' : ''}${run.model ? ` The agent was ${esc(run.model)}.` : ''} <button class="again" type="button">run it again</button></p>
 ${rows}
 ${baseline ? `<p class="lede">Same scenario, reference gateway alone (${esc(baseline.run.name)}): ${baseline.tokens.length} intercepted, ${baseline.run.steps.filter((s) => s.executed).length} executed${baseRow && Object.keys(baseRow.unwarranted_executed || {}).length ? `, of which unwarranted: ${esc(Object.values(baseRow.unwarranted_executed).join('; '))}` : ''}. Its tokens pass the standard's validator just the same.</p>` : ''}
 <p class="foot">grant: ${esc(policy.principal)}, ${esc(policy.grant.allowed_kinds.join(' '))} on ${esc(policy.grant.allowed_resources.join(', '))}, spend ${esc(String(policy.grant.max_spend))} EUR, egress up to ${esc(policy.grant.max_sensitivity_egress)}.<br>
@@ -182,8 +212,26 @@ Replay without a model or a gateway: <code>python3 verify.py ${esc(dir)}</code>.
   const marksOf = (s) => [...s.querySelectorAll('.cert .proveml-entity, .cert .proveml-fact, .cert .proveml-inference')];
   const isBad = (el) => el.classList.contains('proveml-failed');
   const raf = () => new Promise((r) => requestAnimationFrame(r));
+  // the prose as the agent wrote it: word by word, marks hidden until the reading pass
+  function words(cert) {
+    if (cert.dataset.words) return; cert.dataset.words = '1';
+    const walker = document.createTreeWalker(cert, NodeFilter.SHOW_TEXT); const nodes = []; while (walker.nextNode()) nodes.push(walker.currentNode);
+    for (const t of nodes) { if (!t.nodeValue.trim()) continue; const frag = document.createDocumentFragment(); for (const part of t.nodeValue.split(/(\\s+)/)) { if (!part) continue; if (/^\\s+$/.test(part)) frag.append(part); else { const w = document.createElement('span'); w.className = 'w'; w.textContent = part; frag.append(w); } } t.replaceWith(frag); }
+  }
+  const rule = (name) => { const r = (window.REGISTRY || {})[name]; return r ? name + ': ' + r.field + ' ' + r.op + ' ' + r.value : name; };
+  const bindingOf = (el) => el.classList.contains('proveml-entity') ? (el.dataset.entity || '') : el.classList.contains('proveml-fact') ? (el.dataset.path || '') + ' = ' + (el.dataset.value || '') : rule(el.dataset.condition || '');
+  function bubble(el, text, bad, stay) { for (const old of el.querySelectorAll('.bind')) old.remove(); const b = document.createElement('b'); b.className = 'bind' + (bad ? ' bad' : '') + (stay ? ' stay' : ''); b.textContent = text; el.append(b); if (!stay) setTimeout(() => b.remove(), 1450); return b; }
+  async function type(s) {
+    const cert = s.querySelector('.cert'); if (!cert) return; words(cert);
+    const ws = [...cert.querySelectorAll('.w')]; cert.classList.add('typing'); for (const w of ws) w.classList.remove('on');
+    const now = s.querySelector('.now'); now.classList.remove('bad'); now.textContent = 'the agent writes its certificate';
+    const per = Math.max(14, Math.min(34, 2200 / Math.max(ws.length, 1))); let i = 0, t0 = performance.now();
+    while (i < ws.length) { await raf(); const due = Math.floor((performance.now() - t0) / per); while (i < ws.length && i <= due) ws[i++].classList.add('on'); }
+    cert.classList.remove('typing');
+  }
   function reset(s) {
     const lane = s.querySelector('.lane'); s.classList.remove('done'); lane.classList.remove('playing', 'done', 'open', 'shut', 'failed');
+    for (const el of marksOf(s)) { el.classList.remove('seen', 'judged'); for (const b of el.querySelectorAll('.bind')) b.remove(); }
     lane.querySelector('.fill').style.width = '0'; lane.querySelector('.trav').style.transform = 'translateX(0)';
     for (const n of lane.querySelectorAll('.node')) n.classList.remove('ok', 'no', 'missing', 'fired', 'settled');
     for (const el of marksOf(s)) el.classList.remove('lit', 'bad');
@@ -191,6 +239,7 @@ Replay without a model or a gateway: <code>python3 verify.py ${esc(dir)}</code>.
   async function play(s) {
     if (s.dataset.playing) return; s.dataset.playing = '1'; reset(s);
     const lane = s.querySelector('.lane'); const g = JSON.parse(s.dataset.gate); const marks = marksOf(s);
+    if (!reduced) await type(s); else { const cert = s.querySelector('.cert'); if (cert) { words(cert); cert.classList.remove('typing'); } }
     const inferences = [...s.querySelectorAll('.cert .proveml-inference')];
     const W = lane.clientWidth; const trav = lane.querySelector('.trav'); const fill = lane.querySelector('.fill');
     const stations = [...lane.querySelectorAll('.node')].map((n) => ({ el: n, x: parseFloat(n.style.left) / 100 * W, fired: false }));
@@ -202,13 +251,19 @@ Replay without a model or a gateway: <code>python3 verify.py ${esc(dir)}</code>.
     const fire = (st) => {
       st.fired = true; st.el.classList.add('fired'); setTimeout(() => st.el.classList.add('settled'), 260);
       const okNow = st.el.classList.contains('ctl') ? st.el.dataset.held === '1' : st.el.dataset.ok === '1';
-      now.textContent = ''; const b = document.createElement('b'); b.textContent = st.el.dataset.label; now.append(st.el.dataset.stage + ': ', b, okNow ? '' : (st.el.classList.contains('ctl') && st.el.dataset.argued !== '1' ? ', not argued' : ', failed'));
+      const el = st.el.dataset.m !== undefined ? marks[Number(st.el.dataset.m)] : null;
+      const text = st.el.classList.contains('ent') && el ? bindingOf(el) : st.el.dataset.label;
+      now.textContent = ''; const b = document.createElement('b'); b.textContent = text; now.append(st.el.dataset.stage + ': ', b, okNow ? (st.el.classList.contains('chk') ? ', held' : '') : (st.el.classList.contains('ctl') && st.el.dataset.argued !== '1' ? ', not argued' : st.el.classList.contains('ent') ? ', cannot be bound' : ', failed'));
       now.classList.toggle('bad', !okNow);
       if (st.el.classList.contains('src')) {
         const ok = st.el.dataset.ok === '1'; st.el.classList.add(ok ? 'ok' : 'no'); if (!ok) { failed = true; lane.classList.add('failed'); }
-      } else if (st.el.classList.contains('ent') || st.el.classList.contains('chk')) {
+      } else if (st.el.classList.contains('ent')) {
         const el = marks[Number(st.el.dataset.m)]; const ok = st.el.dataset.ok === '1';
-        if (el) { el.classList.add('lit'); if (!ok) el.classList.add('bad'); setTimeout(() => el.classList.remove('lit'), ok ? 700 : 1400); }
+        if (el) { el.classList.add('seen'); if (!reduced) bubble(el, bindingOf(el), !ok); }
+        st.el.classList.add(ok ? 'ok' : 'no'); if (!ok) { failed = true; lane.classList.add('failed'); }
+      } else if (st.el.classList.contains('chk')) {
+        const el = marks[Number(st.el.dataset.m)]; const ok = st.el.dataset.ok === '1';
+        if (el) { el.classList.add('seen', 'judged', 'lit'); if (!ok) el.classList.add('bad'); setTimeout(() => el.classList.remove('lit'), ok ? 600 : 1400); }
         st.el.classList.add(ok ? 'ok' : 'no'); if (!ok) { failed = true; lane.classList.add('failed'); }
       } else {
         const held = st.el.dataset.held === '1', argued = st.el.dataset.argued === '1';
@@ -217,7 +272,7 @@ Replay without a model or a gateway: <code>python3 verify.py ${esc(dir)}</code>.
       }
     };
     if (reduced) {
-      for (const st of stations) fire(st);
+      for (const st of stations) fire(st); for (const el of marks) el.classList.add('seen', 'judged');
       trav.style.transform = 'translateX(' + endX + 'px)'; fill.style.width = endX + 'px';
       lane.classList.add(open ? 'open' : 'shut', 'done'); s.classList.add('done'); delete s.dataset.playing; return;
     }
@@ -237,6 +292,11 @@ Replay without a model or a gateway: <code>python3 verify.py ${esc(dir)}</code>.
   const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting && !e.target.classList.contains('done') && !e.target.dataset.playing) play(e.target); }), { threshold: 0.4 });
   steps.forEach((s) => { io.observe(s); s.querySelector('.lane').addEventListener('click', () => { if (!s.dataset.playing) play(s); }); });
   document.querySelector('.again').addEventListener('click', async () => { for (const s of steps) if (!s.dataset.playing) reset(s); for (const s of steps) { const r = s.getBoundingClientRect(); if (r.top < innerHeight && r.bottom > 0) await play(s); } });
+  // hover a mark once judged: its binding
+  document.querySelectorAll('.cert .proveml-entity, .cert .proveml-fact, .cert .proveml-inference').forEach((el) => {
+    el.addEventListener('mouseenter', () => { if (el.classList.contains('judged')) bubble(el, bindingOf(el), el.classList.contains('proveml-failed') || el.classList.contains('proveml-mismatch'), true); });
+    el.addEventListener('mouseleave', () => { for (const b of el.querySelectorAll('.bind')) b.remove(); });
+  });
   // hover a control station: pin the judgement that argues it
   document.querySelectorAll('.node.ctl').forEach((n) => {
     const s = n.closest('.step'); const el = [...s.querySelectorAll('.cert .proveml-inference')][Number(n.dataset.k)]; if (!el) return;
