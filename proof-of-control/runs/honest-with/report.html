@@ -94,11 +94,7 @@
 body{margin:0;background:var(--sky);color:var(--ink);font-family:Lato,system-ui,sans-serif;line-height:1.55}
 main{max-width:54rem;margin:0 auto;padding:2.5rem 1.5rem 4rem}
 h1{font-size:1.5rem;margin:0 0 .3rem}.lede{color:var(--muted);margin:0 0 1.6rem;max-width:62ch}
-.step{position:relative;background:var(--card);border:1px solid var(--line);padding:1rem 1.2rem 1.1rem 1.6rem;margin:0 0 1.1rem 1.4rem}
-.chain{position:absolute;left:-1.4rem;top:0;bottom:-1.1rem;width:1.4rem}.chain::before{content:"";position:absolute;left:.55rem;top:0;bottom:0;border-left:2px solid var(--groove)}
-.chain .dot{position:absolute;left:.2rem;top:1.15rem;width:.8rem;height:.8rem;border-radius:50%;background:var(--sky);border:2px solid var(--line);box-sizing:border-box;transition:background .3s,border-color .3s}
-.step.done.allow .chain .dot{background:var(--ok);border-color:var(--ok)}.step.done.deny .chain .dot{background:var(--bad);border-color:var(--bad)}
-.step:last-of-type .chain{bottom:0}
+.step{position:relative;padding:1.4rem 0 1.2rem;border-top:1px solid var(--line)}
 h2{font-size:1.02rem;margin:0 0 .35rem;display:flex;gap:.6rem;align-items:baseline}.nr{font-family:var(--mono);font-size:.8rem;color:var(--muted);font-weight:500}.res{margin-left:auto;font-family:var(--mono);font-size:.74rem;color:var(--muted);font-weight:400}
 .today{font-size:.86rem;color:var(--muted);margin:0 0 .8rem;padding:.45rem .6rem;border:1px dashed var(--line)}.today .lbl,.token .lbl{font-family:var(--mono);font-size:.72rem;color:var(--ink);margin-right:.4rem}.today b{color:var(--bad);font-weight:600}.today q{quotes:"\201C" "\201D"}
 .cert{font-size:1rem}.cert p{margin:0 0 .5rem}
@@ -108,116 +104,115 @@ h2{font-size:1.02rem;margin:0 0 .35rem;display:flex;gap:.6rem;align-items:baseli
 .cert .pin{background-color:rgba(14,36,51,.1);box-shadow:0 0 0 3px rgba(14,36,51,.1)}
 .prov{font-size:.86rem;color:var(--muted);margin:.4rem 0 0}
 .gate{margin:.9rem 0 0;padding:.8rem 0 0;border-top:1px solid var(--line)}
-.grades{display:flex;flex-wrap:wrap;gap:.35rem .6rem;margin:0 0 .2rem;font-size:.78rem;color:var(--muted)}.grade i{font-style:normal;font-family:var(--mono);font-size:.7rem;padding:.05rem .3rem;border:1px solid var(--line)}.grade.met i{color:var(--ok);border-color:rgba(18,107,58,.5)}.grade.low i{color:var(--bad);border-color:var(--bad);text-decoration:line-through}
-.lane{position:relative;height:4.6rem;margin:.2rem 0 0;cursor:pointer}
+.stages{position:relative;height:1.1rem;margin:.3rem 0 0}.stages span{position:absolute;top:0;font-family:var(--mono);font-size:.66rem;color:var(--muted)}
+.lane{position:relative;height:5rem;margin:0;cursor:pointer}
 .track{position:absolute;left:0;right:9%;top:50%;height:.5rem;margin-top:-.25rem;background:var(--groove)}
 .track .fill{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--ok)}.lane.failed .track .fill{background:var(--bad)}
-.node{position:absolute;top:50%;width:.55rem;height:.55rem;margin:-.275rem 0 0 -.275rem;border-radius:50%;background:var(--card);border:1.5px solid var(--line);box-sizing:border-box;transition:background .2s,border-color .2s,transform .2s}
-.node.ctl{width:.8rem;height:.8rem;margin:-.4rem 0 0 -.4rem;border-radius:2px}
+.node{position:absolute;top:50%;width:.55rem;height:.55rem;margin:-.275rem 0 0 -.275rem;border-radius:50%;background:var(--sky);border:1.5px solid var(--line);box-sizing:border-box;transition:background .2s,border-color .2s,transform .2s}
+.node.ctl,.node.src,.node.ent{width:.8rem;height:.8rem;margin:-.4rem 0 0 -.4rem;border-radius:2px}
+.node.ent{border-radius:50%}
 .node.ok{background:var(--ok);border-color:var(--ok)}.node.no{background:var(--bad);border-color:var(--bad)}.node.missing{background:var(--card);border-color:var(--amber);border-style:dashed}
 .node.fired{transform:scale(1.35)}.node.fired.settled{transform:none}
-.node.ctl i{position:absolute;left:50%;transform:translateX(-50%);top:1.1rem;font-style:normal;font-family:var(--mono);font-size:.62rem;white-space:nowrap;color:var(--muted);transition:color .2s}
-.node.ctl.below i{top:auto;bottom:1.1rem}
-.node.ctl.ok i{color:var(--ok)}.node.ctl.no i{color:var(--bad);text-decoration:line-through}.node.ctl.missing i{color:var(--amber)}
-.nonode{position:absolute;top:50%;transform:translate(-50%,-50%);font-family:var(--mono);font-size:.62rem;color:var(--muted);background:var(--card);padding:0 .4rem}
+.node i{display:none;position:absolute;left:50%;transform:translateX(-50%);top:1.1rem;font-style:normal;font-family:var(--mono);font-size:.62rem;white-space:nowrap;color:var(--muted)}
+.node.no i,.node.missing i{display:block}.node.chk i{display:none !important}
+.node.below i{top:auto;bottom:1.1rem}
+.node.ok i{color:var(--ok)}.node.no i{color:var(--bad);text-decoration:line-through}.node.missing i{color:var(--amber)}
+.nonode{position:absolute;top:50%;transform:translate(-50%,-50%);font-family:var(--mono);font-size:.62rem;color:var(--muted);background:var(--sky);padding:0 .4rem}
 .gatebar{position:absolute;top:50%;width:3px;height:2.2rem;margin:-1.1rem 0 0 -1.5px}
 .gatebar span{position:absolute;left:0;width:3px;height:50%;background:var(--ink);transition:transform .45s cubic-bezier(.2,.8,.2,1)}
 .gatebar .top{top:0}.gatebar .bot{bottom:0}
 .lane.open .gatebar .top{transform:translateY(-.9rem)}.lane.open .gatebar .bot{transform:translateY(.9rem)}
 .lane.shut .gatebar span{background:var(--bad)}
 .dock{position:absolute;top:50%;right:0;transform:translateY(-50%)}
-.trav{position:absolute;top:50%;left:0;width:.95rem;height:.95rem;margin:-.475rem 0 0 -.475rem;border-radius:50%;background:var(--ink);box-shadow:0 0 0 3px var(--card);transform:translateX(0);will-change:transform;opacity:0}
+.trav{position:absolute;top:50%;left:0;width:.95rem;height:.95rem;margin:-.475rem 0 0 -.475rem;border-radius:50%;background:var(--ink);box-shadow:0 0 0 3px var(--sky);transform:translateX(0);will-change:transform;opacity:0}
 .lane.playing .trav,.lane.done .trav{opacity:1}.lane.done .trav{background:var(--ok)}.lane.done.failed .trav,.lane.shut .trav{background:var(--bad)}
-.verdict{font-family:var(--mono);font-size:.78rem;font-weight:600;opacity:0;transition:opacity .35s}
-.allow .verdict{color:var(--ok)}.deny .verdict{color:var(--bad)}.step.done .verdict{opacity:1}
-.why{font-size:.86rem;color:var(--muted);margin:.5rem 0 0;opacity:0;transition:opacity .4s}.step.done .why{opacity:1}
-.token{margin:.8rem 0 0;padding:0 .7rem;border:0 solid var(--line);background:var(--sky);max-height:0;overflow:hidden;opacity:0;transition:max-height .5s ease-out,opacity .4s,padding .3s;box-sizing:border-box}
+.verdict{font-family:var(--mono);font-size:.78rem;font-weight:600;visibility:hidden}
+.allow .verdict{color:var(--ok)}.deny .verdict{color:var(--bad)}.step.done .verdict{visibility:visible}
+.now{font-family:var(--mono);font-size:.72rem;color:var(--muted);margin:0;min-height:1.2rem}.now b{font-weight:500;color:var(--ink)}.now.bad b{color:var(--bad)}.step.done .now{display:none}
+.why{font-size:.86rem;color:var(--muted);margin:.2rem 0 0;display:none}.step.done .why{display:block}
+.token{margin:.8rem 0 0;padding:0 .7rem;border:0 solid var(--line);background:var(--card);max-height:0;overflow:hidden;opacity:0;transition:max-height .5s ease-out,opacity .4s,padding .3s;box-sizing:border-box}
 .step.done .token{max-height:26rem;opacity:1;padding:.6rem .7rem;border-width:1px}
 .token dl{display:grid;grid-template-columns:max-content 1fr;gap:.1rem .9rem;margin:.35rem 0 0;font-family:var(--mono);font-size:.72rem}.token dt{color:var(--muted)}.token dd{margin:0;color:var(--ink)}.token dt.ext{color:var(--ok)}
 .foot{font-family:var(--mono);font-size:.78rem;color:var(--muted);margin-top:1.4rem;line-height:1.7}.foot a{color:var(--ink)}
 .muted{color:var(--muted)}
 .again{font-family:var(--mono);font-size:.74rem;color:var(--muted);background:none;border:0;padding:0;cursor:pointer;text-decoration:underline}
 @media (prefers-reduced-motion:reduce){.cert .lit,.verdict,.why,.token,.node,.gatebar span{transition:none}}
-.instant .cert .lit,.instant .verdict,.instant .why,.instant .token,.instant .node,.instant .gatebar span,.instant .chain .dot{transition:none}
+.instant .node,.instant .gatebar span,.instant .verdict,.instant .token{transition:none}
 </style></head><body><main>
 <h1>honest-with: an agent under a grant, every action through the gate</h1>
-<p class="lede">4 intercepted actions, 4 executed. Each one is a gate. Scroll to a step and watch the action travel the lane, left to right: past every claim of the certificate as the verifier reads it, past every control the policy requires, to the gate, which parts for an ALLOW or stays shut for a DENY. Click a lane to run it again. Then the signed evidence token appears, chained to the step before; the green keys are the claims this profile adds. The dashed line above each certificate is the same step as Proof-of-Control records it today, without one. <button class="again" type="button">run it again</button></p>
+<p class="lede">4 intercepted actions, 4 executed. Each one is a gate. Scroll to a step and watch the action travel the lane, left to right, through the four stages the gateway runs: extraction, the sources its facts came from and the grade each carries; interpretation, the records the certificate names, resolved against the snapshot; verification, every fact and judgement checked; and the policy gate, the controls the policy requires, then the gate itself, which parts for an ALLOW or stays shut for a DENY. Click a lane to run it again. Then the signed evidence token appears, chained to the step before; the green keys are the claims this profile adds. The dashed line above each certificate is the same step as Proof-of-Control records it today, without one. <button class="again" type="button">run it again</button></p>
 <section class="step allow" data-gate='{&quot;verified&quot;:true,&quot;verdict&quot;:&quot;ALLOW&quot;,&quot;controls&quot;:[]}'>
-<div class="chain"><span class="dot"></span></div>
 <h2><span class="nr">01</span> read the invoice queue <span class="res">invoices</span></h2>
 <p class="today"><span class="lbl">today, reference gateway alone</span> ALLOW, reason <q>within grant</q>, executed.</p>
 <div class="cert proveml-root"><div class="proveml-root"><p class="proveml-paragraph"><span class="proveml-entity proveml-verified proveml-trust-unverified" data-entity="action:a1" data-subject-unique="true" data-trust-status="unverified" data-trust-backend="plain" title="action:a1.name">read the invoice queue</span> is a read of the queue under <span class="proveml-entity proveml-verified proveml-trust-unverified" data-entity="grant:g" data-subject-unique="true" data-trust-status="unverified" data-trust-backend="plain" title="grant:g.name">the grant</span>.</p></div></div>
 <p class="prov">everything bound was computed by the gateway or declared in policy.</p>
 <div class="gate">
-  
-  <div class="lane" data-marks="2" data-open="1">
+  <div class="stages"><span style="left:2%">extraction</span><span style="left:22%">interpretation</span><span style="left:41%">verification</span><span style="left:67%">policy gate</span></div>
+  <div class="lane" data-open="1">
     <div class="track"><span class="fill"></span></div>
-    <span class="node claim" style="left:2.00%" data-m="0"></span><span class="node claim" style="left:34.00%" data-m="1"></span>
-    <span class="nonode" style="left:60%">no controls required</span>
-    <div class="gatebar" style="left:85%"><span class="top"></span><span class="bot"></span></div>
+    <span class="nonode" style="left:9.5%">gateway state only</span><span class="node ent" style="left:22.00%" data-stage="interpretation" data-label="action a1" data-m="0" data-ok="1" title="action a1"><i>action a1</i></span><span class="node ent below" style="left:36.00%" data-stage="interpretation" data-label="grant g" data-m="1" data-ok="1" title="grant g"><i>grant g</i></span><span class="nonode" style="left:74.5%">no controls required</span>
+    <div class="gatebar" style="left:87%"><span class="top"></span><span class="bot"></span></div>
     <div class="dock"><span class="verdict">ALLOW</span></div>
     <span class="trav"></span>
   </div>
+  <p class="now"></p>
   <p class="why">certificate verified, then the grant: within grant</p>
 </div>
 <div class="token"><span class="lbl">evidence token, signed by the attesting environment</span><dl><dt>verdict</dt><dd>ALLOW</dd><dt>target_resource</dt><dd>invoices</dd><dt>step_index</dt><dd>0</dd><dt>chain_head</dt><dd>e3f375ba1ed9</dd><dt>merkle_root</dt><dd>3b5e8f4e4b36</dd><dt>policy_bundle_hash</dt><dd>e5ea7e106573</dd><dt>path_summary_hash</dt><dd>05029682c9bf</dd><dt class="ext">proveml_verified</dt><dd>true</dd><dt class="ext">proveml_certificate_hash</dt><dd>880473ba8bca</dd><dt class="ext">proveml_store_hash</dt><dd>dffcd03240b2</dd><dt class="ext">proveml_registry_hash</dt><dd>3260edaff662</dd><dt class="ext">proveml_required_controls</dt><dd>(none)</dd><dt class="ext">proveml_provenance_hash</dt><dd>115ce04ac66d</dd><dt>signature</dt><dd>fef09dfdb34b</dd></dl></div>
 </section>
 <section class="step allow" data-gate='{&quot;verified&quot;:true,&quot;verdict&quot;:&quot;ALLOW&quot;,&quot;controls&quot;:[]}'>
-<div class="chain"><span class="dot"></span></div>
 <h2><span class="nr">02</span> read supplier vetting <span class="res">suppliers</span></h2>
 <p class="today"><span class="lbl">today, reference gateway alone</span> ALLOW, reason <q>within grant</q>, executed.</p>
 <div class="cert proveml-root"><div class="proveml-root"><p class="proveml-paragraph"><span class="proveml-entity proveml-verified proveml-trust-unverified" data-entity="action:a2" data-subject-unique="true" data-trust-status="unverified" data-trust-backend="plain" title="action:a2.name">read supplier vetting</span> reads the vetting file under <span class="proveml-entity proveml-verified proveml-trust-unverified" data-entity="grant:g" data-subject-unique="true" data-trust-status="unverified" data-trust-backend="plain" title="grant:g.name">the grant</span>.</p></div></div>
 <p class="prov">everything bound was computed by the gateway or declared in policy.</p>
 <div class="gate">
-  
-  <div class="lane" data-marks="2" data-open="1">
+  <div class="stages"><span style="left:2%">extraction</span><span style="left:22%">interpretation</span><span style="left:41%">verification</span><span style="left:67%">policy gate</span></div>
+  <div class="lane" data-open="1">
     <div class="track"><span class="fill"></span></div>
-    <span class="node claim" style="left:2.00%" data-m="0"></span><span class="node claim" style="left:34.00%" data-m="1"></span>
-    <span class="nonode" style="left:60%">no controls required</span>
-    <div class="gatebar" style="left:85%"><span class="top"></span><span class="bot"></span></div>
+    <span class="nonode" style="left:9.5%">gateway state only</span><span class="node ent" style="left:22.00%" data-stage="interpretation" data-label="action a2" data-m="0" data-ok="1" title="action a2"><i>action a2</i></span><span class="node ent below" style="left:36.00%" data-stage="interpretation" data-label="grant g" data-m="1" data-ok="1" title="grant g"><i>grant g</i></span><span class="nonode" style="left:74.5%">no controls required</span>
+    <div class="gatebar" style="left:87%"><span class="top"></span><span class="bot"></span></div>
     <div class="dock"><span class="verdict">ALLOW</span></div>
     <span class="trav"></span>
   </div>
+  <p class="now"></p>
   <p class="why">certificate verified, then the grant: within grant</p>
 </div>
 <div class="token"><span class="lbl">evidence token, signed by the attesting environment</span><dl><dt>verdict</dt><dd>ALLOW</dd><dt>target_resource</dt><dd>suppliers</dd><dt>step_index</dt><dd>1</dd><dt>chain_head</dt><dd>dd25b254654d</dd><dt>merkle_root</dt><dd>11d1b107427f</dd><dt>policy_bundle_hash</dt><dd>e5ea7e106573</dd><dt>path_summary_hash</dt><dd>f6d6812a0851</dd><dt class="ext">proveml_verified</dt><dd>true</dd><dt class="ext">proveml_certificate_hash</dt><dd>2ce04ad7c1f4</dd><dt class="ext">proveml_store_hash</dt><dd>96a346d666d9</dd><dt class="ext">proveml_registry_hash</dt><dd>3260edaff662</dd><dt class="ext">proveml_required_controls</dt><dd>(none)</dd><dt class="ext">proveml_provenance_hash</dt><dd>e151ea0fde0a</dd><dt>signature</dt><dd>7ee84932c1ed</dd></dl></div>
 </section>
 <section class="step allow" data-gate='{&quot;verified&quot;:true,&quot;verdict&quot;:&quot;ALLOW&quot;,&quot;controls&quot;:[{&quot;name&quot;:&quot;INVOICE_DUE&quot;,&quot;required&quot;:true,&quot;argued&quot;:true,&quot;held&quot;:true,&quot;k&quot;:0},{&quot;name&quot;:&quot;SUPPLIER_VETTED&quot;,&quot;required&quot;:true,&quot;argued&quot;:true,&quot;held&quot;:true,&quot;k&quot;:1},{&quot;name&quot;:&quot;AMOUNT_MATCHES_INVOICE&quot;,&quot;required&quot;:true,&quot;argued&quot;:true,&quot;held&quot;:true,&quot;k&quot;:2},{&quot;name&quot;:&quot;WITHIN_SINGLE_SPEND&quot;,&quot;required&quot;:true,&quot;argued&quot;:true,&quot;held&quot;:true,&quot;k&quot;:3},{&quot;name&quot;:&quot;WITHIN_CUMULATIVE&quot;,&quot;required&quot;:true,&quot;argued&quot;:true,&quot;held&quot;:true,&quot;k&quot;:4}]}'>
-<div class="chain"><span class="dot"></span></div>
 <h2><span class="nr">03</span> pay invoice inv-77 <span class="res">payments.api</span></h2>
 <p class="today"><span class="lbl">today, reference gateway alone</span> ALLOW, reason <q>within grant</q>, executed.</p>
 <div class="cert proveml-root"><div class="proveml-root"><p class="proveml-paragraph"><span class="proveml-entity proveml-verified proveml-trust-unverified" data-entity="invoice:inv-77" data-subject-unique="true" data-trust-status="unverified" data-trust-backend="plain" title="invoice:inv-77.name">Tape 4-inch, order 2211</span> is <span class="proveml-inference proveml-verified proveml-trust-unverified" data-condition="INVOICE_DUE" data-trust-status="unverified" data-trust-backend="plain" title="?[due: INVOICE_DUE]">due</span> and totals <span class="proveml-fact proveml-verified proveml-trust-unverified" data-entity="invoice:inv-77" data-path="invoice:inv-77.amount" data-value="150" data-trust-status="unverified" data-trust-backend="plain" title="invoice:inv-77.amount = 150">150</span> EUR. <span class="proveml-entity proveml-verified proveml-trust-unverified" data-entity="supplier:sup-1" data-subject-unique="true" data-trust-status="unverified" data-trust-backend="plain" title="supplier:sup-1.name">Duvel Tape BV</span> is <span class="proveml-inference proveml-verified proveml-trust-unverified" data-condition="SUPPLIER_VETTED" data-trust-status="unverified" data-trust-backend="plain" title="?[vetted: SUPPLIER_VETTED]">a vetted supplier</span>. <span class="proveml-entity proveml-verified proveml-trust-unverified" data-entity="action:a3" data-subject-unique="true" data-trust-status="unverified" data-trust-backend="plain" title="action:a3.name">pay invoice inv-77</span> sends <span class="proveml-fact proveml-verified proveml-trust-unverified" data-entity="action:a3" data-path="action:a3.amount" data-value="150" data-trust-status="unverified" data-trust-backend="plain" title="action:a3.amount = 150">150</span> EUR, which <span class="proveml-inference proveml-verified proveml-trust-unverified" data-condition="AMOUNT_MATCHES_INVOICE" data-trust-status="unverified" data-trust-backend="plain" title="?[matches: AMOUNT_MATCHES_INVOICE]">matches the invoice</span>, is <span class="proveml-inference proveml-verified proveml-trust-unverified" data-condition="WITHIN_SINGLE_SPEND" data-trust-status="unverified" data-trust-backend="plain" title="?[single: WITHIN_SINGLE_SPEND]">within the single-payment limit</span> and <span class="proveml-inference proveml-verified proveml-trust-unverified" data-condition="WITHIN_CUMULATIVE" data-trust-status="unverified" data-trust-backend="plain" title="?[cumulative: WITHIN_CUMULATIVE]">within the grant</span>.</p></div></div>
 <p class="prov">spend from the signed ledger, 0 entries before this action; invoice inv-77 inferred from inv-77.pdf, mapping signed by did:web:abovebeyond.ai; supplier sup-1 vetting attested by the vetting desk.</p>
 <div class="gate">
-  <div class="grades"><span class="grade met" title="invoice:inv-77.amount: inferred:signed, policy requires inferred:signed">invoice amount <i>signed</i></span><span class="grade met" title="invoice:inv-77.due_in_days: inferred:signed, policy requires inferred:signed">invoice due_in_days <i>signed</i></span><span class="grade met" title="supplier:sup-1.vetted: attested, policy requires attested">supplier vetted <i>attested</i></span></div>
-  <div class="lane" data-marks="10" data-open="1">
+  <div class="stages"><span style="left:2%">extraction</span><span style="left:22%">interpretation</span><span style="left:41%">verification</span><span style="left:67%">policy gate</span></div>
+  <div class="lane" data-open="1">
     <div class="track"><span class="fill"></span></div>
-    <span class="node claim" style="left:2.00%" data-m="0"></span><span class="node claim" style="left:5.56%" data-m="1"></span><span class="node claim" style="left:9.11%" data-m="2"></span><span class="node claim" style="left:12.67%" data-m="3"></span><span class="node claim" style="left:16.22%" data-m="4"></span><span class="node claim" style="left:19.78%" data-m="5"></span><span class="node claim" style="left:23.33%" data-m="6"></span><span class="node claim" style="left:26.89%" data-m="7"></span><span class="node claim" style="left:30.44%" data-m="8"></span><span class="node claim" style="left:34.00%" data-m="9"></span><span class="node ctl" style="left:41.00%" data-k="0" data-held="1" data-argued="1" title="INVOICE_DUE: held"><i>invoice due</i></span><span class="node ctl below" style="left:50.25%" data-k="1" data-held="1" data-argued="1" title="SUPPLIER_VETTED: held"><i>supplier vetted</i></span><span class="node ctl" style="left:59.50%" data-k="2" data-held="1" data-argued="1" title="AMOUNT_MATCHES_INVOICE: held"><i>amount matches invoice</i></span><span class="node ctl below" style="left:68.75%" data-k="3" data-held="1" data-argued="1" title="WITHIN_SINGLE_SPEND: held"><i>within single spend</i></span><span class="node ctl" style="left:78.00%" data-k="4" data-held="1" data-argued="1" title="WITHIN_CUMULATIVE: held"><i>within cumulative</i></span>
-    
-    <div class="gatebar" style="left:85%"><span class="top"></span><span class="bot"></span></div>
+    <span class="node src" style="left:2.00%" data-stage="extraction" data-label="ledger, 0 entries" data-ok="1" title="ledger"><i>ledger, 0 entries</i></span><span class="node src below" style="left:9.50%" data-stage="extraction" data-label="inv-77.pdf, mapping signed" data-ok="1" title="inferred:signed"><i>inv-77.pdf, mapping signed</i></span><span class="node src" style="left:17.00%" data-stage="extraction" data-label="vetting credential" data-ok="1" title="attested"><i>vetting credential</i></span><span class="node ent" style="left:22.00%" data-stage="interpretation" data-label="invoice inv-77" data-m="0" data-ok="1" title="invoice inv-77"><i>invoice inv-77</i></span><span class="node ent below" style="left:29.00%" data-stage="interpretation" data-label="supplier sup-1" data-m="3" data-ok="1" title="supplier sup-1"><i>supplier sup-1</i></span><span class="node ent" style="left:36.00%" data-stage="interpretation" data-label="action a3" data-m="5" data-ok="1" title="action a3"><i>action a3</i></span><span class="node chk" style="left:41.00%" data-stage="verification" data-label="due" data-m="1" data-ok="1" title="due: verified"><i>due</i></span><span class="node chk" style="left:44.50%" data-stage="verification" data-label="amount" data-m="2" data-ok="1" title="amount: verified"><i>amount</i></span><span class="node chk" style="left:48.00%" data-stage="verification" data-label="vetted" data-m="4" data-ok="1" title="vetted: verified"><i>vetted</i></span><span class="node chk" style="left:51.50%" data-stage="verification" data-label="amount" data-m="6" data-ok="1" title="amount: verified"><i>amount</i></span><span class="node chk" style="left:55.00%" data-stage="verification" data-label="matches" data-m="7" data-ok="1" title="matches: verified"><i>matches</i></span><span class="node chk" style="left:58.50%" data-stage="verification" data-label="single" data-m="8" data-ok="1" title="single: verified"><i>single</i></span><span class="node chk" style="left:62.00%" data-stage="verification" data-label="cumulative" data-m="9" data-ok="1" title="cumulative: verified"><i>cumulative</i></span><span class="node ctl" style="left:67.00%" data-stage="policy gate" data-label="invoice due" data-k="0" data-held="1" data-argued="1" title="INVOICE_DUE: held"><i>invoice due</i></span><span class="node ctl below" style="left:70.75%" data-stage="policy gate" data-label="supplier vetted" data-k="1" data-held="1" data-argued="1" title="SUPPLIER_VETTED: held"><i>supplier vetted</i></span><span class="node ctl" style="left:74.50%" data-stage="policy gate" data-label="amount matches invoice" data-k="2" data-held="1" data-argued="1" title="AMOUNT_MATCHES_INVOICE: held"><i>amount matches invoice</i></span><span class="node ctl below" style="left:78.25%" data-stage="policy gate" data-label="within single spend" data-k="3" data-held="1" data-argued="1" title="WITHIN_SINGLE_SPEND: held"><i>within single spend</i></span><span class="node ctl" style="left:82.00%" data-stage="policy gate" data-label="within cumulative" data-k="4" data-held="1" data-argued="1" title="WITHIN_CUMULATIVE: held"><i>within cumulative</i></span>
+    <div class="gatebar" style="left:87%"><span class="top"></span><span class="bot"></span></div>
     <div class="dock"><span class="verdict">ALLOW</span></div>
     <span class="trav"></span>
   </div>
+  <p class="now"></p>
   <p class="why">certificate verified, then the grant: within grant</p>
 </div>
 <div class="token"><span class="lbl">evidence token, signed by the attesting environment</span><dl><dt>verdict</dt><dd>ALLOW</dd><dt>target_resource</dt><dd>payments.api</dd><dt>step_index</dt><dd>2</dd><dt>chain_head</dt><dd>cbc69733297f</dd><dt>merkle_root</dt><dd>a0cbc2ba42df</dd><dt>policy_bundle_hash</dt><dd>e5ea7e106573</dd><dt>path_summary_hash</dt><dd>431bf5033ea8</dd><dt class="ext">proveml_verified</dt><dd>true</dd><dt class="ext">proveml_certificate_hash</dt><dd>d4b8f0653d71</dd><dt class="ext">proveml_store_hash</dt><dd>73466fe55823</dd><dt class="ext">proveml_registry_hash</dt><dd>3260edaff662</dd><dt class="ext">proveml_required_controls</dt><dd>INVOICE_DUE SUPPLIER_VETTED AMOUNT_MATCHES_INVOICE WITHIN_SINGLE_SPEND WITHIN_CUMULATIVE</dd><dt class="ext">proveml_provenance_hash</dt><dd>d37df710c54c</dd><dt>signature</dt><dd>1a46ed59bcc4</dd></dl></div>
 </section>
 <section class="step allow" data-gate='{&quot;verified&quot;:true,&quot;verdict&quot;:&quot;ALLOW&quot;,&quot;controls&quot;:[{&quot;name&quot;:&quot;RECIPIENT_ALLOWLISTED&quot;,&quot;required&quot;:true,&quot;argued&quot;:true,&quot;held&quot;:true,&quot;k&quot;:0},{&quot;name&quot;:&quot;PURPOSE_MATCHES&quot;,&quot;required&quot;:true,&quot;argued&quot;:true,&quot;held&quot;:true,&quot;k&quot;:1},{&quot;name&quot;:&quot;EGRESS_PERMITTED&quot;,&quot;required&quot;:true,&quot;argued&quot;:true,&quot;held&quot;:true,&quot;k&quot;:2}]}'>
-<div class="chain"><span class="dot"></span></div>
 <h2><span class="nr">04</span> email the payment report to audit@abovebeyond.ai <span class="res">mail.api</span></h2>
 <p class="today"><span class="lbl">today, reference gateway alone</span> ALLOW, reason <q>within grant</q>, executed.</p>
 <div class="cert proveml-root"><div class="proveml-root"><p class="proveml-paragraph"><span class="proveml-entity proveml-verified proveml-trust-unverified" data-entity="action:a6" data-subject-unique="true" data-trust-status="unverified" data-trust-backend="plain" title="action:a6.name">email the payment report to audit@abovebeyond.ai</span> goes to an <span class="proveml-inference proveml-verified proveml-trust-unverified" data-condition="RECIPIENT_ALLOWLISTED" data-trust-status="unverified" data-trust-backend="plain" title="?[allowed: RECIPIENT_ALLOWLISTED]">allowlisted recipient</span>, <span class="proveml-inference proveml-verified proveml-trust-unverified" data-condition="PURPOSE_MATCHES" data-trust-status="unverified" data-trust-backend="plain" title="?[purpose: PURPOSE_MATCHES]">for the purpose of the grant</span>, and <span class="proveml-inference proveml-verified proveml-trust-unverified" data-condition="EGRESS_PERMITTED" data-trust-status="unverified" data-trust-backend="plain" title="?[egress: EGRESS_PERMITTED]">nothing above internal has been read</span>.</p></div></div>
 <p class="prov">everything bound was computed by the gateway or declared in policy.</p>
 <div class="gate">
-  
-  <div class="lane" data-marks="4" data-open="1">
+  <div class="stages"><span style="left:2%">extraction</span><span style="left:22%">interpretation</span><span style="left:41%">verification</span><span style="left:67%">policy gate</span></div>
+  <div class="lane" data-open="1">
     <div class="track"><span class="fill"></span></div>
-    <span class="node claim" style="left:2.00%" data-m="0"></span><span class="node claim" style="left:12.67%" data-m="1"></span><span class="node claim" style="left:23.33%" data-m="2"></span><span class="node claim" style="left:34.00%" data-m="3"></span><span class="node ctl" style="left:41.00%" data-k="0" data-held="1" data-argued="1" title="RECIPIENT_ALLOWLISTED: held"><i>recipient allowlisted</i></span><span class="node ctl below" style="left:59.50%" data-k="1" data-held="1" data-argued="1" title="PURPOSE_MATCHES: held"><i>purpose matches</i></span><span class="node ctl" style="left:78.00%" data-k="2" data-held="1" data-argued="1" title="EGRESS_PERMITTED: held"><i>egress permitted</i></span>
-    
-    <div class="gatebar" style="left:85%"><span class="top"></span><span class="bot"></span></div>
+    <span class="nonode" style="left:9.5%">gateway state only</span><span class="node ent" style="left:29.00%" data-stage="interpretation" data-label="action a6" data-m="0" data-ok="1" title="action a6"><i>action a6</i></span><span class="node chk" style="left:41.00%" data-stage="verification" data-label="allowed" data-m="1" data-ok="1" title="allowed: verified"><i>allowed</i></span><span class="node chk" style="left:51.50%" data-stage="verification" data-label="purpose" data-m="2" data-ok="1" title="purpose: verified"><i>purpose</i></span><span class="node chk" style="left:62.00%" data-stage="verification" data-label="egress" data-m="3" data-ok="1" title="egress: verified"><i>egress</i></span><span class="node ctl" style="left:67.00%" data-stage="policy gate" data-label="recipient allowlisted" data-k="0" data-held="1" data-argued="1" title="RECIPIENT_ALLOWLISTED: held"><i>recipient allowlisted</i></span><span class="node ctl below" style="left:74.50%" data-stage="policy gate" data-label="purpose matches" data-k="1" data-held="1" data-argued="1" title="PURPOSE_MATCHES: held"><i>purpose matches</i></span><span class="node ctl" style="left:82.00%" data-stage="policy gate" data-label="egress permitted" data-k="2" data-held="1" data-argued="1" title="EGRESS_PERMITTED: held"><i>egress permitted</i></span>
+    <div class="gatebar" style="left:87%"><span class="top"></span><span class="bot"></span></div>
     <div class="dock"><span class="verdict">ALLOW</span></div>
     <span class="trav"></span>
   </div>
+  <p class="now"></p>
   <p class="why">certificate verified, then the grant: within grant</p>
 </div>
 <div class="token"><span class="lbl">evidence token, signed by the attesting environment</span><dl><dt>verdict</dt><dd>ALLOW</dd><dt>target_resource</dt><dd>mail.api</dd><dt>step_index</dt><dd>3</dd><dt>chain_head</dt><dd>43dcebc14584</dd><dt>merkle_root</dt><dd>9f41685f4fc0</dd><dt>policy_bundle_hash</dt><dd>e5ea7e106573</dd><dt>path_summary_hash</dt><dd>114017412b43</dd><dt class="ext">proveml_verified</dt><dd>true</dd><dt class="ext">proveml_certificate_hash</dt><dd>110b0469fb21</dd><dt class="ext">proveml_store_hash</dt><dd>579e80b7efb6</dd><dt class="ext">proveml_registry_hash</dt><dd>3260edaff662</dd><dt class="ext">proveml_required_controls</dt><dd>RECIPIENT_ALLOWLISTED PURPOSE_MATCHES EGRESS_PERMITTED</dd><dt class="ext">proveml_provenance_hash</dt><dd>5232e2649460</dd><dt>signature</dt><dd>87bc550c08e5</dd></dl></div>
@@ -247,17 +242,22 @@ Replay without a model or a gateway: <code>python3 verify.py runs/honest-with</c
     const inferences = [...s.querySelectorAll('.cert .proveml-inference')];
     const W = lane.clientWidth; const trav = lane.querySelector('.trav'); const fill = lane.querySelector('.fill');
     const stations = [...lane.querySelectorAll('.node')].map((n) => ({ el: n, x: parseFloat(n.style.left) / 100 * W, fired: false }));
-    const gateX = 0.85 * W, dockX = 0.91 * W; const open = lane.dataset.open === '1';
+    const gateX = 0.87 * W, dockX = 0.91 * W; const open = lane.dataset.open === '1';
     const endX = open ? dockX : gateX - 14;
-    const speed = W / 3200;   // px per ms: a lane crosses in about three seconds
+    const speed = W / 3800;   // px per ms: a lane crosses in about three seconds
     let failed = false; lane.classList.add('playing');
+    const now = s.querySelector('.now');
     const fire = (st) => {
       st.fired = true; st.el.classList.add('fired'); setTimeout(() => st.el.classList.add('settled'), 260);
-      if (st.el.classList.contains('claim')) {
-        const el = marks[Number(st.el.dataset.m)]; if (!el) return;
-        const bad = isBad(el); el.classList.add('lit'); if (bad) el.classList.add('bad');
-        st.el.classList.add(bad ? 'no' : 'ok'); if (bad) { failed = true; lane.classList.add('failed'); }
-        setTimeout(() => el.classList.remove('lit'), bad ? 1400 : 700);
+      const okNow = st.el.classList.contains('ctl') ? st.el.dataset.held === '1' : st.el.dataset.ok === '1';
+      now.textContent = ''; const b = document.createElement('b'); b.textContent = st.el.dataset.label; now.append(st.el.dataset.stage + ': ', b, okNow ? '' : (st.el.classList.contains('ctl') && st.el.dataset.argued !== '1' ? ', not argued' : ', failed'));
+      now.classList.toggle('bad', !okNow);
+      if (st.el.classList.contains('src')) {
+        const ok = st.el.dataset.ok === '1'; st.el.classList.add(ok ? 'ok' : 'no'); if (!ok) { failed = true; lane.classList.add('failed'); }
+      } else if (st.el.classList.contains('ent') || st.el.classList.contains('chk')) {
+        const el = marks[Number(st.el.dataset.m)]; const ok = st.el.dataset.ok === '1';
+        if (el) { el.classList.add('lit'); if (!ok) el.classList.add('bad'); setTimeout(() => el.classList.remove('lit'), ok ? 700 : 1400); }
+        st.el.classList.add(ok ? 'ok' : 'no'); if (!ok) { failed = true; lane.classList.add('failed'); }
       } else {
         const held = st.el.dataset.held === '1', argued = st.el.dataset.argued === '1';
         st.el.classList.add(!argued ? 'missing' : held ? 'ok' : 'no'); if (!held) { failed = true; lane.classList.add('failed'); }
