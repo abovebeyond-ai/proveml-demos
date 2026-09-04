@@ -136,13 +136,18 @@ ${PROVEML_CSS}
 :root{--ink:#0e2433;--muted:#47616f;--sky:#f2f6f7;--card:#fafcfd;--line:rgba(14,36,51,.18);--groove:rgba(14,36,51,.09);--ok:#126b3a;--bad:#a8352a;--amber:#a35a06;--proveml-entity-color:#126b3a;--proveml-danger-color:#a8352a;--proveml-warning-color:#a35a06;--proveml-inference-color:#0e5730;--mono:"Spline Sans Mono",ui-monospace,monospace}
 body{margin:0;background:var(--sky);color:var(--ink);font-family:Lato,system-ui,sans-serif;line-height:1.55}
 main{max-width:54rem;margin:0 auto;padding:2.5rem 1.5rem 4rem}
-h1{font-size:1.5rem;margin:0 0 .3rem}.lede{color:var(--muted);margin:0 0 1.6rem;max-width:62ch}
-.step{position:relative;padding:1.4rem 0 1.2rem;border-top:1px solid var(--line)}
-h2{font-size:1.02rem;margin:0 0 .35rem;display:flex;gap:.6rem;align-items:baseline}.nr{font-family:var(--mono);font-size:.8rem;color:var(--muted);font-weight:500}.res{margin-left:auto;font-family:var(--mono);font-size:.74rem;color:var(--muted);font-weight:400}
-.frame{display:grid;grid-template-columns:max-content 1fr;gap:.15rem 1rem;margin:0 0 .8rem;font-size:.9rem}.frame dt{font-family:var(--mono);font-size:.7rem;color:var(--muted);padding-top:.2rem}.frame dd{margin:0;color:var(--ink)}
-.frame.top{margin:0 0 1.4rem;padding:.8rem 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+h1{font-size:1.6rem;margin:0 0 .6rem;letter-spacing:-.01em}.thesis{font-size:1.18rem;line-height:1.5;color:var(--ink);max-width:58ch;margin:0 0 1.4rem}
+.lede{color:var(--muted);margin:.6rem 0 0;max-width:66ch;font-size:.92rem}
+.grant{display:grid;grid-template-columns:1fr 1.15fr 1.9fr;gap:1.6rem;padding:1rem 0 1.1rem;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin:0 0 1.2rem}
+.grant h3{font-family:var(--mono);font-size:.7rem;font-weight:500;color:var(--muted);margin:0 0 .4rem}.grant p{margin:0;font-size:.92rem;line-height:1.5}
+.req{display:grid;grid-template-columns:max-content 1fr;gap:.3rem .8rem;margin:0}.req dt{font-size:.86rem;color:var(--muted);padding-top:.15rem}.req dd{margin:0;display:flex;flex-wrap:wrap;gap:.3rem}
+.chip{font-family:var(--mono);font-size:.68rem;padding:.12rem .45rem;border:1px solid var(--line);color:var(--ink);background:var(--card)}
+.legend{margin:0 0 2rem}.legend .lane{cursor:default;height:4.2rem}.legend .node i{display:block}.legend .node.no i{text-decoration:none}
+.step{position:relative;padding:1.6rem 0 1.4rem;border-top:1px solid var(--line)}
+h2{font-size:1.15rem;margin:0 0 .5rem;display:flex;gap:.6rem;align-items:baseline}.nr{font-family:var(--mono);font-size:.8rem;color:var(--muted);font-weight:500}.res{margin-left:auto;font-family:var(--mono);font-size:.74rem;color:var(--muted);font-weight:400}
+.frame{display:grid;grid-template-columns:max-content 1fr;gap:.15rem 1rem;margin:0 0 .9rem;font-size:.9rem}.frame dt{font-family:var(--mono);font-size:.7rem;color:var(--muted);padding-top:.2rem}.frame dd{margin:0;color:var(--muted)}.frame dd:first-of-type{color:var(--ink);font-size:1rem}
 .today{font-size:.86rem;color:var(--muted);margin:0 0 .8rem;padding:.45rem .6rem;border:1px dashed var(--line)}.today .lbl,.token .lbl{font-family:var(--mono);font-size:.72rem;color:var(--ink);margin-right:.4rem}.today b{color:var(--bad);font-weight:600}.today q{quotes:"\\201C" "\\201D"}
-.cert{font-size:1.12rem;line-height:1.6;max-width:64ch}.cert p{margin:0 0 .6rem}
+.cert{font-size:1.22rem;line-height:1.55;max-width:60ch;color:var(--ink)}.cert p{margin:0 0 .6rem}
 .cert .w{opacity:1}.cert.typing .w{opacity:0}.cert.typing .w.on{opacity:1}
 .cert .proveml-entity,.cert .proveml-fact,.cert .proveml-inference{position:relative}
 .cert .proveml-entity:not(.seen),.cert .proveml-fact:not(.seen),.cert .proveml-inference:not(.seen){border-bottom-color:transparent !important;color:inherit !important;text-decoration:none !important;font-weight:inherit !important;background:none !important}
@@ -193,11 +198,29 @@ h2{font-size:1.02rem;margin:0 0 .35rem;display:flex;gap:.6rem;align-items:baseli
 </style></head><body><main>
 <script>window.REGISTRY = ${JSON.stringify(policy.registry)};</script>
 <h1>${esc(run.name)}: an agent under a grant, every action through the gate</h1>
-<p class="lede">The agent forms its own intents. That is what makes it different from a tool, and it is why the trust has to run the other way round: a person is trusted until shown otherwise; an agent's intent is refused until the agent shows why it is warranted, in prose the gateway can check. Nothing here runs on trust.</p>
-<dl class="frame top"><dt>the agent</dt><dd>${esc(tokens[0]?.poc_claims?.agent_id || 'the agent')}${run.model ? `, ${esc(run.model)}` : ', scripted'}, acting for ${esc(policy.principal)}</dd>
-<dt>may</dt><dd>${esc(policy.grant.allowed_kinds.join(' and '))} on ${esc(policy.grant.allowed_resources.join(', '))}; spend up to ${esc(String(policy.grant.max_spend))} EUR, single and cumulative; nothing above ${esc(policy.grant.max_sensitivity_egress)} may leave; purpose ${esc(policy.purpose)}</dd>
-<dt>must show</dt><dd>for every payment: ${esc(policy.required_controls['http.post:payments.api'].map((n) => policy.registry[n].label).join(', '))}. For every mail: ${esc(policy.required_controls['http.post:mail.api'].map((n) => policy.registry[n].label).join(', '))}. For a customer record: ${esc(policy.required_controls['db.read:customers'].map((n) => policy.registry[n].label).join(', '))}. Each as a registered judgement on a fact in the snapshot, and the facts themselves at the grade the policy names: invoice fields ${esc(policy.required_provenance['invoice.amount'])}, vetting ${esc(policy.required_provenance['supplier.vetted'])}, consent ${esc(policy.required_provenance['customer.consented'])}, spend from the ${esc(policy.required_provenance['action.spend_after'])}</dd></dl>
-<p class="lede">${tokens.length} intercepted actions, ${executed} executed. Each one is a gate. Scroll to a step and the certificate appears as the agent wrote it, plain prose. Then the action travels the lane, left to right, through the four stages the gateway runs: extraction, the sources its facts came from and the grade each carries; reading, each record, number and judgement in the prose bound to the snapshot and the registry, shown as it happens; checking, every fact and judgement verified; and the policy gate, the controls the policy requires, then the gate itself, which parts for an ALLOW or stays shut for a DENY. Click a lane to run it again. Then the signed evidence token appears, chained to the step before; the green keys are the claims this profile adds.${baseline ? ' The dashed line above each certificate is the same step as Proof-of-Control records it today, without one.' : ''}${run.model ? ` The agent was ${esc(run.model)}.` : ''} <button class="again" type="button">run it again</button></p>
+<p class="thesis">The agent forms its own intents, so the trust runs the other way round: a person is trusted until shown otherwise; an agent's intent is refused until it shows why it is warranted, in prose the gateway can check.</p>
+<div class="grant">
+  <div><h3>the agent</h3><p>${esc(tokens[0]?.poc_claims?.agent_id || 'the agent')}<br>${run.model ? esc(run.model) : 'scripted'}<br>acting for ${esc(policy.principal)}</p></div>
+  <div><h3>may</h3><p>${esc(policy.grant.allowed_kinds.join(', '))}<br>on ${esc(policy.grant.allowed_resources.join(', '))}<br>spend up to ${esc(String(policy.grant.max_spend))} EUR, single and cumulative<br>nothing above ${esc(policy.grant.max_sensitivity_egress)} may leave<br>purpose ${esc(policy.purpose.split('/').pop())}</p></div>
+  <div><h3>must show</h3>
+    <dl class="req">${[['a payment', 'http.post:payments.api'], ['a mail', 'http.post:mail.api'], ['a customer record', 'db.read:customers']].map(([w, k]) => `<dt>${w}</dt><dd>${policy.required_controls[k].map((n) => `<span class="chip">${esc(policy.registry[n].label)}</span>`).join('')}</dd>`).join('')}
+    <dt>the facts</dt><dd><span class="chip">invoice fields ${esc(policy.required_provenance['invoice.amount'])}</span><span class="chip">vetting ${esc(policy.required_provenance['supplier.vetted'])}</span><span class="chip">consent ${esc(policy.required_provenance['customer.consented'])}</span><span class="chip">spend from the ${esc(policy.required_provenance['action.spend_after'])}</span></dd></dl>
+  </div>
+</div>
+<div class="legend">
+  <div class="stages"><span style="left:2%">extraction</span><span style="left:26%">reading</span><span style="left:56%">checking</span><span style="left:74%">policy gate</span></div>
+  <div class="lane static">
+    <div class="track"><span class="fill" style="width:91%"></span></div>
+    <span class="node src ok" style="left:6%"><i>a source, at its grade</i></span>
+    <span class="node ent ok" style="left:28%"><i>a record</i></span><span class="node ent ok below" data-kind="fact" style="left:36%"><i>a number</i></span><span class="node ent ok" data-kind="inference" style="left:44%"><i>a judgement</i></span>
+    <span class="node chk ok" style="left:58%"><i>checked</i></span><span class="node chk no below" style="left:64%"><i>failed</i></span>
+    <span class="node ctl ok" style="left:76%"><i>a control</i></span><span class="node ctl no below" style="left:82%"><i>false</i></span>
+    <div class="gatebar" style="left:87%"><span class="top"></span><span class="bot"></span></div>
+    <div class="dock"><span class="verdict" style="visibility:visible;color:var(--muted)">verdict</span></div>
+    <span class="trav" style="opacity:1;transform:translateX(91%)"></span>
+  </div>
+  <p class="lede">${tokens.length} intercepted actions, ${executed} executed. Each intent runs this lane, left to right, after the certificate appears as the agent wrote it: what its facts stand on, what its prose binds to, what holds, what the policy requires. The gate parts for an ALLOW and stays shut for a DENY; the signed token follows.${baseline ? ' The dashed line above each certificate is the same step as Proof-of-Control records it today.' : ''} <button class="again" type="button">run it again</button></p>
+</div>
 ${rows}
 ${baseline ? `<p class="lede">Same scenario, reference gateway alone (${esc(baseline.run.name)}): ${baseline.tokens.length} intercepted, ${baseline.run.steps.filter((s) => s.executed).length} executed${baseRow && Object.keys(baseRow.unwarranted_executed || {}).length ? `, of which unwarranted: ${esc(Object.values(baseRow.unwarranted_executed).join('; '))}` : ''}. Its tokens pass the standard's validator just the same.</p>` : ''}
 <p class="foot">grant: ${esc(policy.principal)}, ${esc(policy.grant.allowed_kinds.join(' '))} on ${esc(policy.grant.allowed_resources.join(', '))}, spend ${esc(String(policy.grant.max_spend))} EUR, egress up to ${esc(policy.grant.max_sensitivity_egress)}.<br>

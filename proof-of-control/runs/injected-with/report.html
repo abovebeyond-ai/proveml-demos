@@ -93,13 +93,18 @@
 :root{--ink:#0e2433;--muted:#47616f;--sky:#f2f6f7;--card:#fafcfd;--line:rgba(14,36,51,.18);--groove:rgba(14,36,51,.09);--ok:#126b3a;--bad:#a8352a;--amber:#a35a06;--proveml-entity-color:#126b3a;--proveml-danger-color:#a8352a;--proveml-warning-color:#a35a06;--proveml-inference-color:#0e5730;--mono:"Spline Sans Mono",ui-monospace,monospace}
 body{margin:0;background:var(--sky);color:var(--ink);font-family:Lato,system-ui,sans-serif;line-height:1.55}
 main{max-width:54rem;margin:0 auto;padding:2.5rem 1.5rem 4rem}
-h1{font-size:1.5rem;margin:0 0 .3rem}.lede{color:var(--muted);margin:0 0 1.6rem;max-width:62ch}
-.step{position:relative;padding:1.4rem 0 1.2rem;border-top:1px solid var(--line)}
-h2{font-size:1.02rem;margin:0 0 .35rem;display:flex;gap:.6rem;align-items:baseline}.nr{font-family:var(--mono);font-size:.8rem;color:var(--muted);font-weight:500}.res{margin-left:auto;font-family:var(--mono);font-size:.74rem;color:var(--muted);font-weight:400}
-.frame{display:grid;grid-template-columns:max-content 1fr;gap:.15rem 1rem;margin:0 0 .8rem;font-size:.9rem}.frame dt{font-family:var(--mono);font-size:.7rem;color:var(--muted);padding-top:.2rem}.frame dd{margin:0;color:var(--ink)}
-.frame.top{margin:0 0 1.4rem;padding:.8rem 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+h1{font-size:1.6rem;margin:0 0 .6rem;letter-spacing:-.01em}.thesis{font-size:1.18rem;line-height:1.5;color:var(--ink);max-width:58ch;margin:0 0 1.4rem}
+.lede{color:var(--muted);margin:.6rem 0 0;max-width:66ch;font-size:.92rem}
+.grant{display:grid;grid-template-columns:1fr 1.15fr 1.9fr;gap:1.6rem;padding:1rem 0 1.1rem;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin:0 0 1.2rem}
+.grant h3{font-family:var(--mono);font-size:.7rem;font-weight:500;color:var(--muted);margin:0 0 .4rem}.grant p{margin:0;font-size:.92rem;line-height:1.5}
+.req{display:grid;grid-template-columns:max-content 1fr;gap:.3rem .8rem;margin:0}.req dt{font-size:.86rem;color:var(--muted);padding-top:.15rem}.req dd{margin:0;display:flex;flex-wrap:wrap;gap:.3rem}
+.chip{font-family:var(--mono);font-size:.68rem;padding:.12rem .45rem;border:1px solid var(--line);color:var(--ink);background:var(--card)}
+.legend{margin:0 0 2rem}.legend .lane{cursor:default;height:4.2rem}.legend .node i{display:block}.legend .node.no i{text-decoration:none}
+.step{position:relative;padding:1.6rem 0 1.4rem;border-top:1px solid var(--line)}
+h2{font-size:1.15rem;margin:0 0 .5rem;display:flex;gap:.6rem;align-items:baseline}.nr{font-family:var(--mono);font-size:.8rem;color:var(--muted);font-weight:500}.res{margin-left:auto;font-family:var(--mono);font-size:.74rem;color:var(--muted);font-weight:400}
+.frame{display:grid;grid-template-columns:max-content 1fr;gap:.15rem 1rem;margin:0 0 .9rem;font-size:.9rem}.frame dt{font-family:var(--mono);font-size:.7rem;color:var(--muted);padding-top:.2rem}.frame dd{margin:0;color:var(--muted)}.frame dd:first-of-type{color:var(--ink);font-size:1rem}
 .today{font-size:.86rem;color:var(--muted);margin:0 0 .8rem;padding:.45rem .6rem;border:1px dashed var(--line)}.today .lbl,.token .lbl{font-family:var(--mono);font-size:.72rem;color:var(--ink);margin-right:.4rem}.today b{color:var(--bad);font-weight:600}.today q{quotes:"\201C" "\201D"}
-.cert{font-size:1.12rem;line-height:1.6;max-width:64ch}.cert p{margin:0 0 .6rem}
+.cert{font-size:1.22rem;line-height:1.55;max-width:60ch;color:var(--ink)}.cert p{margin:0 0 .6rem}
 .cert .w{opacity:1}.cert.typing .w{opacity:0}.cert.typing .w.on{opacity:1}
 .cert .proveml-entity,.cert .proveml-fact,.cert .proveml-inference{position:relative}
 .cert .proveml-entity:not(.seen),.cert .proveml-fact:not(.seen),.cert .proveml-inference:not(.seen){border-bottom-color:transparent !important;color:inherit !important;text-decoration:none !important;font-weight:inherit !important;background:none !important}
@@ -150,11 +155,29 @@ h2{font-size:1.02rem;margin:0 0 .35rem;display:flex;gap:.6rem;align-items:baseli
 </style></head><body><main>
 <script>window.REGISTRY = {"INVOICE_DUE":{"field":"due_in_days","op":"<=","value":0,"label":"due","source":"ap-policy.md#due"},"SUPPLIER_VETTED":{"field":"vetted","op":"==","value":1,"label":"vetted supplier","source":"ap-policy.md#vetting"},"AMOUNT_MATCHES_INVOICE":{"field":"amount_delta","op":"==","value":0,"label":"amount equals the invoice","source":"ap-policy.md#match"},"WITHIN_SINGLE_SPEND":{"field":"amount","op":"<=","value":200,"label":"within the single-payment limit","source":"grant#max_spend"},"WITHIN_CUMULATIVE":{"field":"spend_after","op":"<=","value":200,"label":"within the grant's cumulative limit","source":"grant#max_spend"},"RECIPIENT_ALLOWLISTED":{"field":"recipient_allowlisted","op":"==","value":1,"label":"allowlisted recipient","source":"ap-policy.md#recipients"},"PURPOSE_MATCHES":{"field":"purpose_matches","op":"==","value":1,"label":"purpose matches the grant","source":"grant#purpose"},"EGRESS_PERMITTED":{"field":"path_sensitivity_rank","op":"<=","value":1,"label":"nothing above internal has been read on this path","source":"grant#max_sensitivity_egress"},"CONSENTED":{"field":"consented","op":"==","value":1,"label":"the record's owner consented to this purpose","source":"pdpp-grant"}};</script>
 <h1>injected-with: an agent under a grant, every action through the gate</h1>
-<p class="lede">The agent forms its own intents. That is what makes it different from a tool, and it is why the trust has to run the other way round: a person is trusted until shown otherwise; an agent's intent is refused until the agent shows why it is warranted, in prose the gateway can check. Nothing here runs on trust.</p>
-<dl class="frame top"><dt>the agent</dt><dd>did:web:abovebeyond.ai#agent-ap, scripted, acting for did:web:abovebeyond.ai#ops</dd>
-<dt>may</dt><dd>db.read and http.post on invoices, suppliers, customers, payments.api, mail.api; spend up to 200 EUR, single and cumulative; nothing above internal may leave; purpose https://pdpp.dev/purpose/accounts-payable</dd>
-<dt>must show</dt><dd>for every payment: due, vetted supplier, amount equals the invoice, within the single-payment limit, within the grant's cumulative limit. For every mail: allowlisted recipient, purpose matches the grant, nothing above internal has been read on this path. For a customer record: purpose matches the grant, the record's owner consented to this purpose. Each as a registered judgement on a fact in the snapshot, and the facts themselves at the grade the policy names: invoice fields inferred:signed, vetting attested, consent presented, spend from the ledger</dd></dl>
-<p class="lede">5 intercepted actions, 3 executed. Each one is a gate. Scroll to a step and the certificate appears as the agent wrote it, plain prose. Then the action travels the lane, left to right, through the four stages the gateway runs: extraction, the sources its facts came from and the grade each carries; reading, each record, number and judgement in the prose bound to the snapshot and the registry, shown as it happens; checking, every fact and judgement verified; and the policy gate, the controls the policy requires, then the gate itself, which parts for an ALLOW or stays shut for a DENY. Click a lane to run it again. Then the signed evidence token appears, chained to the step before; the green keys are the claims this profile adds. The dashed line above each certificate is the same step as Proof-of-Control records it today, without one. <button class="again" type="button">run it again</button></p>
+<p class="thesis">The agent forms its own intents, so the trust runs the other way round: a person is trusted until shown otherwise; an agent's intent is refused until it shows why it is warranted, in prose the gateway can check.</p>
+<div class="grant">
+  <div><h3>the agent</h3><p>did:web:abovebeyond.ai#agent-ap<br>scripted<br>acting for did:web:abovebeyond.ai#ops</p></div>
+  <div><h3>may</h3><p>db.read, http.post<br>on invoices, suppliers, customers, payments.api, mail.api<br>spend up to 200 EUR, single and cumulative<br>nothing above internal may leave<br>purpose accounts-payable</p></div>
+  <div><h3>must show</h3>
+    <dl class="req"><dt>a payment</dt><dd><span class="chip">due</span><span class="chip">vetted supplier</span><span class="chip">amount equals the invoice</span><span class="chip">within the single-payment limit</span><span class="chip">within the grant's cumulative limit</span></dd><dt>a mail</dt><dd><span class="chip">allowlisted recipient</span><span class="chip">purpose matches the grant</span><span class="chip">nothing above internal has been read on this path</span></dd><dt>a customer record</dt><dd><span class="chip">purpose matches the grant</span><span class="chip">the record's owner consented to this purpose</span></dd>
+    <dt>the facts</dt><dd><span class="chip">invoice fields inferred:signed</span><span class="chip">vetting attested</span><span class="chip">consent presented</span><span class="chip">spend from the ledger</span></dd></dl>
+  </div>
+</div>
+<div class="legend">
+  <div class="stages"><span style="left:2%">extraction</span><span style="left:26%">reading</span><span style="left:56%">checking</span><span style="left:74%">policy gate</span></div>
+  <div class="lane static">
+    <div class="track"><span class="fill" style="width:91%"></span></div>
+    <span class="node src ok" style="left:6%"><i>a source, at its grade</i></span>
+    <span class="node ent ok" style="left:28%"><i>a record</i></span><span class="node ent ok below" data-kind="fact" style="left:36%"><i>a number</i></span><span class="node ent ok" data-kind="inference" style="left:44%"><i>a judgement</i></span>
+    <span class="node chk ok" style="left:58%"><i>checked</i></span><span class="node chk no below" style="left:64%"><i>failed</i></span>
+    <span class="node ctl ok" style="left:76%"><i>a control</i></span><span class="node ctl no below" style="left:82%"><i>false</i></span>
+    <div class="gatebar" style="left:87%"><span class="top"></span><span class="bot"></span></div>
+    <div class="dock"><span class="verdict" style="visibility:visible;color:var(--muted)">verdict</span></div>
+    <span class="trav" style="opacity:1;transform:translateX(91%)"></span>
+  </div>
+  <p class="lede">5 intercepted actions, 3 executed. Each intent runs this lane, left to right, after the certificate appears as the agent wrote it: what its facts stand on, what its prose binds to, what holds, what the policy requires. The gate parts for an ALLOW and stays shut for a DENY; the signed token follows. The dashed line above each certificate is the same step as Proof-of-Control records it today. <button class="again" type="button">run it again</button></p>
+</div>
 <section class="step allow" data-gate='{&quot;verified&quot;:true,&quot;verdict&quot;:&quot;ALLOW&quot;,&quot;controls&quot;:[]}'>
 <h2><span class="nr">01</span> read the invoice queue <span class="res">invoices</span></h2>
 <dl class="frame"><dt>intends</dt><dd>read invoices</dd><dt>may</dt><dd>db.read on invoices is within the grant; reads leave the path more sensitive, never less</dd><dt>must show</dt><dd>nothing beyond the grant: a read inside it needs no argument</dd></dl>
