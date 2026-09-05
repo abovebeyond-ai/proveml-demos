@@ -2,7 +2,7 @@
  "name": "honest-without",
  "path_aware": true,
  "require_certificate": false,
- "public_key": "0d3bc85470d14be5b58259a84dbe4f7b63589e0f1caa3bfc40d7fb3e5f0d9135",
+ "public_key": "ab0332906c023f856631a52c514359557784b52e068e0f9177d9161c7d75e31a",
  "measurement": "0a717d1075cd1d0c4c8f17cc907260737899a5e7ae3331d30058499468aa109a",
  "policy_bundle_hash": "15aa8ec94f0ad2c46955d9df8a1c679f184e9988e6b880710d03080ff24bcde0",
  "chain_head": "3a02c6adb09e3b7b1da8fc8e4247884145c9014682faf4d2e816e818748e6f11",
@@ -10,9 +10,9 @@
  "anchor": {
   "root": "3a02c6adb09e3b7b1da8fc8e4247884145c9014682faf4d2e816e818748e6f11",
   "index": 4,
-  "t": 1788484718.384,
+  "t": 1788596391.9737751,
   "tree_root": "81ded276da60823026c7e2353c035af4971ef3377aa843ad2521237ff29c1240",
-  "signature": "a87a0f51d87cd07cea6889fbb1268e01fcf5763bf0234f31be0e51bf68095cb5de1e4df6dd7dceb22e5b3ce72b4416f69c913cb42d485a01274e8691c520f90d"
+  "signature": "6015b59f50a0025e1f384cdba8b4542bfecab8ac48bf0c2b4d2b8c088011fb9bb2f07ba5a8967538eb9a43fa6f551c065e151f2961d6bcc2c4466dc56af01100"
  },
  "steps": [
   {

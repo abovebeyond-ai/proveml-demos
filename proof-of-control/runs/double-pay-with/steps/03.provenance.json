@@ -15,7 +15,7 @@
   "grade": "ledger",
   "ledger": "runs/double-pay-with/ledger.jsonl",
   "entries": 1,
-  "head": "41449c9dd23d2fbe8e255951a5c2c526a70eacfe3fec7f87e3033ff64c4df6d4",
+  "head": "d14d14baa0f0c5343ad33df94f99d61c5b4c906c022572c3e6cd5ffce9da77a5",
   "signer": "did:jwk:eyJrdHkiOiJPS1AiLCJjcnYiOiJFZDI1NTE5IiwieCI6InU0QTNiUHdJRVVQQXM2UzU2a3NHd1Jxb3R3T3V2bkx1ZjZEQTdZUlVwY0EifQ",
   "sum_before": 90.0
  },

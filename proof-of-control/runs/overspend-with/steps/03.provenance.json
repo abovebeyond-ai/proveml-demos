@@ -15,7 +15,7 @@
   "grade": "ledger",
   "ledger": "runs/overspend-with/ledger.jsonl",
   "entries": 1,
-  "head": "cfa9050d31ff4e4d8c14c802e261b0d6a74dc5fd8ef5bcd4f447d05f2fe1947d",
+  "head": "d5971de24632d72cd16a191da2430c5bef701f502553d1fc310600c11952664f",
   "signer": "did:jwk:eyJrdHkiOiJPS1AiLCJjcnYiOiJFZDI1NTE5IiwieCI6InU0QTNiUHdJRVVQQXM2UzU2a3NHd1Jxb3R3T3V2bkx1ZjZEQTdZUlVwY0EifQ",
   "sum_before": 150.0
  },

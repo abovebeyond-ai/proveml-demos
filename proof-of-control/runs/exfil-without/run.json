@@ -2,7 +2,7 @@
  "name": "exfil-without",
  "path_aware": true,
  "require_certificate": false,
- "public_key": "f843ef536aa83c9aae87b840808ea9776b4644e1b4a877e8e294c18d530baaa8",
+ "public_key": "8ed7daa79791105534688630829ef8288359f7c33f8de79810b7e32406e9ce20",
  "measurement": "0a717d1075cd1d0c4c8f17cc907260737899a5e7ae3331d30058499468aa109a",
  "policy_bundle_hash": "15aa8ec94f0ad2c46955d9df8a1c679f184e9988e6b880710d03080ff24bcde0",
  "chain_head": "a79a10a36f3d52001015c9964a1f1af7da412fe6a69328eb945cb52978b15748",
@@ -10,9 +10,9 @@
  "anchor": {
   "root": "a79a10a36f3d52001015c9964a1f1af7da412fe6a69328eb945cb52978b15748",
   "index": 3,
-  "t": 1788484827.676197,
+  "t": 1788596509.220824,
   "tree_root": "c16680bfbcb403e001bfb5cc58436db6fdbcdd999b02666fb2b86bf3ddf12ec7",
-  "signature": "364e0a93fcf6700a28cc681a54ef82af9f5121725508decb9df5ee311aa81a9563add0695454350c517e788d74940adfb1a5259d80e5594721b4b14aea60590f"
+  "signature": "7b2f72f206dbd0eb4a64a2f95ecc5daf3b0857740e90f8244fc10909708c536b5d0ffdfbc45b1d04e6ae48253aef5980ed26d5b51ff7d93b1d528ca39c65a004"
  },
  "steps": [
   {

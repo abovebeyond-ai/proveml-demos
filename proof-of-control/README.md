@@ -105,9 +105,10 @@ Their reports are in the session record; what they found and what changed:
   the wrapper did not grade; the regexes were quadratic on hostile input. The
   wrapper now reads only the parser's own output, refuses any condition that
   is not one bare registered threshold, counts a control as argued only
-  through a judgement that verified, binds a judgement to every store path
-  carrying its field (conservative until proveml exposes the entity in force
-  per judgement), and runs under a timeout. Rerun on the same fifty-nine:
+  through a judgement that verified, binds a judgement to the entity the
+  parser had in force when it evaluated it (proveml 0.8.0 reports it, and
+  reads certificates with its stricter numeral rule), and runs under a
+  timeout. Rerun on the same fifty-nine:
   five verify, all of them honest, plus one disclosed residual, numbers
   written as words.
 - **Agent text at a trusted grade.** The action's name in the snapshot was the

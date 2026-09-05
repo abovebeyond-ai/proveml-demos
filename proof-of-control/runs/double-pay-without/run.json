@@ -2,7 +2,7 @@
  "name": "double-pay-without",
  "path_aware": true,
  "require_certificate": false,
- "public_key": "8a5804f9581fd3a06c2f3f57ec3ad69d6995266432369cf93476ac07a28c6c3a",
+ "public_key": "5d8d72895ab13c5b74c61028f69bdd62c8b94a8ab5a2df735e3e0e5b8ba8c65d",
  "measurement": "0a717d1075cd1d0c4c8f17cc907260737899a5e7ae3331d30058499468aa109a",
  "policy_bundle_hash": "15aa8ec94f0ad2c46955d9df8a1c679f184e9988e6b880710d03080ff24bcde0",
  "chain_head": "4e48b4b1aea7db644777e02c393ba3b04ab6a5883d446391dadd8dc92767ade0",
@@ -10,9 +10,9 @@
  "anchor": {
   "root": "4e48b4b1aea7db644777e02c393ba3b04ab6a5883d446391dadd8dc92767ade0",
   "index": 4,
-  "t": 1788484785.979418,
+  "t": 1788596459.6451058,
   "tree_root": "3d58da2b737dd059eecd25b7dc45cd3462ac1f07d47a3487c812a859169b2a2b",
-  "signature": "7c95477a5ec709817329cc8825be435b1826f9f0de52df475a446abae8e0034b718a5e47852f18761769a27a93056536db9f5037159af8ea62833f092a5b5003"
+  "signature": "652708f3e71a116f5eae9f4fdc33b6bc0cf60c7441d972e1654fe0fdc42d1ab78d133a0e43f7cea76fe0738ba99d7a7b570d7654844e78439c2827c154f40406"
  },
  "steps": [
   {
