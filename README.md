@@ -51,3 +51,15 @@ report button is. Nothing else needs credentials: the mirror node is public.
   as a fact with its own proof line, never inside the verifier.
 - The credential is issued by a demo provider key. The EU reference issuer needs a
   browser step; the protocol after issuance is the real one.
+
+## Not built yet
+
+**Four lanes, animated.** Slide 4 of the Geneva deck draws one chain with an adapter at
+each edge. The idea discussed on 5 September 2026 and not built: four lanes, one per
+input adapter, each carrying a signed thing through the model and out still verifiable:
+a wallet credential (`adapters/pid-sdjwt.mjs`), a ledger fact (`adapters/hedera-mirror.mjs`),
+a registry entry (the did:web publisher credential), a signed document
+(`adapters/source-vc.mjs`). Per lane: a blue pulse from the source, a dashed hop through
+the model where nothing gets signed, a green machine check, the amber human node only on
+the lane where interpretation happened, a blue signed verdict out. Same colour law as the
+deck. Home: this repo, as `web/adapters.html`, so it sits next to the adapters it shows.
