@@ -5,13 +5,16 @@
 // that was not extracted: the fields are copied from extraction.json, never
 // typed here.
 // usage: node sign-mapping.mjs inv-77 [inv-78 ...]
+//   PROVEML_CLERK_KEY=<path to {privateJwk, publicJwk}> signs with that key instead, as did:jwk
+//   (a runner without the clerk's did:web key, such as CI, still needs a clerk)
 import { readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { homedir } from 'node:os';
-import { HERE, loadKey, issuer } from './lib.mjs';
+import { HERE, loadKey, issuer, didJwk } from './lib.mjs';
 
-const SIGNER = 'did:web:abovebeyond.ai';
-const key = loadKey(join(homedir(), '.config', 'proveml', 'abovebeyond-signing.jwk'));
+const keyPath = process.env.PROVEML_CLERK_KEY || join(homedir(), '.config', 'proveml', 'abovebeyond-signing.jwk');
+const key = loadKey(keyPath);
+const SIGNER = process.env.PROVEML_CLERK_KEY ? didJwk(key.publicJwk) : 'did:web:abovebeyond.ai';
 const ex = JSON.parse(readFileSync(join(HERE, 'extraction.json'), 'utf8'));
 for (const id of process.argv.slice(2)) {
     const e = ex.invoices[id]; if (!e) throw new Error('not extracted: ' + id);

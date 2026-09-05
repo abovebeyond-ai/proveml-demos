@@ -34,6 +34,7 @@ Nothing else changes. Set POC_STANDARD to the ov-poc-standard checkout.
 """
 import json, os, subprocess, sys, time, hashlib, tempfile, datetime, dataclasses
 POC = os.environ.get('POC_STANDARD') or os.path.expanduser('~/Projects/ov-poc-standard')
+if not os.path.isdir(POC): POC = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'ov-poc-standard')   # a sibling checkout, as CI lays it out
 if not os.path.isdir(POC): POC = '/private/tmp/claude-501/-Volumes-shanedeconinck-be-Projects-proveml-all/aaffe3ee-a529-4c8f-bc96-24f5cec9bb0e/scratchpad/ov-poc-standard'
 sys.path.insert(0, POC + '/impl')
 from poc.core import (Action, Grant, PolicyEngine, AttestingEnvironment, EvidenceStore, Gateway,

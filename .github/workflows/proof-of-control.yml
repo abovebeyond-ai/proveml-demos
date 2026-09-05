@@ -1,0 +1,58 @@
+# De rechter draait niet op de machine van de dader. Twee delen, in deze volgorde:
+#   1. de vreemde: de gecommitte runs herspelen met enkel de gepubliceerde bestanden
+#      (tokens, snapshots, certificaten, herkomst, bronnen); geen sleutel, geen model,
+#      geen gateway; en de vectoren van het profiel valideren
+#   2. het harnas opnieuw: verse demo-sleutels (de bediende is hier een did:jwk, niet
+#      Shanes did:web), bronnen opnieuw gebouwd, alle scenario's in drie condities;
+#      de tabel moet gelijk zijn aan wat er in results/attacks.md gecommit staat,
+#      en elke nieuwe run moet op zijn beurt herspelen
+# De referentie-implementatie van de standaard wordt op een vaste commit opgehaald.
+name: proof-of-control
+on:
+  push:
+    paths: ['proof-of-control/**', 'package.json', 'package-lock.json', '.github/workflows/proof-of-control.yml']
+  pull_request:
+    paths: ['proof-of-control/**', 'package.json', 'package-lock.json', '.github/workflows/proof-of-control.yml']
+jobs:
+  replay-and-rerun:
+    runs-on: ubuntu-latest
+    env:
+      POC_STANDARD: ${{ github.workspace }}/ov-poc-standard
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '20', cache: npm }
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - name: de standaard, op de commit waartegen dit gebouwd is
+        run: |
+          git clone --quiet https://github.com/AAI-Society/ov-poc-standard "$POC_STANDARD"
+          git -C "$POC_STANDARD" checkout --quiet ef17b38f9fce5ab3ff5172db1bdc3903ad988770
+      - name: afhankelijkheden
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq poppler-utils > /dev/null
+          npm ci
+          python3 -m pip install --quiet cryptography jsonschema
+      - name: 1. de vreemde herspeelt de gecommitte runs
+        working-directory: proof-of-control
+        run: |
+          set -e
+          for r in runs/*-with runs/*-predicate runs/live-sonnet*; do
+            [ -f "$r/run.json" ] || continue
+            echo "== $r"; python3 verify.py "$r" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['verified'], [(c.get('passed'),c.get('of')) for c in d['checks']]); sys.exit(0 if d['verified'] else 1)"
+          done
+          python3 profile/validate.py --vectors
+      - name: 2. het harnas opnieuw, met verse sleutels
+        working-directory: proof-of-control
+        run: |
+          set -e
+          node sources/make.mjs
+          python3 sources/extract.py
+          node -e "import('./sources/lib.mjs').then(m => require('fs').writeFileSync('sources/keys/clerk.jwk', JSON.stringify(m.newKey())))"
+          PROVEML_CLERK_KEY=sources/keys/clerk.jwk node sources/sign-mapping.mjs inv-77 inv-78 inv-91
+          python3 attacks.py
+          git diff --exit-code results/attacks.md || { echo "de harnastabel wijkt af van wat er gecommit staat"; exit 1; }
+          for r in runs/*-with runs/*-predicate; do
+            echo "== $r"; python3 verify.py "$r" | python3 -c "import sys,json; d=json.load(sys.stdin); sys.exit(0 if d['verified'] else 1)"
+          done
+          python3 profile/make-vectors.py && python3 profile/validate.py --vectors

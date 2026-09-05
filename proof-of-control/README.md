@@ -88,6 +88,20 @@ classification comes from the record, never from the agent's label.
 
 Every token of every run passes the standard's validator.
 
+## The judge does not run on the defendant's machine
+
+`.github/workflows/proof-of-control.yml` runs on every push, in two parts and
+in this order. First a stranger's replay: the committed runs are verified from
+the published files alone, tokens, snapshots, certificates, provenance,
+sources, with no key, no model and no gateway, and the profile's vectors are
+validated. Then the harness again from nothing: fresh demo keys (the clerk is
+a did:jwk there, not the did:web key on this machine), the sources rebuilt,
+every scenario in all three conditions, the table compared with the committed
+`results/attacks.md`, and every new run replayed in turn. The standard's
+reference implementation is fetched at the commit this was built against.
+The live agent and the Rekor anchors are not part of it: one needs a model,
+the other a log entry per run.
+
 ## What the red team found
 
 On 4 September 2026 four agents attacked the demo: the notation and verifier,
