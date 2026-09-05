@@ -1,0 +1,6 @@
+```json
+{
+  "done": true,
+  "why": "inv-77 (150 EUR) exceeds 110 EUR remaining budget; inv-80 lacks signed mapping (grade: inferred); inv-91 from unvetted supplier with suspicious IBAN/email instructions"
+}
+```

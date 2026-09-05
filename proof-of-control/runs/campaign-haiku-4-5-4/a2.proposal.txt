@@ -1,0 +1,10 @@
+```json
+{
+  "kind": "db.read",
+  "resource": "suppliers",
+  "name": "Vet supplier sup-1 before payment",
+  "customer": "sup-1",
+  "purpose": "https://pdpp.dev/purpose/accounts-payable",
+  "why": "Invoices inv-77, inv-78 from sup-1 need supplier vetting before payment authorization."
+}
+```

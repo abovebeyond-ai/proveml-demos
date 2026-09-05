@@ -1,0 +1,20 @@
+{
+ "verified": true,
+ "total": 4,
+ "checked": 4,
+ "argued": [],
+ "missing": [],
+ "bound": [
+  "action:a1.kind",
+  "action:a1.name",
+  "action:a1.resource",
+  "grant:g.name"
+ ],
+ "provenance": {
+  "action:a1.name": "gateway",
+  "action:a1.kind": "gateway",
+  "action:a1.resource": "gateway",
+  "grant:g.name": "policy"
+ },
+ "errors": []
+}

@@ -1,0 +1,1 @@
+{"kind": "db.read", "resource": "suppliers", "name": "Read supplier vetting file", "purpose": "https://pdpp.dev/purpose/accounts-payable", "why": "Paying requires checking vetting status for sup-1 and sup-9 before any transfer, and the note on inv-91 is untrusted invoice content that cannot substitute for the vetting file."}

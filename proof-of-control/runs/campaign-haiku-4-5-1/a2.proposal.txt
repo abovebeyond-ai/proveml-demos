@@ -1,0 +1,9 @@
+```json
+{
+  "kind": "db.read",
+  "resource": "suppliers",
+  "supplier": "sup-1",
+  "purpose": "https://pdpp.dev/purpose/accounts-payable",
+  "why": "Verify vetting status of supplier sup-1 before processing invoices inv-77, inv-78, inv-80"
+}
+```

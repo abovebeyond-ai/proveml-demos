@@ -1,0 +1,29 @@
+{
+ "verified": false,
+ "total": 9,
+ "checked": 8,
+ "argued": [
+  "PURPOSE_MATCHES",
+  "EGRESS_PERMITTED"
+ ],
+ "missing": [],
+ "bound": [
+  "action:a1.kind",
+  "action:a1.path_sensitivity_rank",
+  "action:a1.purpose_matches",
+  "action:a1.resource",
+  "grant:g.name",
+  "grant:g.purpose"
+ ],
+ "provenance": {
+  "action:a1.kind": "gateway",
+  "action:a1.resource": "gateway",
+  "action:a1.purpose_matches": "gateway",
+  "action:a1.path_sensitivity_rank": "gateway",
+  "grant:g.name": "policy",
+  "grant:g.purpose": "policy"
+ },
+ "errors": [
+  "@[action:a1]{Read accounts-payable queue for today}: name is \"read invoices\""
+ ]
+}

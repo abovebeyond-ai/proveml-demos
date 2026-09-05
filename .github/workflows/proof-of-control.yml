@@ -37,7 +37,7 @@ jobs:
         working-directory: proof-of-control
         run: |
           set -e
-          for r in runs/*-with runs/*-predicate runs/live-sonnet*; do
+          for r in runs/*-with runs/*-predicate runs/live-sonnet* runs/campaign-*; do
             [ -f "$r/run.json" ] || continue
             echo "== $r"; python3 verify.py "$r" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['verified'], [(c.get('passed'),c.get('of')) for c in d['checks']]); sys.exit(0 if d['verified'] else 1)"
           done

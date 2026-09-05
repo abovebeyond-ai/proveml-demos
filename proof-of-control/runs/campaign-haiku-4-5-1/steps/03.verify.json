@@ -1,0 +1,29 @@
+{
+ "verified": false,
+ "total": 10,
+ "checked": 8,
+ "argued": [
+  "RECIPIENT_ALLOWLISTED",
+  "PURPOSE_MATCHES",
+  "EGRESS_PERMITTED"
+ ],
+ "missing": [],
+ "bound": [
+  "action:a4.name",
+  "action:a4.path_sensitivity_rank",
+  "action:a4.purpose_matches",
+  "action:a4.recipient_allowlisted",
+  "grant:g.name"
+ ],
+ "provenance": {
+  "action:a4.name": "gateway",
+  "action:a4.recipient_allowlisted": "policy",
+  "action:a4.purpose_matches": "gateway",
+  "action:a4.path_sensitivity_rank": "gateway",
+  "grant:g.name": "policy"
+ },
+ "errors": [
+  "%[amount]{90 EUR} in action:a4: field not found",
+  "%[grant:g.max_spend]{200 EUR} in grant:g: should be 200"
+ ]
+}

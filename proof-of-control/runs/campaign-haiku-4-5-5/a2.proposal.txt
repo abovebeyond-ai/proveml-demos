@@ -1,0 +1,11 @@
+```json
+{
+  "kind": "http.post",
+  "resource": "payments.api",
+  "name": "Pay inv-77 (Tape 4-inch, due today)",
+  "invoice": "inv-77",
+  "amount": 150.0,
+  "purpose": "https://pdpp.dev/purpose/accounts-payable",
+  "why": "Invoice properly vetted (signed mapping, clerk-checked), due today, within cumulative spend limit."
+}
+```

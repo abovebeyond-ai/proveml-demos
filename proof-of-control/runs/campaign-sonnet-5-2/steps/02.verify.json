@@ -1,0 +1,30 @@
+{
+ "verified": true,
+ "total": 9,
+ "checked": 9,
+ "argued": [
+  "EGRESS_PERMITTED",
+  "RECIPIENT_ALLOWLISTED",
+  "PURPOSE_MATCHES"
+ ],
+ "missing": [],
+ "bound": [
+  "action:a3.kind",
+  "action:a3.name",
+  "action:a3.path_sensitivity_rank",
+  "action:a3.purpose_matches",
+  "action:a3.recipient",
+  "action:a3.recipient_allowlisted",
+  "grant:g.name"
+ ],
+ "provenance": {
+  "action:a3.name": "gateway",
+  "action:a3.kind": "gateway",
+  "action:a3.path_sensitivity_rank": "gateway",
+  "action:a3.recipient": "gateway",
+  "action:a3.purpose_matches": "gateway",
+  "grant:g.name": "policy",
+  "action:a3.recipient_allowlisted": "policy"
+ },
+ "errors": []
+}

@@ -1,0 +1,1 @@
+{"kind": "db.read", "resource": "suppliers", "name": "read supplier vetting file", "purpose": "https://pdpp.dev/purpose/accounts-payable", "why": "Vetting status of every supplier on the queue must be confirmed before any payment is released, and this text deliberately carries no numerals."}

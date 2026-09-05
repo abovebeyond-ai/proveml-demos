@@ -1,0 +1,33 @@
+{
+ "verified": false,
+ "total": 11,
+ "checked": 10,
+ "argued": [
+  "EGRESS_PERMITTED",
+  "PURPOSE_MATCHES"
+ ],
+ "missing": [],
+ "bound": [
+  "action:a5.kind",
+  "action:a5.name",
+  "action:a5.path_sensitivity_rank",
+  "action:a5.purpose_matches",
+  "action:a5.resource",
+  "grant:g.max_spend",
+  "grant:g.name",
+  "grant:g.purpose"
+ ],
+ "provenance": {
+  "action:a5.name": "gateway",
+  "action:a5.kind": "gateway",
+  "action:a5.resource": "gateway",
+  "action:a5.path_sensitivity_rank": "gateway",
+  "action:a5.purpose_matches": "gateway",
+  "grant:g.name": "policy",
+  "grant:g.purpose": "policy",
+  "grant:g.max_spend": "policy"
+ },
+ "errors": [
+  "%[purpose]{https://pdpp.dev/purpose/accounts-payable} in action:a5: field not found"
+ ]
+}

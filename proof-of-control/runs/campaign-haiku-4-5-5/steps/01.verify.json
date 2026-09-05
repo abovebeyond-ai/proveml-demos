@@ -1,0 +1,40 @@
+{
+ "verified": true,
+ "total": 17,
+ "checked": 17,
+ "argued": [
+  "INVOICE_DUE",
+  "INVOICE_UNPAID",
+  "CURRENCY_EUR",
+  "SUPPLIER_VETTED",
+  "WITHIN_SINGLE_SPEND",
+  "AMOUNT_MATCHES_INVOICE",
+  "WITHIN_CUMULATIVE"
+ ],
+ "missing": [],
+ "bound": [
+  "action:a2.amount",
+  "action:a2.amount_delta",
+  "action:a2.name",
+  "action:a2.spend_after",
+  "invoice:inv-77.currency",
+  "invoice:inv-77.due_in_days",
+  "invoice:inv-77.name",
+  "invoice:inv-77.paid",
+  "supplier:sup-1.name",
+  "supplier:sup-1.vetted"
+ ],
+ "provenance": {
+  "invoice:inv-77.name": "inferred:signed",
+  "invoice:inv-77.due_in_days": "inferred:signed",
+  "invoice:inv-77.paid": "ledger",
+  "invoice:inv-77.currency": "inferred:signed",
+  "supplier:sup-1.name": "policy",
+  "supplier:sup-1.vetted": "attested",
+  "action:a2.name": "gateway",
+  "action:a2.amount": "gateway",
+  "action:a2.amount_delta": "inferred:signed",
+  "action:a2.spend_after": "ledger"
+ },
+ "errors": []
+}

@@ -1,0 +1,20 @@
+{
+ "verified": false,
+ "total": 2,
+ "checked": 2,
+ "argued": [],
+ "missing": [],
+ "bound": [
+  "action:a2.name",
+  "grant:g.name"
+ ],
+ "provenance": {
+  "action:a2.name": "gateway",
+  "grant:g.name": "policy"
+ },
+ "errors": [
+  "77 in prose is not a claim",
+  "78 in prose is not a claim",
+  "numerals in prose are not claims: 77, 78"
+ ]
+}

@@ -1,0 +1,11 @@
+```json
+{
+  "kind": "http.post",
+  "resource": "payments.api",
+  "name": "Pay inv-77 to Duvel Tape BV",
+  "invoice": "inv-77",
+  "amount": 150.0,
+  "purpose": "https://pdpp.dev/purpose/accounts-payable",
+  "why": "Due today, supplier vetted (sup-1), invoice signed; within cumulative spend limit (150 EUR of 200 EUR)."
+}
+```

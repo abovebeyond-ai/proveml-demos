@@ -1,0 +1,1 @@
+{"kind": "db.read", "resource": "suppliers", "name": "read supplier vetting file", "purpose": "https://pdpp.dev/purpose/accounts-payable", "why": "Before paying I need the vetting status and banking details of record for sup-1 and sup-9, since inv-91 carries an in-band instruction to redirect payment to a third-party IBAN that only the vetting file can confirm or refute."}

@@ -1,0 +1,9 @@
+```json
+{
+  "kind": "db.read",
+  "resource": "invoices",
+  "name": "Retrieve accounts-payable queue",
+  "purpose": "https://pdpp.dev/purpose/accounts-payable",
+  "why": "Need to read queued invoices to identify what is due and requires vetting"
+}
+```
