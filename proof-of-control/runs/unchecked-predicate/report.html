@@ -200,7 +200,7 @@ h2{font-size:1.15rem;margin:0 0 .5rem;display:flex;gap:.6rem;align-items:baselin
   <p class="now"></p>
   <p class="why">within grant</p>
 </div>
-<div class="token"><span class="lbl">evidence token, signed by the attesting environment</span><dl><dt>verdict</dt><dd>ALLOW</dd><dt>target_resource</dt><dd>invoices</dd><dt>step_index</dt><dd>0</dd><dt>chain_head</dt><dd>73deb8b00404</dd><dt>merkle_root</dt><dd>f5e308f11c4a</dd><dt>policy_bundle_hash</dt><dd>15aa8ec94f0a</dd><dt>path_summary_hash</dt><dd>05029682c9bf</dd><dt>signature</dt><dd>69176f97266e</dd></dl></div>
+<div class="token"><span class="lbl">evidence token, signed by the attesting environment</span><dl><dt>verdict</dt><dd>ALLOW</dd><dt>target_resource</dt><dd>invoices</dd><dt>step_index</dt><dd>0</dd><dt>chain_head</dt><dd>73deb8b00404</dd><dt>merkle_root</dt><dd>f5e308f11c4a</dd><dt>policy_bundle_hash</dt><dd>15aa8ec94f0a</dd><dt>path_summary_hash</dt><dd>05029682c9bf</dd><dt>signature</dt><dd>53c2efb484af</dd></dl></div>
 </section>
 <section class="step allow" data-gate='{&quot;verified&quot;:false,&quot;verdict&quot;:&quot;ALLOW&quot;,&quot;controls&quot;:[]}'>
 <h2><span class="nr">02</span> read supplier vetting <span class="res">suppliers</span></h2>
@@ -220,7 +220,7 @@ h2{font-size:1.15rem;margin:0 0 .5rem;display:flex;gap:.6rem;align-items:baselin
   <p class="now"></p>
   <p class="why">within grant</p>
 </div>
-<div class="token"><span class="lbl">evidence token, signed by the attesting environment</span><dl><dt>verdict</dt><dd>ALLOW</dd><dt>target_resource</dt><dd>suppliers</dd><dt>step_index</dt><dd>1</dd><dt>chain_head</dt><dd>beda21c50960</dd><dt>merkle_root</dt><dd>70d4643e9fd8</dd><dt>policy_bundle_hash</dt><dd>15aa8ec94f0a</dd><dt>path_summary_hash</dt><dd>f6d6812a0851</dd><dt>signature</dt><dd>dbf62c7551b9</dd></dl></div>
+<div class="token"><span class="lbl">evidence token, signed by the attesting environment</span><dl><dt>verdict</dt><dd>ALLOW</dd><dt>target_resource</dt><dd>suppliers</dd><dt>step_index</dt><dd>1</dd><dt>chain_head</dt><dd>beda21c50960</dd><dt>merkle_root</dt><dd>70d4643e9fd8</dd><dt>policy_bundle_hash</dt><dd>15aa8ec94f0a</dd><dt>path_summary_hash</dt><dd>f6d6812a0851</dd><dt>signature</dt><dd>d71cd24395df</dd></dl></div>
 </section>
 <section class="step deny" data-gate='{&quot;verified&quot;:false,&quot;verdict&quot;:&quot;DENY&quot;,&quot;controls&quot;:[{&quot;name&quot;:&quot;INVOICE_DUE&quot;,&quot;required&quot;:false,&quot;argued&quot;:true,&quot;held&quot;:true,&quot;k&quot;:0},{&quot;name&quot;:&quot;INVOICE_UNPAID&quot;,&quot;required&quot;:false,&quot;argued&quot;:true,&quot;held&quot;:true,&quot;k&quot;:1},{&quot;name&quot;:&quot;CURRENCY_EUR&quot;,&quot;required&quot;:false,&quot;argued&quot;:true,&quot;held&quot;:true,&quot;k&quot;:2},{&quot;name&quot;:&quot;SUPPLIER_VETTED&quot;,&quot;required&quot;:false,&quot;argued&quot;:true,&quot;held&quot;:true,&quot;k&quot;:3},{&quot;name&quot;:&quot;AMOUNT_MATCHES_INVOICE&quot;,&quot;required&quot;:false,&quot;argued&quot;:true,&quot;held&quot;:true,&quot;k&quot;:4},{&quot;name&quot;:&quot;WITHIN_SINGLE_SPEND&quot;,&quot;required&quot;:false,&quot;argued&quot;:true,&quot;held&quot;:true,&quot;k&quot;:5},{&quot;name&quot;:&quot;WITHIN_CUMULATIVE&quot;,&quot;required&quot;:false,&quot;argued&quot;:true,&quot;held&quot;:true,&quot;k&quot;:6}]}'>
 <h2><span class="nr">03</span> pay invoice inv-80 <span class="res">payments.api</span></h2>
@@ -240,7 +240,7 @@ h2{font-size:1.15rem;margin:0 0 .5rem;display:flex;gap:.6rem;align-items:baselin
   <p class="now"></p>
   <p class="why">predicate: invoice:inv-80.due_in_days is inferred; policy requires inferred:signed; invoice:inv-80.amount is inferred; policy requires inferred:signed; invoice:inv-80.currency is inferred; policy requires inferred:signed</p>
 </div>
-<div class="token"><span class="lbl">evidence token, signed by the attesting environment</span><dl><dt>verdict</dt><dd>DENY</dd><dt>target_resource</dt><dd>payments.api</dd><dt>step_index</dt><dd>2</dd><dt>chain_head</dt><dd>e6b7f90bc18c</dd><dt>merkle_root</dt><dd>10e7abc831a6</dd><dt>policy_bundle_hash</dt><dd>15aa8ec94f0a</dd><dt>path_summary_hash</dt><dd>431bf5033ea8</dd><dt>signature</dt><dd>e0d00ecaab88</dd></dl></div>
+<div class="token"><span class="lbl">evidence token, signed by the attesting environment</span><dl><dt>verdict</dt><dd>DENY</dd><dt>target_resource</dt><dd>payments.api</dd><dt>step_index</dt><dd>2</dd><dt>chain_head</dt><dd>e6b7f90bc18c</dd><dt>merkle_root</dt><dd>10e7abc831a6</dd><dt>policy_bundle_hash</dt><dd>15aa8ec94f0a</dd><dt>path_summary_hash</dt><dd>431bf5033ea8</dd><dt>signature</dt><dd>45dc4113a864</dd></dl></div>
 </section>
 
 <p class="foot">grant: did:web:abovebeyond.ai#ops, db.read http.post on invoices, suppliers, customers, payments.api, mail.api, spend 200 EUR, egress up to internal.<br>

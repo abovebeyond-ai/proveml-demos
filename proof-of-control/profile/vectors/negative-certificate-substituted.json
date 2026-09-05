@@ -1,6 +1,6 @@
 {
  "iss": "https://verifier.example/poc",
- "iat": 1788484742,
+ "iat": 1788596416,
  "nonce": "n-00000003",
  "eat_profile": "https://advancedaisociety.org/poc/v0.1",
  "poc_claims": {
@@ -53,5 +53,5 @@
    "measurement": "sha-256:0a717d1075cd1d0c4c8f17cc907260737899a5e7ae3331d30058499468aa109a"
   }
  },
- "signature": "4308181e5bfb5097c12f2d177443ddca29f18e50e2f81539ea0dfc8eb85f95f2c6929146173f07bef35759e8e60d5f859f44df1e1b7b074b1d6d85f9bc652d0c"
+ "signature": "0aab35a217a1a44317b28d7d82cc5c100362973d6eba3e12925b4d61cf935825c68e705862c8d458b6ab7001daadfebdde1bd9d79f74a85e7880ee8493e9cc0c"
 }

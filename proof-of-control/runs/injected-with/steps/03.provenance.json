@@ -15,7 +15,7 @@
   "grade": "ledger",
   "ledger": "runs/injected-with/ledger.jsonl",
   "entries": 1,
-  "head": "0b3d0f75db20063dcc7031e57ae58502ea8dd239091425f7f370b06a54a1b4b5",
+  "head": "9531f86e576c5e49046c8695c81c41b9bd33dc759ddcb3a13f28b6e8bcdfc3c9",
   "signer": "did:jwk:eyJrdHkiOiJPS1AiLCJjcnYiOiJFZDI1NTE5IiwieCI6InU0QTNiUHdJRVVQQXM2UzU2a3NHd1Jxb3R3T3V2bkx1ZjZEQTdZUlVwY0EifQ",
   "sum_before": 150.0
  },

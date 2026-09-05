@@ -18,9 +18,10 @@
 //   - a fact with an explicit path may only name a record the certificate
 //     also mentions as an entity
 //   - every numeral the reader sees outside a verified fact or entity name is
-//     an error, whatever script it is written in
-//   - grading binds a judgement to every store path carrying its field
-//     (conservative until proveml exposes the entity in force per judgement)
+//     an error, whatever script it is written in (proveml 0.8.0's certificate
+//     coverage, plus a second scan here over the rendered text)
+//   - grading binds a judgement to the entity the parser had in force when it
+//     evaluated it (proveml 0.8.0 reports it), or to the explicit path
 //
 // usage: node verify-cert.mjs store.json registry.json cert.md [REQ1,REQ2,...] [provenance.json] ['{"type.field":"grade"}']
 import { readFileSync } from 'node:fs';
@@ -32,7 +33,7 @@ const registry = JSON.parse(readFileSync(regF, 'utf8'));
 const cert = readFileSync(certF, 'utf8');
 const required = req ? req.split(',').filter(Boolean) : [];
 const errors = [];
-const v = verifyProveml(cert, store, { thresholds: registry, strict: true });
+const v = verifyProveml(cert, store, { thresholds: registry, strict: true, coverage: 'certificate' });
 errors.push(...v.errors);
 
 // the marks as the renderer saw them, in document order, with their attributes
@@ -52,7 +53,7 @@ spans.forEach((s, i) => {
   const d = marks[i] || {}; const m = BARE.exec((s['data-condition'] || '').trim());
   if (!m) { errors.push(`?[${d.label || '?'}: ${s['data-condition']}]: a judgement names one registered threshold; OR, NOT and label references are not accepted in a certificate`); return; }
   if (!registry[m[1]]) { errors.push(`?[${d.label || '?'}: ${m[1]}]: unknown threshold`); return; }
-  judgements.push({ name: m[1], explicit: m[2] || null, verified: d.status === 'verified' && s.verified });
+  judgements.push({ name: m[1], explicit: m[2] || null, entity: d.entity || null, verified: d.status === 'verified' && s.verified });
 });
 const argued = judgements.filter((j) => j.verified).map((j) => j.name);
 const missing = required.filter((r) => !argued.includes(r));
@@ -74,7 +75,8 @@ spans.forEach((s) => { if (s.kind === 'fact' && s.verified && s['data-path']) bo
 for (const j of judgements) {
   if (!j.verified) continue; const field = registry[j.name].field;
   if (j.explicit) { const p = j.explicit + '.' + field; if (p in store) bound.add(p); continue; }
-  for (const p of Object.keys(store)) if (p.endsWith('.' + field) && p.split('.').length === 2) bound.add(p);
+  if (j.entity && (j.entity + '.' + field) in store) { bound.add(j.entity + '.' + field); continue; }
+  for (const p of Object.keys(store)) if (p.endsWith('.' + field) && p.split('.').length === 2) bound.add(p);   // no entity reported: bind every candidate
 }
 
 // numerals the reader sees outside a verified fact or entity name

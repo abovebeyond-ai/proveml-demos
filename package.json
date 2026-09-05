@@ -15,7 +15,7 @@
     "@sd-jwt/sd-jwt-vc": "^0.20.0",
     "@simplewebauthn/server": "^13.3.3",
     "jose": "^6.2.10",
-    "proveml": "^0.7.0"
+    "proveml": "^0.8.0"
   },
   "engines": {
     "node": ">=20"

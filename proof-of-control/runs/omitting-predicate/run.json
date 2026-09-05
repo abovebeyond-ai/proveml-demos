@@ -2,7 +2,7 @@
  "name": "omitting-predicate",
  "path_aware": true,
  "require_certificate": "predicate",
- "public_key": "be5fc12fe0fba317925095b63d85e2e5104dd29612346ef9a80a6adb3b593b8b",
+ "public_key": "6bb33ecea84fa7d1f4c3fba47fd7b0bd971afcf90d76f3c2063a24b4919b3606",
  "measurement": "0a717d1075cd1d0c4c8f17cc907260737899a5e7ae3331d30058499468aa109a",
  "policy_bundle_hash": "15aa8ec94f0ad2c46955d9df8a1c679f184e9988e6b880710d03080ff24bcde0",
  "chain_head": "b800ea218d42355daa5ccb087a223381dc3faeeac2448643945ec4991af12b3e",
@@ -10,9 +10,9 @@
  "anchor": {
   "root": "b800ea218d42355daa5ccb087a223381dc3faeeac2448643945ec4991af12b3e",
   "index": 3,
-  "t": 1788484751.992167,
+  "t": 1788596424.757451,
   "tree_root": "965ca5d0d0803296109696c8596d4599053e4294165104d8d41b080359985631",
-  "signature": "ec623b30c1a8529af7efdc9fc185daf310af09b7db2c9d933d6560bfb7998de92f700d787cc9b1eb0a723719265590bc7e32bae34d660a4b634a13cb946fc30c"
+  "signature": "bb9b7a98dd3b41a07cfcf8839deb6ce2cdadbdfd1c3762e44413096dc513ed001db786c040805a5940fc1a47264c52cdbff56a874ea63a523106c15de96d1301"
  },
  "steps": [
   {
