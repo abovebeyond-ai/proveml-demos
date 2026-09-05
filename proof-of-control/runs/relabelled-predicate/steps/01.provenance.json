@@ -1,0 +1,40 @@
+{
+ "action:a7.name": {
+  "grade": "gateway"
+ },
+ "action:a7.kind": {
+  "grade": "gateway"
+ },
+ "action:a7.resource": {
+  "grade": "gateway"
+ },
+ "action:a7.path_sensitivity_rank": {
+  "grade": "gateway"
+ },
+ "action:a7.purpose_matches": {
+  "grade": "gateway"
+ },
+ "customer:cust-4.name": {
+  "grade": "policy",
+  "from": "data.json#customers"
+ },
+ "customer:cust-4.consented": {
+  "grade": "presented",
+  "presentation": "runs/relabelled-predicate/steps/01.presentation.sdjwt",
+  "issuer": "did:jwk:eyJrdHkiOiJPS1AiLCJjcnYiOiJFZDI1NTE5IiwieCI6IkNsaHNsb1ZGWmJyUVo5RHpybUt6RkJEZHdDUDU0TEkzRFItcFdBalFuYnMifQ",
+  "holder": "xM01uDayW8RVrOjn7t5vuDGLqol-PP1i24HUXFG52FM",
+  "nonce": "ca38ee8d20d9008c4ea76c4b255fe707",
+  "aud": "did:web:abovebeyond.ai#gateway",
+  "presented_at": 1788596483,
+  "vct": "urn:proveml:consent:1"
+ },
+ "grant:g.name": {
+  "grade": "policy"
+ },
+ "grant:g.max_spend": {
+  "grade": "policy"
+ },
+ "grant:g.purpose": {
+  "grade": "policy"
+ }
+}

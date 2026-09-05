@@ -2,17 +2,17 @@
  "name": "unchecked-with",
  "path_aware": true,
  "require_certificate": true,
- "public_key": "df35319631222230833d61f7504af9b597d8475a716d8814ec1e22408903203b",
- "measurement": "d530cb41c54fbb9f05658afe54ed467e74205025b48bbbdf85d4914f09778db4",
- "policy_bundle_hash": "e5ea7e1065736d5e7acb069a9335a7f49186839e1dd623593f34dc11ae6eabe6",
- "chain_head": "7093a22d8b051a2c933c126421c152c2d6c7230e44f55fc0737f135ff5b25ce6",
- "tree_root": "6981e4c360bb2326df6fdfcdb41374537caebac90088ea397c0b22a6686e2b94",
+ "public_key": "a33d4ba6321ba8450f603a5b8962ae16a7f7e579ccaee85bbad6ea0dab65af52",
+ "measurement": "0a717d1075cd1d0c4c8f17cc907260737899a5e7ae3331d30058499468aa109a",
+ "policy_bundle_hash": "15aa8ec94f0ad2c46955d9df8a1c679f184e9988e6b880710d03080ff24bcde0",
+ "chain_head": "e6b7f90bc18ce3d650381774716554891fd3caf64c39c1206992fb393041e898",
+ "tree_root": "10e7abc831a6e3c8c31196fac6d5688e0299b265cbbec4460791b8f90c21f2bc",
  "anchor": {
-  "root": "7093a22d8b051a2c933c126421c152c2d6c7230e44f55fc0737f135ff5b25ce6",
+  "root": "e6b7f90bc18ce3d650381774716554891fd3caf64c39c1206992fb393041e898",
   "index": 3,
-  "t": 1788478299.095194,
-  "tree_root": "6981e4c360bb2326df6fdfcdb41374537caebac90088ea397c0b22a6686e2b94",
-  "signature": "ee2929c46359f8ffdc2bac718ae822bd7b5c2078ac68997102d4e8aa4f28b5670d1be22af34276b4079b59faa4d3fa51e9511c0132491b97bbeccbcfbebf040b"
+  "t": 1788596454.836808,
+  "tree_root": "10e7abc831a6e3c8c31196fac6d5688e0299b265cbbec4460791b8f90c21f2bc",
+  "signature": "7c1040446cd3886cf15003b2088a004f18d8ab9066ba17bf63eb0346935eecea5f4362d4176a8a5acb5483a403960494237e26dd3567b50b095920c4fb60c402"
  },
  "steps": [
   {
@@ -33,7 +33,7 @@
    "step": "a4",
    "name": "pay invoice inv-80",
    "verdict": "DENY",
-   "reason": "certificate does not verify: invoice:inv-80.amount is inferred (no one has signed the mapping); policy requires inferred:signed; invoice:inv-80.due_in_days is inferred (no one has signed the mapping); policy requires inferred:signed",
+   "reason": "certificate does not verify: invoice:inv-80.name is inferred (no one has signed the mapping); policy requires inferred:signed; invoice:inv-80.amount is inferred (no one has signed the mapping); policy requires inferred:signed; invoice:inv-80.due_in_days is inferred (no",
    "executed": false
   }
  ]

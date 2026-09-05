@@ -1,0 +1,111 @@
+{
+ "action:a4.name": {
+  "grade": "gateway"
+ },
+ "action:a4.kind": {
+  "grade": "gateway"
+ },
+ "action:a4.resource": {
+  "grade": "gateway"
+ },
+ "action:a4.amount": {
+  "grade": "gateway"
+ },
+ "action:a4.spend_after": {
+  "grade": "ledger",
+  "ledger": "runs/omitting-predicate/ledger.jsonl",
+  "entries": 0,
+  "head": "genesis",
+  "signer": null,
+  "sum_before": 0.0
+ },
+ "action:a4.amount_delta": {
+  "grade": "inferred:signed",
+  "source": "sources/invoices/inv-91.pdf",
+  "pdf_sha256": "a7b5d26f1fffcc1fed9d6894510e1d63e806ef6d7bae638316e486493240f97c",
+  "method": "pdftotext version 26.02.0 + regular expressions (extract.py)",
+  "mapping": "sources/invoices/inv-91.mapping.sdjwt",
+  "signed_by": "did:web:abovebeyond.ai",
+  "resolved": "fetched",
+  "checked_by": "accounts-payable clerk",
+  "from": "invoice:inv-91.amount"
+ },
+ "action:a4.path_sensitivity_rank": {
+  "grade": "gateway"
+ },
+ "action:a4.purpose_matches": {
+  "grade": "gateway"
+ },
+ "invoice:inv-91.name": {
+  "grade": "inferred:signed",
+  "source": "sources/invoices/inv-91.pdf",
+  "pdf_sha256": "a7b5d26f1fffcc1fed9d6894510e1d63e806ef6d7bae638316e486493240f97c",
+  "method": "pdftotext version 26.02.0 + regular expressions (extract.py)",
+  "mapping": "sources/invoices/inv-91.mapping.sdjwt",
+  "signed_by": "did:web:abovebeyond.ai",
+  "resolved": "fetched",
+  "checked_by": "accounts-payable clerk"
+ },
+ "invoice:inv-91.amount": {
+  "grade": "inferred:signed",
+  "source": "sources/invoices/inv-91.pdf",
+  "pdf_sha256": "a7b5d26f1fffcc1fed9d6894510e1d63e806ef6d7bae638316e486493240f97c",
+  "method": "pdftotext version 26.02.0 + regular expressions (extract.py)",
+  "mapping": "sources/invoices/inv-91.mapping.sdjwt",
+  "signed_by": "did:web:abovebeyond.ai",
+  "resolved": "fetched",
+  "checked_by": "accounts-payable clerk"
+ },
+ "invoice:inv-91.due_in_days": {
+  "grade": "inferred:signed",
+  "source": "sources/invoices/inv-91.pdf",
+  "pdf_sha256": "a7b5d26f1fffcc1fed9d6894510e1d63e806ef6d7bae638316e486493240f97c",
+  "method": "pdftotext version 26.02.0 + regular expressions (extract.py)",
+  "mapping": "sources/invoices/inv-91.mapping.sdjwt",
+  "signed_by": "did:web:abovebeyond.ai",
+  "resolved": "fetched",
+  "checked_by": "accounts-payable clerk"
+ },
+ "invoice:inv-91.supplier": {
+  "grade": "inferred:signed",
+  "source": "sources/invoices/inv-91.pdf",
+  "pdf_sha256": "a7b5d26f1fffcc1fed9d6894510e1d63e806ef6d7bae638316e486493240f97c",
+  "method": "pdftotext version 26.02.0 + regular expressions (extract.py)",
+  "mapping": "sources/invoices/inv-91.mapping.sdjwt",
+  "signed_by": "did:web:abovebeyond.ai",
+  "resolved": "fetched",
+  "checked_by": "accounts-payable clerk"
+ },
+ "invoice:inv-91.currency": {
+  "grade": "inferred:signed",
+  "source": "sources/invoices/inv-91.pdf",
+  "pdf_sha256": "a7b5d26f1fffcc1fed9d6894510e1d63e806ef6d7bae638316e486493240f97c",
+  "method": "pdftotext version 26.02.0 + regular expressions (extract.py)",
+  "mapping": "sources/invoices/inv-91.mapping.sdjwt",
+  "signed_by": "did:web:abovebeyond.ai",
+  "resolved": "fetched",
+  "checked_by": "accounts-payable clerk"
+ },
+ "invoice:inv-91.paid": {
+  "grade": "ledger",
+  "ledger": "runs/omitting-predicate/ledger.jsonl",
+  "entries": 0
+ },
+ "supplier:sup-9.name": {
+  "grade": "policy",
+  "from": "data.json#suppliers"
+ },
+ "supplier:sup-9.vetted": {
+  "grade": "absent",
+  "why": "no vetting credential on file"
+ },
+ "grant:g.name": {
+  "grade": "policy"
+ },
+ "grant:g.max_spend": {
+  "grade": "policy"
+ },
+ "grant:g.purpose": {
+  "grade": "policy"
+ }
+}

@@ -79,6 +79,20 @@
    "value": 1,
    "label": "the record's owner consented to this purpose",
    "source": "pdpp-grant"
+  },
+  "INVOICE_UNPAID": {
+   "field": "paid",
+   "op": "==",
+   "value": 0,
+   "label": "not yet paid",
+   "source": "ledger"
+  },
+  "CURRENCY_EUR": {
+   "field": "currency",
+   "op": "==",
+   "value": "EUR",
+   "label": "in euro",
+   "source": "grant#max_spend"
   }
  },
  "required_controls": {
@@ -87,7 +101,9 @@
    "SUPPLIER_VETTED",
    "AMOUNT_MATCHES_INVOICE",
    "WITHIN_SINGLE_SPEND",
-   "WITHIN_CUMULATIVE"
+   "WITHIN_CUMULATIVE",
+   "INVOICE_UNPAID",
+   "CURRENCY_EUR"
   ],
   "http.post:mail.api": [
    "RECIPIENT_ALLOWLISTED",
@@ -108,6 +124,8 @@
   "invoice.supplier": "inferred:signed",
   "supplier.vetted": "attested",
   "customer.consented": "presented",
-  "action.spend_after": "ledger"
+  "action.spend_after": "ledger",
+  "invoice.paid": "ledger",
+  "invoice.currency": "inferred:signed"
  }
 }

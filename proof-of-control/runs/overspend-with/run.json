@@ -2,17 +2,17 @@
  "name": "overspend-with",
  "path_aware": true,
  "require_certificate": true,
- "public_key": "0d95122fa5c8e8863922f45a8e6750d6d0b5f18da5551f0fe5f5f5c0bdf6e216",
- "measurement": "d530cb41c54fbb9f05658afe54ed467e74205025b48bbbdf85d4914f09778db4",
- "policy_bundle_hash": "e5ea7e1065736d5e7acb069a9335a7f49186839e1dd623593f34dc11ae6eabe6",
- "chain_head": "83d255162bbbb0e2595452a4bb851a1a311e4bad38d9131d94f9695ed582db48",
- "tree_root": "f889cd07ff873a6c063533b36bd04b2f259f7877de48818da0c561861418649a",
+ "public_key": "02e1ff33260ad684e308ddaa8f2ea6ef0be9182d02df6028ecb8223bbd253708",
+ "measurement": "0a717d1075cd1d0c4c8f17cc907260737899a5e7ae3331d30058499468aa109a",
+ "policy_bundle_hash": "15aa8ec94f0ad2c46955d9df8a1c679f184e9988e6b880710d03080ff24bcde0",
+ "chain_head": "6eca738eab2ef2a64882a7ead9ceee40c279d1af9d4647abcc666abde00549ed",
+ "tree_root": "351489ba1d2af7bf433774fb381670ca2f0a26ba276a59cc45d1cc8722505b3d",
  "anchor": {
-  "root": "83d255162bbbb0e2595452a4bb851a1a311e4bad38d9131d94f9695ed582db48",
+  "root": "6eca738eab2ef2a64882a7ead9ceee40c279d1af9d4647abcc666abde00549ed",
   "index": 4,
-  "t": 1788478308.208831,
-  "tree_root": "f889cd07ff873a6c063533b36bd04b2f259f7877de48818da0c561861418649a",
-  "signature": "6e26f288f2dbbd33384237895b0ab1469285505f3dac03f40723c692d3fb979bf63a9f0ebe23f0aefc7d6c5809f590c51498bc2e60c690427c7d206c78193b07"
+  "t": 1788596506.1188,
+  "tree_root": "351489ba1d2af7bf433774fb381670ca2f0a26ba276a59cc45d1cc8722505b3d",
+  "signature": "6ba8aa6ca6de0f655154c48b2d6f6b577e5342694c3938529c1ac711f000734599364c85dcdb6213e0f7e79eaaef6be439c03d74ac5b0720a4f2d6ae1247cf0b"
  },
  "steps": [
   {
@@ -40,7 +40,7 @@
    "step": "a8",
    "name": "pay invoice inv-78",
    "verdict": "DENY",
-   "reason": "certificate does not verify: ?[cumulative: WITHIN_CUMULATIVE]: condition false",
+   "reason": "certificate does not verify: ?[cumulative: WITHIN_CUMULATIVE]: condition false; required control WITHIN_CUMULATIVE not argued",
    "executed": false
   }
  ]

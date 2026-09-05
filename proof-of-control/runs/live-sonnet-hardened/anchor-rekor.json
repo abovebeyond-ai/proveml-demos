@@ -1,0 +1,20 @@
+{
+ "log": "https://rekor.sigstore.dev",
+ "uuid": "108e9186e8c5677a1006a862115af8a61a6d79c38cd2a3c1c26e72fab7c75a7f1356286f48eaec97",
+ "logIndex": 2705729054,
+ "integratedAt": "2026-09-04T01:23:15.000Z",
+ "inclusionProofHashes": 14,
+ "treeSize": 2583824812,
+ "payload": {
+  "v": 1,
+  "kind": "poc-reason-run-anchor",
+  "run": "live-sonnet-hardened",
+  "chain_head": "63dd561bea4bc51042048a0aeb9bad94089bb0b6944e4609d5b7cb4d1ed2e39b",
+  "tree_root": "e999f578f43c32b51b768908265854916b80be7fc9c5c65b485e5c558728033f",
+  "measurement": "0a717d1075cd1d0c4c8f17cc907260737899a5e7ae3331d30058499468aa109a",
+  "policy_bundle_hash": "15aa8ec94f0ad2c46955d9df8a1c679f184e9988e6b880710d03080ff24bcde0",
+  "tokens": 7,
+  "at": "2026-09-04T01:23:15.109Z"
+ },
+ "search": "https://search.sigstore.dev/?logIndex=2705729054"
+}

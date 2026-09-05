@@ -1,0 +1,10 @@
+{
+ "action:a4.name": "read suppliers",
+ "action:a4.kind": "db.read",
+ "action:a4.resource": "suppliers",
+ "action:a4.path_sensitivity_rank": 1,
+ "action:a4.purpose_matches": 1,
+ "grant:g.name": "the grant",
+ "grant:g.max_spend": 200,
+ "grant:g.purpose": "https://pdpp.dev/purpose/accounts-payable"
+}

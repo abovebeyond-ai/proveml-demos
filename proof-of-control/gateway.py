@@ -32,8 +32,9 @@ really has, and the policy says which grade each field needs:
 
 Nothing else changes. Set POC_STANDARD to the ov-poc-standard checkout.
 """
-import json, os, subprocess, sys, time, hashlib, tempfile, datetime
+import json, os, subprocess, sys, time, hashlib, tempfile, datetime, dataclasses
 POC = os.environ.get('POC_STANDARD') or os.path.expanduser('~/Projects/ov-poc-standard')
+if not os.path.isdir(POC): POC = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'ov-poc-standard')   # a sibling checkout, as CI lays it out
 if not os.path.isdir(POC): POC = '/private/tmp/claude-501/-Volumes-shanedeconinck-be-Projects-proveml-all/aaffe3ee-a529-4c8f-bc96-24f5cec9bb0e/scratchpad/ov-poc-standard'
 sys.path.insert(0, POC + '/impl')
 from poc.core import (Action, Grant, PolicyEngine, AttestingEnvironment, EvidenceStore, Gateway,
@@ -101,6 +102,30 @@ def ledger_spend(ledger, principal):
     if not v.get('ok'): raise RuntimeError('ledger does not verify: ' + '; '.join(v.get('errors') or [v.get('why', '')]))
     return float(v['sum']), {'grade': 'ledger', 'ledger': rel(ledger), 'entries': v['entries'], 'head': v['head'], 'signer': v['signer'], 'sum_before': float(v['sum'])}
 
+def ledger_paid(ledger, invoice):
+    """How many times this invoice was paid, from the signed ledger the gateway keeps (the red team of
+    2026-09-04 paid one invoice twice under the cap: nothing in the snapshot said it was already paid)."""
+    if not ledger or not os.path.exists(ledger): return 0
+    n = 0
+    for line in open(ledger):
+        if line.strip() and json.loads(line)['entry'].get('invoice') == invoice: n += 1
+    return n
+
+def action_name(p, kind, resource):
+    """The action's name as the snapshot carries it: composed by the gateway from the action, never the
+    agent's own words (which entered the store at a trusted grade and carried numbers past strict mode)."""
+    if resource == 'payments.api': return 'pay invoice ' + str(p.get('invoice', '?'))
+    if resource == 'mail.api': return 'mail ' + str(p.get('recipient', '?'))
+    if resource == 'customers': return 'read customer ' + str(p.get('customer', '?'))
+    return ('read ' if kind == 'db.read' else kind + ' ') + resource
+
+def effective_classification(data, action):
+    """What the action touches decides its classification, not the label the agent put on it."""
+    if action.resource == 'customers':
+        c = data['customers'].get(action.params.get('customer', ''))
+        return (c or {}).get('classification', 'confidential')
+    return 'internal'
+
 def store_for(policy, data, action, phi, base=None, ledger=None):
     """The facts a certificate may bind: the action, what it touches, the grant,
     and the path so far. Computed by the gateway, never by the agent. Returns
@@ -115,7 +140,7 @@ def store_for(policy, data, action, phi, base=None, ledger=None):
     sup_id = inv['supplier'] if inv else p.get('supplier', '')
     sup = data['suppliers'].get(sup_id)
     amount = float(p.get('amount', 0) or 0)
-    put(f'action:{aid}.name', p.get('name', f'action {aid}'), G)
+    put(f'action:{aid}.name', action_name(p, action.kind, action.resource), G)
     put(f'action:{aid}.kind', action.kind, G)
     put(f'action:{aid}.resource', action.resource, G)
     if amount:
@@ -123,7 +148,7 @@ def store_for(policy, data, action, phi, base=None, ledger=None):
         spent, lprov = ledger_spend(ledger, policy['principal'])
         if spent is not None and abs(spent - phi.spend) > 1e-9: raise RuntimeError(f'the ledger says {spent} spent, the path says {phi.spend}')
         put(f'action:{aid}.spend_after', (spent if spent is not None else phi.spend) + amount, lprov or G)
-        if inv: put(f'action:{aid}.amount_delta', amount - float(inv['amount']), {'grade': 'gateway', 'from': f'invoice:{p["invoice"]}.amount'})
+        if inv: put(f'action:{aid}.amount_delta', amount - float(inv['amount']), {**inv['_prov'], 'from': f'invoice:{p["invoice"]}.amount'})   # a derived value is no better than its weakest input
     put(f'action:{aid}.path_sensitivity_rank', ORDER[phi.sensitivity], G)
     if 'recipient' in p:
         put(f'action:{aid}.recipient', p['recipient'], G)
@@ -132,7 +157,8 @@ def store_for(policy, data, action, phi, base=None, ledger=None):
     if inv:
         iid = p['invoice']; ip = inv['_prov']
         put(f'invoice:{iid}.name', inv['description'], ip); put(f'invoice:{iid}.amount', float(inv['amount']), ip)
-        put(f'invoice:{iid}.due_in_days', inv['due_in_days'], ip); put(f'invoice:{iid}.supplier', inv['supplier'], ip)
+        put(f'invoice:{iid}.due_in_days', inv['due_in_days'], ip); put(f'invoice:{iid}.supplier', inv['supplier'], ip); put(f'invoice:{iid}.currency', inv['currency'], ip)
+        put(f'invoice:{iid}.paid', ledger_paid(ledger, iid), {'grade': 'ledger', 'ledger': rel(ledger) if ledger else None, 'entries': ledger_paid(ledger, iid)})
     if sup:
         put(f'supplier:{sup_id}.name', sup['name'], {'grade': 'policy', 'from': 'data.json#suppliers'})
         put(f'supplier:{sup_id}.vetted', sup['vetted'], sup['_prov'])
@@ -166,17 +192,22 @@ class ReasonedPolicyEngine(PolicyEngine):
 
     def evaluate(self, action, phi):
         self.last = None
-        if self.require:
+        if self.require is True:
             cert = action.params.get('certificate', '')
             os.makedirs(os.path.join(self.run_dir, 'steps'), exist_ok=True)
             base = os.path.join(self.run_dir, 'steps', f'{self.step:02d}')
             ledger = os.path.join(self.run_dir, 'ledger.jsonl')
             store, prov = store_for(self.policy, self.data, action, phi, base=base, ledger=ledger)
-            required = self.policy['required_controls'].get(f'{action.kind}:{action.resource}', [])
+            required = self.policy['required_controls'].get(f'{action.kind}:{action.resource}')
+            if required is None:
+                self.step += 1; self.last = {'proveml_verified': False, 'proveml_required_controls': [], 'proveml_certificate_hash': tag(sha256(cert.encode())), 'proveml_store_hash': tag(sha256(canonical(store))), 'proveml_registry_hash': tag(self.registry_hash)}
+                return 'DENY', f'no policy for {action.kind} on {action.resource}: an action kind the policy did not foresee is refused, not waved through'
             json.dump(store, open(base + '.store.json', 'w'), indent=1); open(base + '.cert.md', 'w').write(cert)
             json.dump(self.policy['registry'], open(base + '.registry.json', 'w')); json.dump(prov, open(base + '.provenance.json', 'w'), indent=1)
-            r = subprocess.run(['node', os.path.join(HERE, 'verify-cert.mjs'), base + '.store.json', base + '.registry.json', base + '.cert.md', ','.join(required), base + '.provenance.json', json.dumps(self.policy.get('required_provenance', {}))], capture_output=True, text=True, cwd=HERE)
-            try: result = json.loads(r.stdout.strip().splitlines()[-1])
+            try:
+                r = subprocess.run(['node', os.path.join(HERE, 'verify-cert.mjs'), base + '.store.json', base + '.registry.json', base + '.cert.md', ','.join(required), base + '.provenance.json', json.dumps(self.policy.get('required_provenance', {}))], capture_output=True, text=True, cwd=HERE, timeout=20)
+                result = json.loads(r.stdout.strip().splitlines()[-1])
+            except subprocess.TimeoutExpired: result = {'verified': False, 'errors': ['certificate verifier did not answer within 20 seconds'], 'bound': []}
             except Exception: result = {'verified': False, 'errors': ['certificate verifier failed: ' + (r.stderr or r.stdout)[-300:]], 'bound': []}
             json.dump(result, open(base + '.verify.json', 'w'), indent=1)
             self.last = {'proveml_certificate_hash': tag(sha256(cert.encode())), 'proveml_store_hash': tag(sha256(canonical(store))), 'proveml_registry_hash': tag(self.registry_hash),
@@ -185,6 +216,26 @@ class ReasonedPolicyEngine(PolicyEngine):
             self.step += 1
             if not result['verified']:
                 return 'DENY', 'certificate does not verify: ' + '; '.join(result['errors'])[:240]
+        elif self.require == 'predicate':
+            # the baseline the red team asked for: the gateway evaluates the same registry, controls and grades
+            # itself, from the same snapshot, with no certificate; a judgement reads every store path carrying its field
+            os.makedirs(os.path.join(self.run_dir, 'steps'), exist_ok=True)
+            base = os.path.join(self.run_dir, 'steps', f'{self.step:02d}'); ledger = os.path.join(self.run_dir, 'ledger.jsonl')
+            store, prov = store_for(self.policy, self.data, action, phi, base=base, ledger=ledger)
+            json.dump(store, open(base + '.store.json', 'w'), indent=1); json.dump(prov, open(base + '.provenance.json', 'w'), indent=1)
+            required = self.policy['required_controls'].get(f'{action.kind}:{action.resource}'); self.step += 1
+            if required is None: return 'DENY', f'no policy for {action.kind} on {action.resource}'
+            failed = []
+            for name in required:
+                th = self.policy['registry'][name]; paths = [p for p in store if p.endswith('.' + th['field'])]
+                if not paths: failed.append(f'{name}: no {th["field"]} in the snapshot'); continue
+                for p in paths:
+                    val = store[p]; ok = {'<=': val <= th['value'], '<': val < th['value'], '>=': val >= th['value'], '>': val > th['value'], '==': val == th['value'], '!=': val != th['value']}[th['op']]
+                    if not ok: failed.append(f'{name}: {p} is {val}')
+                    need = self.policy.get('required_provenance', {}).get(p.split(':')[0] + '.' + th['field']); g = prov.get(p, {}).get('grade', 'absent')
+                    if need and GRADE_RANK.get(g, 0) < GRADE_RANK[need]: failed.append(f'{p} is {g}; policy requires {need}')
+            self.last = {'poc_predicate': True, 'poc_predicate_controls': required, 'poc_predicate_failed': failed[:8]}
+            if failed: return 'DENY', 'predicate: ' + '; '.join(failed)[:240]
         else:
             self.step += 1
         return super().evaluate(action, phi)
@@ -226,10 +277,17 @@ def make_gateway(run_dir, policy=None, data=None, path_aware=True, require_certi
     env = ReasonedEnvironment(engine, anchor=log, anchor_interval_s=0.0)
     store = EvidenceStore()
     gw = Gateway(env, store, agent_id=agent_id)
+    submit = gw.submit
+    def reclassified_submit(action):
+        # never the agent's label: a confidential read under "public" defeated egress in the red team of 2026-09-04
+        return submit(dataclasses.replace(action, classification=effective_classification(data, action)))
+    gw.submit = reclassified_submit
     return gw, env, store, log, engine
 
 def run_steps(name, steps, path_aware=True, require_certificate=True):
-    """steps: list of dicts {kind, resource, params, classification}. Returns the run record."""
+    """steps: list of dicts {kind, resource, params, classification}. require_certificate: True (reason as
+    evidence), False (the reference gateway alone), or 'predicate' (the gateway evaluates the registry itself).
+    Returns the run record."""
     run_dir = os.path.join(HERE, 'runs', name)
     gw, env, store, log, engine = make_gateway(run_dir, path_aware=path_aware, require_certificate=require_certificate)
     out = []

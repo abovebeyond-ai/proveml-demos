@@ -1,0 +1,40 @@
+{
+ "name": "misattributed-predicate",
+ "path_aware": true,
+ "require_certificate": "predicate",
+ "public_key": "c1d39d8e6ba5ecfac5edc81c1d13c4c9bf3d5921bcef731c113075d9dd4e28b1",
+ "measurement": "0a717d1075cd1d0c4c8f17cc907260737899a5e7ae3331d30058499468aa109a",
+ "policy_bundle_hash": "15aa8ec94f0ad2c46955d9df8a1c679f184e9988e6b880710d03080ff24bcde0",
+ "chain_head": "1b4522e8748f7a86a14f350978e723853e114c749d2b2886f512c0c714f7f3cb",
+ "tree_root": "59a7b72fa9aa5934a6e8c6df03a5a3831593db69d343a346c32b48f701275e0d",
+ "anchor": {
+  "root": "1b4522e8748f7a86a14f350978e723853e114c749d2b2886f512c0c714f7f3cb",
+  "index": 3,
+  "t": 1788596438.0340211,
+  "tree_root": "59a7b72fa9aa5934a6e8c6df03a5a3831593db69d343a346c32b48f701275e0d",
+  "signature": "efa174c42a1feb72422251f6f2a4d0586bde4b5faca095ca39e5bf736241288ae189d6fc9c15b65781c215d3c6200fc7f458d65334618221d8f03aaf91094805"
+ },
+ "steps": [
+  {
+   "step": "a1",
+   "name": "read the invoice queue",
+   "verdict": "ALLOW",
+   "reason": "within grant",
+   "executed": true
+  },
+  {
+   "step": "a2",
+   "name": "read supplier vetting",
+   "verdict": "ALLOW",
+   "reason": "within grant",
+   "executed": true
+  },
+  {
+   "step": "a4",
+   "name": "pay invoice inv-91",
+   "verdict": "DENY",
+   "reason": "predicate: SUPPLIER_VETTED: supplier:sup-9.vetted is 0; supplier:sup-9.vetted is absent; policy requires attested",
+   "executed": false
+  }
+ ]
+}

@@ -4,7 +4,13 @@
  "checked": 2,
  "argued": [],
  "missing": [],
- "bound": [],
- "provenance": {},
+ "bound": [
+  "action:a1.name",
+  "grant:g.name"
+ ],
+ "provenance": {
+  "action:a1.name": "gateway",
+  "grant:g.name": "policy"
+ },
  "errors": []
 }
