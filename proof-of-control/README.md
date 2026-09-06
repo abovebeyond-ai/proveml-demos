@@ -14,6 +14,8 @@ model and no gateway. Every fact in the snapshot carries its provenance, the
 kind of guarantee it really has, and the policy says which grade each field
 needs; a true claim on a fact nobody vouched for does not verify either.
 
+Stated narrowly, because the red team of 4 September earned it: the certificate is not a control the gateway lacks. A predicate over the same snapshot and registry refuses the same actions. What the certificate adds is the record: the reason for the action, in prose a person can read, checked, and replayable by a stranger beside the verdict.
+
 What this is, stated no larger than the evidence supports: a Proof-of-Control
 token proves an action was **permitted**, within grant and within the path's
 bounds. This profile adds a checked record of the **premises** it was executed
