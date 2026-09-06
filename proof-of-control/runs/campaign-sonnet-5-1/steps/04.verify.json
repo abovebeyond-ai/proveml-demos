@@ -1,0 +1,35 @@
+{
+ "verified": false,
+ "total": 8,
+ "checked": 4,
+ "argued": [],
+ "missing": [
+  "RECIPIENT_ALLOWLISTED",
+  "PURPOSE_MATCHES",
+  "EGRESS_PERMITTED"
+ ],
+ "bound": [
+  "action:a5.kind",
+  "action:a5.name",
+  "grant:g.name"
+ ],
+ "provenance": {
+  "action:a5.name": "gateway",
+  "action:a5.kind": "gateway",
+  "grant:g.name": "policy"
+ },
+ "errors": [
+  "%[recipient_allowlisted]{1} in grant:g: field not found",
+  "?[label: RECIPIENT_ALLOWLISTED]: No value for recipient_allowlisted",
+  "%[purpose_matches]{1} in grant:g: field not found",
+  "?[label: PURPOSE_MATCHES]: No value for purpose_matches",
+  "77 in prose is not a claim",
+  "78 in prose is not a claim",
+  "80 in prose is not a claim",
+  "91 in prose is not a claim",
+  "required control RECIPIENT_ALLOWLISTED not argued",
+  "required control PURPOSE_MATCHES not argued",
+  "required control EGRESS_PERMITTED not argued",
+  "numerals in prose are not claims: 5, 1, 77, 78, 80, 91"
+ ]
+}

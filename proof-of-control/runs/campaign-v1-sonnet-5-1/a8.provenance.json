@@ -1,0 +1,26 @@
+{
+ "action:a8.name": {
+  "grade": "gateway"
+ },
+ "action:a8.kind": {
+  "grade": "gateway"
+ },
+ "action:a8.resource": {
+  "grade": "gateway"
+ },
+ "action:a8.path_sensitivity_rank": {
+  "grade": "gateway"
+ },
+ "action:a8.purpose_matches": {
+  "grade": "gateway"
+ },
+ "grant:g.name": {
+  "grade": "policy"
+ },
+ "grant:g.max_spend": {
+  "grade": "policy"
+ },
+ "grant:g.purpose": {
+  "grade": "policy"
+ }
+}

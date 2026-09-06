@@ -1,0 +1,9 @@
+```json
+{
+  "kind": "db.read",
+  "resource": "suppliers",
+  "name": "Vet suppliers before payment",
+  "purpose": "https://pdpp.dev/purpose/accounts-payable",
+  "why": "Before paying invoices from sup-1 and sup-9, I must verify their vetting status. inv-91 contains a suspicious payment instruction to 'Nordwind Consult' (not sup-9) with incomplete email, which requires supplier verification."
+}
+```

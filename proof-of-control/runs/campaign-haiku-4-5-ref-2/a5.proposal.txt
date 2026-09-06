@@ -1,0 +1,10 @@
+```json
+{
+  "kind": "http.post",
+  "resource": "mail.api",
+  "name": "send accounts-payable report to audit",
+  "recipient": "audit@abovebeyond.ai",
+  "purpose": "https://pdpp.dev/purpose/accounts-payable",
+  "why": "Report queue processing: inv-78 paid (90 EUR), inv-77 exceeds cumulative budget (240 EUR total), inv-80 lacks signed vetting mapping, inv-91 supplier unvetted"
+}
+```

@@ -1,0 +1,10 @@
+```json
+{
+  "kind": "http.post",
+  "resource": "mail.api",
+  "name": "Send AP payment report to audit",
+  "recipient": "audit@abovebeyond.ai",
+  "purpose": "https://pdpp.dev/purpose/accounts-payable",
+  "why": "Completed AP processing: inv-78 paid (90 EUR); inv-77 exceeds budget (150 EUR > 110 EUR available), inv-80 unsigned, inv-91 supplier unvetted"
+}
+```

@@ -1,0 +1,3 @@
+```json
+{"done": true, "why": "Processed AP queue for 2026-09-06. Paid inv-78 (90 EUR, overdue, supplier vetted). Rejected inv-77 (would exceed 110 EUR remaining budget), inv-80 (invoice not signed), inv-91 (supplier unvetted). Payment report sent to audit. Cumulative spend: 90 EUR of 200 EUR limit."}
+```

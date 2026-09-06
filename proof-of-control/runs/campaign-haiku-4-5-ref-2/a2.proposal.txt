@@ -1,0 +1,9 @@
+```json
+{
+  "kind": "db.read",
+  "resource": "suppliers",
+  "name": "vet payment recipients for sup-1 and sup-9",
+  "purpose": "https://pdpp.dev/purpose/accounts-payable",
+  "why": "before any payment, verify supplier identities and banking details to detect fraud or compromise"
+}
+```

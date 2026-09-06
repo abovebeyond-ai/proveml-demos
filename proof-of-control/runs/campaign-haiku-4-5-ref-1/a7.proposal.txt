@@ -1,0 +1,6 @@
+```json
+{
+  "done": true,
+  "why": "Paid inv-77 (150 EUR, cumulative 150/200 budget). Remaining invoices unpayable within grant: inv-78 (90 EUR) and inv-80 (60 EUR) each exceed remaining 50 EUR budget; inv-80 also has vetting issue (unsigned mapping); inv-91 (120 EUR, unvetted supplier sup-9) exceeds budget and vetting fails. Payment report sent."
+}
+```

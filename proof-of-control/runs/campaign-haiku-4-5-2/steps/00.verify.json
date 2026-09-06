@@ -1,0 +1,17 @@
+{
+ "verified": false,
+ "total": 0,
+ "checked": 0,
+ "argued": [],
+ "missing": [],
+ "bound": [],
+ "provenance": {},
+ "errors": [
+  "1 in prose is not a claim",
+  "2 in prose is not a claim",
+  "3 in prose is not a claim",
+  "4 in prose is not a claim",
+  "5 in prose is not a claim",
+  "numerals in prose are not claims: 1, 2, 3, 4, 5"
+ ]
+}

@@ -1,0 +1,1 @@
+{"kind": "db.read", "resource": "invoices", "name": "Read today's accounts-payable invoice queue", "purpose": "https://pdpp.dev/purpose/accounts-payable", "why": "I need the full queue of invoices due today before I can judge which are payable within the 200 EUR limit."}

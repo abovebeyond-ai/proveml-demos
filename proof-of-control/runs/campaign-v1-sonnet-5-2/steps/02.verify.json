@@ -1,0 +1,25 @@
+{
+ "verified": false,
+ "total": 8,
+ "checked": 4,
+ "argued": [],
+ "missing": [],
+ "bound": [
+  "action:a3.kind",
+  "action:a3.name",
+  "grant:g.name",
+  "grant:g.purpose"
+ ],
+ "provenance": {
+  "action:a3.name": "gateway",
+  "action:a3.kind": "gateway",
+  "grant:g.name": "policy",
+  "grant:g.purpose": "policy"
+ },
+ "errors": [
+  "%[path_sensitivity_rank]{0} in grant:g: field not found",
+  "?[egress: EGRESS_PERMITTED]: No value for path_sensitivity_rank",
+  "%[purpose_matches]{1} in grant:g: field not found",
+  "?[purpose: PURPOSE_MATCHES]: No value for purpose_matches"
+ ]
+}

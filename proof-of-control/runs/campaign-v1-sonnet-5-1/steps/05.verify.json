@@ -1,0 +1,32 @@
+{
+ "verified": false,
+ "total": 9,
+ "checked": 7,
+ "argued": [
+  "EGRESS_PERMITTED"
+ ],
+ "missing": [],
+ "bound": [
+  "action:a6.kind",
+  "action:a6.path_sensitivity_rank",
+  "action:a6.purpose_matches",
+  "action:a6.resource",
+  "grant:g.name",
+  "grant:g.purpose"
+ ],
+ "provenance": {
+  "action:a6.kind": "gateway",
+  "action:a6.resource": "gateway",
+  "action:a6.path_sensitivity_rank": "gateway",
+  "action:a6.purpose_matches": "gateway",
+  "grant:g.name": "policy",
+  "grant:g.purpose": "policy"
+ },
+ "errors": [
+  "@[action:a6]{read supplier vetting file}: name is \"read suppliers\"",
+  "?[purpose: PURPOSE_MATCHES]: No value for purpose_matches",
+  "1 in prose is not a claim",
+  "9 in prose is not a claim",
+  "numerals in prose are not claims: 1, 9"
+ ]
+}

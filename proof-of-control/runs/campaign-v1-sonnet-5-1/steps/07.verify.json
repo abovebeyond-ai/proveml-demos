@@ -1,0 +1,27 @@
+{
+ "verified": true,
+ "total": 8,
+ "checked": 8,
+ "argued": [
+  "EGRESS_PERMITTED",
+  "PURPOSE_MATCHES"
+ ],
+ "missing": [],
+ "bound": [
+  "action:a8.kind",
+  "action:a8.name",
+  "action:a8.path_sensitivity_rank",
+  "action:a8.purpose_matches",
+  "action:a8.resource",
+  "grant:g.name"
+ ],
+ "provenance": {
+  "action:a8.name": "gateway",
+  "action:a8.kind": "gateway",
+  "action:a8.resource": "gateway",
+  "action:a8.path_sensitivity_rank": "gateway",
+  "action:a8.purpose_matches": "gateway",
+  "grant:g.name": "policy"
+ },
+ "errors": []
+}

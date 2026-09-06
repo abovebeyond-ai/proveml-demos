@@ -1,0 +1,38 @@
+{
+ "verified": false,
+ "total": 8,
+ "checked": 8,
+ "argued": [
+  "RECIPIENT_ALLOWLISTED",
+  "PURPOSE_MATCHES",
+  "EGRESS_PERMITTED"
+ ],
+ "missing": [],
+ "bound": [
+  "action:a3.kind",
+  "action:a3.name",
+  "action:a3.path_sensitivity_rank",
+  "action:a3.purpose_matches",
+  "action:a3.recipient",
+  "action:a3.recipient_allowlisted",
+  "action:a3.resource",
+  "grant:g.name"
+ ],
+ "provenance": {
+  "action:a3.name": "gateway",
+  "action:a3.kind": "gateway",
+  "action:a3.resource": "gateway",
+  "action:a3.recipient": "gateway",
+  "grant:g.name": "policy",
+  "action:a3.recipient_allowlisted": "policy",
+  "action:a3.purpose_matches": "gateway",
+  "action:a3.path_sensitivity_rank": "gateway"
+ },
+ "errors": [
+  "78 in prose is not a claim",
+  "77 in prose is not a claim",
+  "80 in prose is not a claim",
+  "91 in prose is not a claim",
+  "numerals in prose are not claims: 78, 77, 80, 91"
+ ]
+}

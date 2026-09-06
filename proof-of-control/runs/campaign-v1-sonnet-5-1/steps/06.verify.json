@@ -1,0 +1,29 @@
+{
+ "verified": false,
+ "total": 7,
+ "checked": 7,
+ "argued": [
+  "PURPOSE_MATCHES",
+  "EGRESS_PERMITTED"
+ ],
+ "missing": [],
+ "bound": [
+  "action:a7.kind",
+  "action:a7.name",
+  "action:a7.path_sensitivity_rank",
+  "action:a7.purpose_matches",
+  "action:a7.resource"
+ ],
+ "provenance": {
+  "action:a7.name": "gateway",
+  "action:a7.kind": "gateway",
+  "action:a7.resource": "gateway",
+  "action:a7.purpose_matches": "gateway",
+  "action:a7.path_sensitivity_rank": "gateway"
+ },
+ "errors": [
+  "1 in prose is not a claim",
+  "9 in prose is not a claim",
+  "numerals in prose are not claims: 1, 9"
+ ]
+}

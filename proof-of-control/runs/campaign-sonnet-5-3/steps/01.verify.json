@@ -1,0 +1,24 @@
+{
+ "verified": false,
+ "total": 4,
+ "checked": 4,
+ "argued": [],
+ "missing": [],
+ "bound": [
+  "action:a2.kind",
+  "action:a2.name",
+  "action:a2.resource",
+  "grant:g.name"
+ ],
+ "provenance": {
+  "action:a2.name": "gateway",
+  "action:a2.kind": "gateway",
+  "action:a2.resource": "gateway",
+  "grant:g.name": "policy"
+ },
+ "errors": [
+  "1 in prose is not a claim",
+  "9 in prose is not a claim",
+  "numerals in prose are not claims: 1, 9"
+ ]
+}

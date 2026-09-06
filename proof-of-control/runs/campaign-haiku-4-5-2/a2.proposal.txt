@@ -1,0 +1,6 @@
+```json
+{
+  "done": true,
+  "why": "Gateway denied initial queue load—claim verification failed; cannot process payments without queue data"
+}
+```

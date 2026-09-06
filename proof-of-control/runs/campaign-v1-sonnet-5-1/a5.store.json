@@ -1,0 +1,10 @@
+{
+ "action:a5.name": "read invoices",
+ "action:a5.kind": "db.read",
+ "action:a5.resource": "invoices",
+ "action:a5.path_sensitivity_rank": 0,
+ "action:a5.purpose_matches": 1,
+ "grant:g.name": "the grant",
+ "grant:g.max_spend": 200,
+ "grant:g.purpose": "https://pdpp.dev/purpose/accounts-payable"
+}
