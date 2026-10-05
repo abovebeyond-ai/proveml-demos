@@ -5,7 +5,8 @@
 //   credentials/*.consent.sdjwt the consent registry's credential, bound to the customer's wallet key,
 //                               PRESENTED on request with a nonce (wallet.mjs)
 // The demo issuers are did:jwk keys generated here (keys/, never committed).
-// The person who signs the extraction mapping is did:web:abovebeyond.ai (sign-mapping.mjs).
+// The person who signs the extraction mapping is Above Beyond's key-1, as did:web:abovebeyond.ai:id
+// since 5 October 2026 (sign-mapping.mjs).
 // usage: node make.mjs
 import { writeFileSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
