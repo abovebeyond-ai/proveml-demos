@@ -36,7 +36,9 @@ const DID_WEB_CACHE = join(HERE, 'keys', 'did-web-cache.json');
 export async function resolveDid(did) {
     if (did.startsWith('did:jwk:')) return { jwk: resolveDidJwk(did), via: 'did:jwk' };
     if (did.startsWith('did:web:')) {
-        const host = did.slice(8).split(':')[0]; const url = `https://${host}/.well-known/did.json`;
+        // did:web:host serves /.well-known/did.json, did:web:host:a:b serves /a/b/did.json.
+        const [host, ...path] = did.slice(8).split(':').map(decodeURIComponent);
+        const url = path.length ? `https://${host}/${path.join('/')}/did.json` : `https://${host}/.well-known/did.json`;
         let doc = null, via = 'fetched';
         try { const r = await fetch(url); if (r.ok) doc = await r.json(); } catch { /* offline */ }
         const cache = existsSync(DID_WEB_CACHE) ? JSON.parse(readFileSync(DID_WEB_CACHE, 'utf8')) : {};
@@ -50,7 +52,12 @@ export async function resolveDid(did) {
 }
 
 // signing callbacks in the shape @sd-jwt expects
-export const signerFor = (privateJwk) => { const key = createPrivateKey({ key: privateJwk, format: 'jwk' }); return async (data) => base64url.encode(sign(null, Buffer.from(data), key)); };
+// A private JWK, or an opened key with sign(bytes) -> raw signature (key-1 on a token, through
+// abovebeyond's scripts/key-1.mjs): either way the same raw Ed25519 bytes, base64url-encoded.
+export const signerFor = (k) => {
+    if (typeof k.sign === 'function') return async (data) => base64url.encode(k.sign(Buffer.from(data)));
+    const key = createPrivateKey({ key: k, format: 'jwk' }); return async (data) => base64url.encode(sign(null, Buffer.from(data), key));
+};
 export const verifierFor = (publicJwk) => { const key = createPublicKey({ key: publicJwk, format: 'jwk' }); return async (data, sig) => verify(null, Buffer.from(data), key, base64url.decode(sig)); };
 export const issuer = (privateJwk) => new SDJwtVcInstance({ signer: signerFor(privateJwk), signAlg: 'EdDSA', hasher: digest, hashAlg: 'sha-256', saltGenerator: generateSalt });
 export const holder = (privateJwk) => new SDJwtVcInstance({ hasher: digest, saltGenerator: generateSalt, kbSigner: signerFor(privateJwk), kbSignAlg: 'EdDSA' });
